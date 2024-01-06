@@ -1,0 +1,217 @@
+:root {
+  /* --main-bg-color: #009d63; */
+  --main-bg-color: #f3c809;
+  --main-text-color: #009d63;
+  --second-text-color: #bbbec5;
+  /* --second-bg-color: #c1efde; */
+  --second-bg-color:  #f3c809;
+}                                     
+
+.primary-text {
+  color: var(--main-text-color);
+}
+
+.second-text {
+  color: var(--second-text-color);
+}
+
+.primary-bg {
+  background-color: var(--main-bg-color);
+}
+
+.secondary-bg {
+  background-color: var(--second-bg-color);
+}
+
+.rounded-full {
+  border-radius: 100%;
+}
+body{
+  background-image: linear-gradient(to right,
+  #baf3d7,
+  #c2f5de,
+  #cbf7e4,
+  #d4f8ea,
+  #ddfaef);
+}
+#wrapper {
+  overflow-x: hidden;
+  /* overflow-x: auto; */
+  background-image: linear-gradient(to right,
+      #baf3d7,
+      #c2f5de,
+      #cbf7e4,
+      #d4f8ea,
+      #ddfaef);
+}
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  margin-left: -15rem;
+  -webkit-transition: margin 0.25s ease-out;
+  -moz-transition: margin 0.25s ease-out;
+  -o-transition: margin 0.25s ease-out;
+  transition: margin 0.25s ease-out;
+  
+}
+
+#sidebar-wrapper .sidebar-heading {
+  /* padding: 0.875rem 1.25rem; */
+  padding: 5px 2px;
+  font-size: 1.5rem;
+}
+
+/* sidebar width control */
+#sidebar-wrapper .list-group {
+  /* width: 13rem; */
+  width: 15rem;
+}
+
+/* sidebar width control */
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  margin-left: 0;
+ 
+}
+
+#menu-toggle {
+  cursor: pointer;
+}
+
+.list-group-item {
+  border: none;
+  /* padding: 18px 12px; */
+  padding: 10px 30px;
+  cursor: pointer;
+
+}
+
+.list-group-item.active {
+      background-color:var(--second-bg-color);
+      color: var(--main-text-color);
+      font-weight: bold;
+      border: none;
+    }
+
+@media (min-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: 0px;
+  }
+
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -15rem;
+  }
+}
+
+/* my css */
+#toggleone a,
+#toggletwo a,
+#togglethree a,
+#togglefour a,
+#report_toggle a, 
+#toggle_opn a {
+  display: block;
+  padding: 4px 8px 4px 32px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: 0.3s;
+  /* background-color: rgb(94, 144, 253); */
+  color: #000000;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#toggleone a:hover,
+#toggletwo a:hover,
+#togglethree a:hover,
+#togglefour a:hover,
+#report_toggle a:hover,
+#toggle_opn a:hover {
+  display: block;
+  padding: 4px 8px 4px 32px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: 0.3s;
+  background-color: rgb(6, 50, 133);
+  color: #ffffff;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+.pcw {
+  width: 60px;
+  height: 60px;
+  padding: 5px;
+}
+
+label {
+  font-weight: 600;
+  color: #000;
+}
+/*
+input:not([type="radio"]) {
+  height: 35px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  border-radius: 2px !important;
+  border: 1px solid #c7c5c5 !important;
+  margin-bottom: 2px !important;
+  background: transparent !important;
+  color: blue !important;
+  padding: 4px !important;
+
+}
+
+input:not([type="radio"]):focus {
+  border-color: rgb(185, 183, 183) !important;
+  box-shadow: 2px 2px 5px #bcbbbd !important;
+  color: blue !important;
+  background-color: #fff !important;
+  outline-color: blue;
+  outline-width: 1px;
+}
+*/
+textarea{
+  color: blue !important;
+  font-weight: 600 !important;
+}
+
+
+
+
+button:focus {
+  outline-width: 10px;
+      outline-color:#FDCA40;
+    }
+  a:focus {
+  outline-width: 10px;
+      outline-color:#FDCA40;
+    }
+
+
+    .homebutton{
+      position:absolute;
+      position: fixed;
+      top:0%;
+      left:0%;
+    }
+
+    

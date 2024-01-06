@@ -1,0 +1,121 @@
+.modal table th{
+    background: rgb(33, 100, 155);
+    padding: 10px;
+    color:#fff;
+  }
+  .modal input[type="number"],.modal input[type="text"] {
+    color:blue !important;
+
+  }
+.modal table {
+  width: 100%;
+}
+  /* .inputContainer2{
+    margin-top: 10px;
+  }
+  .inputContainer{
+    margin-bottom: 10px;
+  } */
+/* CSS styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  /* Adjust right position to center on the right side */
+  width: 60%;
+  margin-left: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+
+.modal-content {
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  /* Center horizontally on the right side */
+  transform: translate(0, -50%);
+  /* Vertically center the modal content */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  height: 600px;
+  width: 90%;
+  /* Set a maximum height for the modal content */
+  overflow: auto;
+  /* Enable vertical scrollbar if needed */
+}
+
+.modal label {
+  background-color: yellowgreen;
+  border-radius: 50%;
+  padding: 8px;
+  color: #fff;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.modal input[type="submit"] {
+  background-color: #003985;
+  width: 200px;
+  color: #fff;
+  padding: 5px;
+  margin-top: 10px;
+
+}
+
+
+#itemrow {
+  display: flex;
+  /* padding: 10px; */
+
+}
+
+table {
+  border: 1px solid #000;
+}
+
+th,
+td {
+  border: 1px solid #000;
+}
+
+
+
+
+
+/* Media query for medium-sized devices */
+@media only screen and (max-width: 768px) {
+  .modal {
+    width: 80%; /* Adjust width for medium-sized devices */
+  }
+}
+
+/* Media query for small devices */
+@media only screen and (max-width: 500px) {
+  .modal {
+    width: 90%; /* Adjust width for small devices */
+  }
+  .modal-content {
+    width: 95%; /* Adjust content width for small devices */
+    right: 2.5%; /* Center horizontally on smaller devices */
+  }
+}
+
+
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

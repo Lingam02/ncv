@@ -1,0 +1,54 @@
+.gridcon {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  position: sticky;
+  top: 0;
+}
+
+.grid-div {
+  border: 1px solid #fff;
+  cursor: pointer;
+  text-align: center;
+  background-color: cornflowerblue;
+  color: aliceblue;
+  font-weight: 600;
+  padding: 10px;
+}
+
+#dyedsilkstores:hover {
+  background-color: green;
+}
+
+#bobinstores:hover {
+  background-color: red;
+}
+
+#pirnstores:hover {
+  background-color: yellow;
+  color: black;
+}
+
+input {
+  color: blue !important;
+  font-weight: 600 !important;
+}
+
+.tbl_heading {
+  text-align: center;
+  border: 1px solid #ccc;
+  font-weight: 500;
+  background-color: cornflowerblue;
+  color: #fff;
+}
+
+table,
+th,
+td {
+  border: 1px solid #ccc;
+
+}
+.home {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+}
