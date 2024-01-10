@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg  py-0 px-1 non-print">
   <div class="d-flex align-items-center"id="menu-toggle" >
     <i class="fas fa-align-left text-dark fs-4 me-3" id="menu-toggle"></i>
-    <h2 class="fs-4 m-0 text-dark text-uppercase" >NC Vardhan Silks</h2>
+    <h2 class="fs-4 m-0 text-dark text-uppercase" >NC Vardhan Silks - 2024</h2>
   </div>
 
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
