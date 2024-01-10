@@ -125,7 +125,6 @@ function funfetch3() {
         // Populate the last row with your data
         lastRow.querySelector("[name='boxes[]']").value = invoice.box_no;
         lastRow.querySelector("[name='colors[]']").value = invoice.box_col_nam;
-        lastRow.querySelector("[name='nos[]']").value = 1;
 
         if (index < maxrec - 1) {
           addRow2();
@@ -232,7 +231,61 @@ function calculateTotalSum() {
 }
 
 // Call the calculateTotalSum function whenever needed, e.g., when a new row is added
-calculateTotalSum();
+
+
+
+//----------------------------------------- 1----------ends
+// Select the input field where you want to display the sum
+const returnWeightInput2 = document.getElementById('no_ofpirns');
+
+// Function to calculate and update the total sum
+function calculateTotalSum2() {
+  const weightInputs2 = document.querySelectorAll('input[name="p_nos[]"]');
+  let totalSum2 = 0;
+
+  weightInputs2.forEach((input) => {
+    const value2 = input.value.trim();
+    if (value2) {
+      const weight2 = parseFloat(value2);
+      if (!isNaN(weight2)) {
+        totalSum2 += weight2;
+      }             
+    }
+  });
+
+  // Update the "returnweight" input field with the calculated sum
+  returnWeightInput2.value = totalSum2;
+ // document.getElementById('returnweight').value = document.getElementById('itemopb').value-totalSum;
+}
+
+// Call the calculateTotalSum function whenever needed, e.g., when a new row is added
+
+// --------------------------------------- 2  ------------- ends    
+// Select the input field where you want to display the sum
+const returnWeightInput3 = document.getElementById('wght_of_pirns');
+
+// Function to calculate and update the total sum
+function calculateTotalSum3() {
+  const weightInputs3 = document.querySelectorAll('input[name="p_wghts[]"]');
+  let totalSum3 = 0;
+
+  weightInputs3.forEach((input) => {
+    const value3 = input.value.trim();
+    if (value3) {
+      const weight3 = parseFloat(value3);
+      if (!isNaN(weight3)) {
+        totalSum3 += weight3;
+      }             
+    }
+  });
+
+  // Update the "returnweight" input field with the calculated sum
+  returnWeightInput3.value = totalSum3;
+ // document.getElementById('returnweight').value = document.getElementById('itemopb').value-totalSum;
+}
+
+// Call the calculateTotalSum function whenever needed, e.g., when a new row is added
+
 
 
   // Function to handle Enter key for dynamically added inputs
@@ -241,6 +294,20 @@ calculateTotalSum();
       event.preventDefault();
   
       const inputs = document.querySelectorAll('#inputContainer input[type="number"]');
+      const currentIndex = Array.from(inputs).indexOf(event.target);
+  
+      if (currentIndex !== -1 && currentIndex < inputs.length - 1) {
+        inputs[currentIndex + 1].focus();
+        inputs[currentIndex + 1].select();  
+      }
+    }
+  });
+  // Function to handle Enter key for dynamically added inputs
+  document.getElementById('inputContainer2').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+  
+      const inputs = document.querySelectorAll('#inputContainer2 input[type="number"]');
       const currentIndex = Array.from(inputs).indexOf(event.target);
   
       if (currentIndex !== -1 && currentIndex < inputs.length - 1) {

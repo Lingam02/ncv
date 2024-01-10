@@ -1,56 +1,70 @@
 <?php
 include "config.php";
- // Check if 'uname' session variable is not set or empty
- if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
-  // Redirect to the login page
+
+if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
   header("Location: index.php");
-  exit(); // Ensure that code stops executing after the redirect
+  exit();
 }
 
 if (isset($_POST['save'])) {
-  
-
   $id = $_POST['workname'];
-  //-------------------------------------------
 
-  //$fromid = $_POST['hidden_id_unitid'];
-  //$fromname = $_POST['unit'];
-
-  //$to_id = $_POST['hidden_id_fromloc'];
-  //$to_name = $_POST['fromloc'];
-  //--------------------------------------------
-  $finish_qty = $_POST['no_ofpirns'];
+ $finish_qty = $_POST['no_ofpirns'];
   $finish_wght = $_POST['wght_of_pirns'];
 
   $bobins = $_POST['bobins'];
   $wghts = $_POST['wghts'];
   $ttl_wght_bobin = $_POST['ttl_retbobin_wght_inpirn'];
 
-  date_default_timezone_set("Asia/Kolkata"); // Set the timezone to Asia/Kolkata
-  $finish_date = date("Y-m-d H:i:s"); // Generate the current date and time in the specified format
+  $boxes = $_POST['boxes'];
+  $colors = $_POST['colors'];
+  $p_nos = $_POST['p_nos'];
+  $p_wghts = $_POST['p_wghts'];
+
+  date_default_timezone_set("Asia/Kolkata");
+  $finish_date = date("Y-m-d H:i:s");
 
   $sql = "UPDATE `work_progress` SET  `work_prog`=0, `work_end`=1,
-   `finish_date`='$finish_date',
-   `finish_wght`='$finish_wght' WHERE id='$id'";
+           `finish_date`='$finish_date',
+           `finish_wght`='$finish_wght' WHERE id='$id'";
 
   if ($con->query($sql) === TRUE) {
-    // Success: You can perform any additional actions if needed
     for ($key = 0; $key < count($bobins); $key++) {
-      if ($bobins[$key] !== "" && $wghts[$key] > 0) { // Corrected variable name 'amts' to 'wghts'
+      if ($bobins[$key] !== "" && $wghts[$key] > 0) { 
         $bobin = $bobins[$key];
         $wght = $wghts[$key];
         $txn_type = "PIRN_RET";
-        $sql = "UPDATE `bobin_trans` SET `return_date` = '$finish_date', `ret_bobinwghts_inpirn` = '$wght',`no_of_pirnsfinished`='$finish_qty',`txn_type` = '$txn_type',`ttl_wghtof_pirns`='$finish_wght',`ttl_retbobin_wght_inpirn` = '$ttl_wght_bobin'
-         WHERE `bobin_id` = '$bobin' and `reff_id` = '$id'";
+        $sql = "UPDATE `bobin_trans` SET `return_date` = '$finish_date', `ret_bobinwghts_inpirn` = '$wght',`no_of_pirnsfinished`='$finish_qty',
+        `txn_type` = '$txn_type',`ttl_wghtof_pirns`='$finish_wght',`ttl_retbobin_wght_inpirn` = '$ttl_wght_bobin',`bobin_no`='$bobin'
+         WHERE `bobin_id` = '$bobin_id' and `reff_id` = '$id'";
         $con->query($sql); // Execute the SQL query for each bobin
       }
     }
+    for ($innerKey = 0; $innerKey < count($boxes); $innerKey++) {
+      if ($boxes[$innerKey] !== "" && $p_wghts[$innerKey] > 0) {
+        // Updated variable names inside the loop
+        $box = $boxes[$innerKey];
+        $color = $colors[$innerKey];
+        $p_no = $p_nos[$innerKey];
+        $p_wght = $p_wghts[$innerKey];
+
+        $txn_type = "PIRN_RET";
+
+        // SQL query for boxes...
+        $sql = "UPDATE `bobin_trans` SET `return_date` = '$finish_date', `ret_bobinwghts_inpirn` = '$wght',`no_of_pirnsfinished`='$finish_qty',
+                `txn_type` = '$txn_type',`ttl_wghtof_pirns`='$finish_wght',`ttl_retbobin_wght_inpirn` = '$ttl_wght_bobin',
+                `box_no`='$box',`box_col_nam`='$color',`ret_p_nos`='$p_no',`ret_p_wghts`='$p_wght'
+                WHERE `bobin_id` = '$bobin' and `reff_id` = '$id'";
+
+        $con->query($sql);
+      }
+    }
+    header('Location: rawreturnfrom_pirn.php');
   } else {
     echo "Error: " . $sql . "<br>" . $con->error;
   }
 
   $con->close();
-  header('Location: rawreturnfrom_pirn.php');
 }
 
 if (isset($_POST['log-out'])) {
@@ -58,6 +72,7 @@ if (isset($_POST['log-out'])) {
   header('Location: index.php');
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -126,7 +141,7 @@ if (isset($_POST['log-out'])) {
       </div>
       <div class="input-div">
         <label for="no_ofpirns">No of Pirns finished</label>
-        <input style="border:1px solid yellow" type="number" id="no_ofpirns" placeholder="ENTER NO OF PIRNS FINISHED" name="no_ofpirns" required oninput="updateInput2(this.value)">
+        <input style="border:1px solid yellow" type="number" id="no_ofpirns" placeholder="ENTER NO OF PIRNS FINISHED" name="no_ofpirns" required >
       </div>
       <div class="input-div">
         <label for="wght_of_pirns">Weight of finished pirns</label>
@@ -164,7 +179,7 @@ if (isset($_POST['log-out'])) {
           </div>
           
           <div id="inputContainer2">
-          <P class="heading_modal">ENTER PIRN QTY AND WEIGHT</P>  
+          <P class="heading_modal">ENTER PIRN QTY AND WEIGHTS</P>  
             <table id="modaltable2">
               <thead>
                 <tr>
@@ -180,8 +195,8 @@ if (isset($_POST['log-out'])) {
                   <td><input style="width:80px" type="text" name="boxes[]" value="" readonly></td>
                   <!-- <td><input type="text" name="items[]" value=""readonly id="itemsInput"></td>-->
                   <td><input type="text" name="colors[]" value=""readonly id="colors"></td> 
-                  <td><input style="width:80px" type="number" name="nos[]" onclick="this.select()" required oninput="calculateTotalSum()"></td>
-                  <td><input style="width:80px" type="number" name="nos[]" onclick="this.select()" required oninput="calculateTotalSum()"></td>
+                  <td><input style="width:80px" type="number" name="p_nos[]" onclick="this.select()" required oninput="calculateTotalSum2()"></td>
+                  <td><input style="width:80px" type="number" name="p_wghts[]" onclick="this.select()" required oninput="calculateTotalSum3()"></td>
                 </tr>
               </tbody>
             </table>
