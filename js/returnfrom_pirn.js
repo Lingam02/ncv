@@ -124,14 +124,18 @@ function funfetch3() {
 
         // Populate the last row with your data
         lastRow.querySelector("[name='boxes[]']").value = invoice.box_no;
+        lastRow.querySelector("[name='p_nos[]']").value = 20;
         lastRow.querySelector("[name='colors[]']").value = invoice.box_col_nam;
 
         if (index < maxrec - 1) {
           addRow2();
+         calculateTotalSum2();
         }
       });
     }
+    
   });
+  
 }
 
 
@@ -166,6 +170,7 @@ function addRow2() {
 
   // Append the new row to the table body
   tableBody.appendChild(newRow);
+   
 }
 /* ------------------------------------------------------------------------------------------------------------------------------  */
 
@@ -257,6 +262,7 @@ function calculateTotalSum2() {
   returnWeightInput2.value = totalSum2;
  // document.getElementById('returnweight').value = document.getElementById('itemopb').value-totalSum;
 }
+calculateTotalSum2();
 
 // Call the calculateTotalSum function whenever needed, e.g., when a new row is added
 

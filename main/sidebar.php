@@ -31,8 +31,8 @@
   <div class="list-group list-group-flush my-3">
     <a href="admin.php" class="list-group-item list-group-item-action second-text active"><i class="fas fa-home me-2"></i>Home</a>
     <a href="dyer_form.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Dyer</a>
-    <!-- <a href="seperation.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Seperation</a> -->
-    <!-- <a href="sizeing.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Sizeing</a> -->
+    <a href="seperation.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Seperation</a>
+    <a href="sizeing.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Sizeing</a>
     <!-- <a href="dyer.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Dyer</a> -->
     <!-- <a href="dyer_ret.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Dyer Ret</a> -->
     <!-- <a href="user.php" class="list-group-item list-group-item-action second-text fw-bold"><i class="fas fas fa-layer-group me-2"></i>User Creation</a>

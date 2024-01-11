@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
               <tr>
                 <th>Wept colour</th>
                 <th>Wept Wght</th>
-                <!-- <th>Wept Qty</th> -->
+               
               </tr>
             </thead>
             <tbody id="tbody_ds_wept">

@@ -1,7 +1,7 @@
 <?php
 include "config.php";
- // Check if 'uname' session variable is not set or empty
- if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
+// Check if 'uname' session variable is not set or empty
+if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
   // Redirect to the login page
   header("Location: index.php");
   exit(); // Ensure that code stops executing after the redirect
@@ -95,14 +95,14 @@ if (isset($_POST['Log-out'])) {
       <div class="form-group">
         <label for="fromloc">From:</label>
         <select required name="fromloc" id="fromloc" class="selectpicker" data-show-subtext="true" data-live-search="true">
-    <option value="" selected disabled>Select From Where</option>
-    <?php
-    $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores ORDER BY loc_nam");
-    while ($row = $sql->fetch_assoc()) {
-        echo "<option class='text-uppercase' value='" . $row['id'] . "' data-subtext='" . $row['loc_nam'] . "'>" . $row['loc_nam'] . "</option>";
-    }
-    ?>
-</select>
+          <option value="" selected disabled>Select From Where</option>
+          <?php
+          $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores ORDER BY loc_nam");
+          while ($row = $sql->fetch_assoc()) {
+            echo "<option class='text-uppercase' value='" . $row['id'] . "' data-subtext='" . $row['loc_nam'] . "'>" . $row['loc_nam'] . "</option>";
+          }
+          ?>
+        </select>
 
       </div>
 
@@ -139,6 +139,21 @@ if (isset($_POST['Log-out'])) {
         </div>
 
         <div class="form-group">
+          <label for="silk_nam">Box:</label>
+          <input type="text" list="box_nos" name="box" class="form-control" placeholder="Select Box no" onchange="getitembox2(this)">
+          <datalist id="box_nos">
+            <?php
+            $sql = mysqli_query($con, "SELECT box_no,id FROM pirn_box  order by box_no");
+            while ($row = $sql->fetch_assoc()) {
+              echo "<option class='text-uppercase' value='" . $row['box_no'] . "' data-acid='" . $row['id'] . "'></option>";
+            }
+            ?>
+          </datalist>
+          <input type="hidden" name="hidden_box2_id[]">
+        </div>
+
+
+        <div class="form-group">
           <label for="col_nam">Colour:</label>
           <select name="col_nam" id="col_nam" class="selectpicker" data-show-subtext="true" data-live-search="true">
             <option value="" selected disabled>Select Colour</option>
@@ -157,12 +172,12 @@ if (isset($_POST['Log-out'])) {
 
       <div class="form-row">
 
-        <div class="form-group">
+        <div class="form-group" style="display:none">
           <label for="silk_wght">Weight:</label>
           <input type="Number" id="silk_wght" name="silk_wght">
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="display:none">
           <label for="silk_qty">Qty:</label>
           <input type="Number" id="silk_qty" name="silk_qty" value="0" onclick="this.select()">
         </div>

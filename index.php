@@ -19,7 +19,7 @@ if (isset($_POST['but_submit'])) {
             // Check ac_grp_nam for different roles
             $ac_grp_nam = trim(strtoupper($row['ac_grp_nam']));
             if ($ac_grp_nam === "ADMIN") {
-                header('Location: admin.php');
+                header('Location: admin/dashboard.php');
                 exit();
             } elseif ($ac_grp_nam === "WORKER") {
                 header('Location: admin.php');

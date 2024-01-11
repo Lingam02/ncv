@@ -22,12 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     $wept_colours_id = $_POST['hidden_weft_id'];
     $wept_colours = $_POST['wept_colours'];
     $wghts = $_POST['wghts'];
-    $qtys = $_POST['qtys'];
+    // $qtys = $_POST['qtys'];
 
     $zari_id = $_POST['hidden_zari_id'];
     $zari = $_POST['zarinames'];
     $wghts2 = $_POST['wghts2'];
-    $qtys2 = $_POST['qtys2'];
+    // $qtys2 = $_POST['qtys2'];
 
     if ($locationid != "") {
         $con = mysqli_connect($host, $user, $password, $dbname);
@@ -50,13 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
         $tbl_type1 = "WEFTBS";
 
         // First table INSERT
-        $query1 = "INSERT INTO `tbl_opening`(`loc_id`, `loc_name`, `itm_type`, `tbl_type`, `reff_id`, `reff_nam`, `col_id`, `col_nam`, `wght`, `qty`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        $query1 = "INSERT INTO `tbl_opening`(`loc_id`, `loc_name`, `itm_type`, `tbl_type`, `reff_id`, `reff_nam`, `col_id`, `col_nam`, `wght`) VALUES (?,?,?,?,?,?,?,?,?)";
         $stmt1 = mysqli_prepare($con, $query1);
 
         if ($stmt1) {
             for ($key = 0; $key < count($wept_colours_id); $key++) {
                 if ($wept_colours_id[$key] !== "") {
-                    mysqli_stmt_bind_param($stmt1, "ssssssssdd", $locationid, $location, $itm_type,$tbl_type1,$bobinid[$key],$bobin_name[$key], $wept_colours_id[$key], $wept_colours[$key], $wghts[$key], $qtys[$key]);
+                    mysqli_stmt_bind_param($stmt1, "ssssssssd", $locationid, $location, $itm_type,$tbl_type1,$bobinid[$key],$bobin_name[$key], $wept_colours_id[$key], $wept_colours[$key], $wghts[$key]);
                     mysqli_stmt_execute($stmt1);
                 }
             }
@@ -66,13 +66,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
         }
         $tbl_type2 = "ZARIBS";
         // Second table INSERT
-        $query2 = "INSERT INTO `tbl_opening`(`loc_id`, `loc_name`, `itm_type`, `tbl_type`, `reff_id`, `reff_nam`, `itm_id`, `itm_nam`, `wght`, `qty`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        $query2 = "INSERT INTO `tbl_opening`(`loc_id`, `loc_name`, `itm_type`, `tbl_type`, `reff_id`, `reff_nam`, `itm_id`, `itm_nam`, `wght`) VALUES (?,?,?,?,?,?,?,?,?)";
         $stmt2 = mysqli_prepare($con, $query2);
 
         if ($stmt2) {
             for ($key = 0; $key < count($zari_id); $key++) {
                 if ($zari_id[$key] !== "") {
-                    mysqli_stmt_bind_param($stmt2, "ssssssssdd", $locationid, $location, $itm_type,$tbl_type2,$bobinid2[$key],$bobin_name2[$key], $zari_id[$key], $zari[$key], $wghts2[$key], $qtys2[$key]);
+                    mysqli_stmt_bind_param($stmt2, "ssssssssd", $locationid, $location, $itm_type,$tbl_type2,$bobinid2[$key],$bobin_name2[$key], $zari_id[$key], $zari[$key], $wghts2[$key]);
                     mysqli_stmt_execute($stmt2);
                 }
             }
@@ -137,7 +137,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
               <th>Bobin Id</th>
               <th>Wept Colour</th>
               <th>Weft Wght</th>
-              <th>Wept Qty</th>
             </tr>
           </thead>
           <tbody id="tbody_bs_wept">
@@ -177,9 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
               <td>
                 <input type="number" class="form-control" value="0" name="wghts[]" onclick="this.select()" oninput="calculateTotalSum()" >
               </td>
-              <td>
-                <input type="number" class="form-control" value="0" name="qtys[]" onclick="this.select()" oninput="calculateTotalSumqty()" >
-              </td>
+             
             </tr>
 
           </tbody>
@@ -207,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
               <th>Bobin Id</th>
               <th>Zari Name</th>
               <th>Zari Wght</th>
-              <th>Zari Qty</th>
+ 
             </tr>
           </thead>
           <tbody id="tbody_bs_zari">
@@ -247,9 +244,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
               <td>
                 <input type="number" class="form-control" value="0" name="wghts2[]" onclick="this.select()" oninput="calculateTotalSum2()">
               </td>
-              <td>
+              <!-- <td>
                 <input type="number" class="form-control" value="0" name="qtys2[]" onclick="this.select()" oninput="calculateTotalSumqty2()">
-              </td>
+              </td> -->
             </tr>
           </tbody>
           <!-- <tfoot>
