@@ -1,20 +1,34 @@
-  <!-- attach php code here -->
-  <?php
-  include "config.php";
+<?php
+include "config.php";
+
+// Create the table if it does not exist
+$sqlCreateTable = "
+    CREATE TABLE IF NOT EXISTS u296169589_ncv23.pirn_box (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        box_no VARCHAR(10),
+        empty_wght DECIMAL(10,3),
+        date_time TIMESTAMP
+    );
+";
 
 
-  $sql1 = "SELECT id,box_no,empty_wght FROM pirn_box"; // Default query to retrieve all users
-  $result = $con->query($sql1);
+if ($con->query($sqlCreateTable) === TRUE) {
+    echo "Table created or already exists successfully";
+} else {
+    echo "Error creating table: " . $con->error;
+}
 
+$sql1 = "SELECT id, box_no, empty_wght FROM pirn_box"; // Default query to retrieve all users
+$result = $con->query($sql1);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $box_no = $_POST["box_no"];
     $empty_wght = $_POST["empty_wght"];
-    // $bobin_id_edi = $_POST["bobin_id_edi"];
+    $bobin_id_edi = $_POST["bobin_id_edi"];
 
     if (!empty($bobin_id_edi)) {
         // If $bobin_id_edi is provided, update the existing record
-        $sql = "UPDATE pirn_box SET box_no = '$box_no', empty_wghtt = '$empty_wght' WHERE id = $bobin_id_edi";
+        $sql = "UPDATE pirn_box SET box_no = '$box_no', empty_wght = '$empty_wght' WHERE id = $bobin_id_edi";
     } else {
         // If $bobin_id_edi is empty, perform an insert for a new record
         $sql = "INSERT INTO pirn_box (box_no, empty_wght) VALUES ('$box_no', '$empty_wght')";
@@ -28,7 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: " . $sql . "<br>" . $con->error;
     }
 }
+
 ?>
+
 
   <!-- attach php code here ends-->
   <!DOCTYPE html>
@@ -218,6 +234,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form-group">
                   <label for="empty_wght">Bobin Empty Weight</label>
                   <input type="number" id="empty_wght" name="empty_wght" required>
+                </div>
+                <div class="form-group">
+                  <label for="no_of_pirns">No of Pirns</label>
+                  <input type="number" id="no_of_pirns" name="no_of_pirns" value="20" readonly>
                 </div>
 
                 <div class="form-group buttons">

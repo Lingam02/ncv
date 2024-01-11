@@ -194,7 +194,7 @@ if (isset($_POST['save'])) {
           </div>
           <div class="form-group">
            <h4>SELECT BOX TO ISSUE</h4>
-            <input required type="number" placeholder="Enter no of pirn box " id="box_qty" name="box_qty">
+            <input required type="number" placeholder="Enter no of pirn box and press tab" id="box_qty" name="box_qty">
           </div>
           <table id="box_table">
               <thead>
