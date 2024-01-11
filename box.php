@@ -13,7 +13,7 @@ $sqlCreateTable = "
 
 
 if ($con->query($sqlCreateTable) === TRUE) {
-    echo "Table created or already exists successfully";
+    //echo "Table created or already exists successfully";
 } else {
     echo "Error creating table: " . $con->error;
 }
