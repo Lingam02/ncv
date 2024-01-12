@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
 
   <!-- ------------------- 2 ------------------ -->
   <div class="container" id="bobinstore">
-    <h4 class="text-center mt-2 text-danger">Opening Balance </h4>
+    <h4 class="text-center mt-2 text-danger">Opening Balance of Bobin Type </h4>
     <form action="" method="post" autocomplete="off">
 
       <div class="row">

@@ -15,10 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $user_name = $_POST["userName"];
   $password = $_POST["password"];
 
-
-
-
-
   $sql = "INSERT INTO acct (ac_nam, user_nam, pwd,ac_grp_nam) VALUES (' $ac_name', '$user_name', '$password','$user_type')";
 
   if ($con->query($sql) === TRUE) {
@@ -123,8 +119,8 @@ $con->close();
               <div class="form-group">
                 <label for="workerName">Name</label>
                 <input type="text" id="workerName" name="workerName" onkeydown="handleEnterKey(event, 'userName')">
-                <span class="error" id="workerNameError">Worker Name Is Required</span>
-                <span class="error" id="workerDuplicateError">Worker Name Is Duplicate</span>
+                <span class="error" id="workerNameError">Name Is Required</span>
+                <span class="error" id="workerDuplicateError">Name Is Duplicate</span>
               </div>
               <div class="form-group">
                 <label for="userName">User Id</label>

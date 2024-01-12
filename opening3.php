@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
 
   <!-- -------------------- 3 ----------------- -->
   <div class="container" id="pirnstore">
-    <h4 class="text-center mt-2 text-warning">Opening Balance</h4>
+    <h4 class="text-center mt-2 text-warning">Opening Balance of Pirn Type</h4>
     <form action="" method="post" autocomplete="off">
       <div class="row">
         <div class="my-2 col-md-12">

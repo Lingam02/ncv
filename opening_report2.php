@@ -75,7 +75,7 @@
                                      <th>Bobin Id</th>
                                      <th>Wept Colour</th>
                                      <th>Wept Weight</th>
-                                     <th>Wept Qty</th>
+                                     <!-- <th>Wept Qty</th> -->
                                  </tr>
                              </thead>
                              <tbody>
@@ -89,13 +89,13 @@
                                             echo "<td>" . $row["reff_nam"] . "</td>";
                                             echo "<td>" . $row["col_nam"] . "</td>";
                                             echo "<td>" . $row["wght"] . "</td>";
-                                            echo "<td>" . $row["qty"] . "</td>";
+                                            // echo "<td>" . $row["qty"] . "</td>";
 
                                             echo "</tr>";
                                             $serialNumber++; // Increment serial number for the next row
                                         }
                                     } else {
-                                        echo "<tr><td colspan='6'>0 results</td></tr>";
+                                        echo "<tr><td colspan='5'>0 results</td></tr>";
                                     }
                                     ?>
                              </tbody>
@@ -115,7 +115,7 @@
                                      <th>Bobin Id</th>
                                      <th>Zari Name</th>
                                      <th>Zari Weight</th>
-                                     <th>Wept Qty</th>
+                                     <!-- <th>Wept Qty</th> -->
 
                                  </tr>
                              </thead>
@@ -130,13 +130,13 @@
                                             echo "<td>" . $row["reff_nam"] . "</td>";
                                             echo "<td>" . $row["itm_nam"] . "</td>";
                                             echo "<td>" . $row["wght"] . "</td>";
-                                            echo "<td>" . $row["qty"] . "</td>";
+                                            // echo "<td>" . $row["qty"] . "</td>";
 
                                             echo "</tr>";
                                             $serialNumber++; // Increment serial number for the next row
                                         }
                                     } else {
-                                        echo "<tr><td colspan='6'>0 results</td></tr>";
+                                        echo "<tr><td colspan='5'>0 results</td></tr>";
                                     }
                                     ?>
                              </tbody>

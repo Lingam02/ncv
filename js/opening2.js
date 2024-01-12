@@ -190,7 +190,7 @@ document.getElementById("location").addEventListener('change',function fetchstoc
         lastRow.querySelector("[name='wept_colours[]']").value = invoice.col_nam;
         lastRow.querySelector("[name='hidden_weft_id[]']").value = invoice.col_id;
         lastRow.querySelector("[name='wghts[]']").value = invoice.wght;
-        lastRow.querySelector("[name='qtys[]']").value = invoice.qty;
+        // lastRow.querySelector("[name='qtys[]']").value = invoice.qty;
 
         if (index < maxrec3 - 1) {
           addweptRow();
@@ -219,7 +219,7 @@ document.getElementById("location").addEventListener('change',function fetchstoc
         lastRow.querySelector("[name='zarinames[]']").value = invoice.itm_nam;
         lastRow.querySelector("[name='hidden_zari_id[]']").value = invoice.itm_id;
         lastRow.querySelector("[name='wghts2[]']").value = invoice.wght;
-        lastRow.querySelector("[name='qtys2[]']").value = invoice.qty;
+        // lastRow.querySelector("[name='qtys2[]']").value = invoice.qty;
 
         if (index < maxrec2 - 1) {
           addzariRow();
