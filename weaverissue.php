@@ -16,6 +16,9 @@ if (isset($_POST['submit'])) {
   $col_nam = $_POST['selectedcolor'];
   $zari_nam = $_POST['selectedzari'];
 
+  $hidden_box_id = $_POST['hidden_box_id'];
+  $box = $_POST['box'];
+
   $wevid = $_POST['wevname'];
   $loomid = $_POST['loomnam'];
   $silk_id = $_POST['silk_nam'];
@@ -35,9 +38,9 @@ if (isset($_POST['submit'])) {
 
   $sql = "INSERT INTO `wev_usage`(`txn_date`, `txn_typ`, `wev_id`, `wev_nam`, `work_id`, `work_nam`, `jari_qty`, 
     `jari_wght`, `jari_id`,`zari_nam`, `silk_id`, `silk_nam`, `silk_qty`, `silk_wght`, `slk_colid`, `slk_colnam`, 
-     `work_progress`, `cmp_id`,`particulars`,`from_id`, `from_name`) VALUES (CURRENT_DATE(),'ISS','$loomid','$loomnam','$wevid',
+     `work_progress`, `cmp_id`,`particulars`,`from_id`, `from_name`,`box_id`,`box_no`) VALUES (CURRENT_DATE(),'ISS','$loomid','$loomnam','$wevid',
     '$wevname', '$jari_qty','$jari_wght','$jari_id','$zari_nam','$silk_id','$silk_nam','$silk_qty','$silk_wght','$slk_colid', 
-    '$col_nam','1','1','$particulars','$fromname','$fromid')";
+    '$col_nam','1','1','$particulars','$fromname','$fromid','$hidden_box_id','$box')";
 
   $result = $con->query($sql);
   if ($result === TRUE) {
@@ -140,7 +143,7 @@ if (isset($_POST['Log-out'])) {
 
         <div class="form-group">
           <label for="silk_nam">Box:</label>
-          <input type="text" list="box_nos" name="box" class="form-control" placeholder="Select Box no" onchange="getitembox2(this)">
+          <input type="text" list="box_nos" name="box" id="box" class="form-control" placeholder="Select Box no">
           <datalist id="box_nos">
             <?php
             $sql = mysqli_query($con, "SELECT box_no,id FROM pirn_box  order by box_no");
@@ -149,7 +152,7 @@ if (isset($_POST['Log-out'])) {
             }
             ?>
           </datalist>
-          <input type="hidden" name="hidden_box2_id[]">
+          <input type="hidden" id="hidden_box_id" name="hidden_box_id">
         </div>
 
 

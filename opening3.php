@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
                 <th>Pirn Box No</th>
                 <th>Wept Colour</th>
                 <th>Weft Wght</th>
-                <th>Wept Qty</th>
+                <th>No of Pirns</th>
               </tr>
             </thead>
             <tbody id="tbody_ps_weft">
@@ -195,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
                 <th>Pirn Box No</th>
                 <th>Zari Name</th>
                 <th>Zari Wght</th>
-                <th>Zari Qty</th>
+                <th>No of Pirns</th>
               </tr>
             </thead>
             <tbody id="tbody_ps_zari">

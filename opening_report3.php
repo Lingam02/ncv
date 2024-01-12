@@ -72,6 +72,8 @@
                                  <tr>
                                      <th>S.NO</th>
                                      <th>Location</th>
+                                     <th>Box No</th>
+
                                      <th>Wept Colour</th>
                                      <th>Wept Weight</th>
                                      <th>Wept Qty</th>
@@ -85,6 +87,7 @@
                                             echo "<tr>";
                                             echo "<td>" . $serialNumber . "</td>"; // Serial number column
                                             echo "<td>" . $row["loc_name"] . "</td>";
+                                            echo "<td>" . $row["box_no"] . "</td>";
                                             echo "<td>" . $row["col_nam"] . "</td>";
                                             echo "<td>" . $row["wght"] . "</td>";
                                             echo "<td>" . $row["qty"] . "</td>";
@@ -93,7 +96,7 @@
                                             $serialNumber++; // Increment serial number for the next row
                                         }
                                     } else {
-                                        echo "<tr><td colspan='6'>0 results</td></tr>";
+                                        echo "<tr><td colspan='7'>0 results</td></tr>";
                                     }
                                     ?>
                              </tbody>
@@ -110,6 +113,7 @@
                                  <tr>
                                      <th>S.NO</th>
                                      <th>Location</th>
+                                     <th>Box No</th>
                                      <th>Zari Name</th>
                                      <th>Zari Weight</th>
                                      <th>Wept Qty</th>
@@ -124,6 +128,7 @@
                                             echo "<tr>";
                                             echo "<td>" . $serialNumber . "</td>"; // Serial number column
                                             echo "<td>" . $row["loc_name"] . "</td>";
+                                            echo "<td>" . $row["box_no"] . "</td>";
                                             echo "<td>" . $row["itm_nam"] . "</td>";
                                             echo "<td>" . $row["wght"] . "</td>";
                                             echo "<td>" . $row["qty"] . "</td>";
@@ -132,7 +137,7 @@
                                             $serialNumber++; // Increment serial number for the next row
                                         }
                                     } else {
-                                        echo "<tr><td colspan='5'>0 results</td></tr>";
+                                        echo "<tr><td colspan='6'>0 results</td></tr>";
                                     }
                                     ?>
                              </tbody>

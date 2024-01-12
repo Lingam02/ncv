@@ -1,18 +1,7 @@
 <?php
 include "config.php";
 
-// Alter the table to add the new column if it does not exist
-$sqlAlterTable = "
-    ALTER TABLE pirn_box  
-    ADD COLUMN IF NOT EXISTS no_of_pirns DECIMAL(10,3) NOT NULL AFTER empty_wght;
-";
-
-if ($con->query($sqlAlterTable) === TRUE) {
-    //echo "Table altered successfully";
-} else {
-    echo "Error altering table: " . $con->error;
-}
-$sql1 = "SELECT id, box_no, empty_wght FROM pirn_box"; // Default query to retrieve all users
+$sql1 = "SELECT id, box_no, empty_wght,no_of_pirns FROM pirn_box"; // Default query to retrieve all users
 $result = $con->query($sql1);
 
 
@@ -183,6 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <!-- <th>Id</th> -->
                     <th>Box No</th>
                     <th>Empty Weight</th>
+                    <th>No of Pirns</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -195,13 +185,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       // echo "<td>" . $row["id"] . "</td>";
                       echo "<td>" . $row["box_no"] . "</td>";
                       echo "<td>" . $row["empty_wght"] . "</td>";
+                      echo "<td>" . $row["no_of_pirns"] . "</td>";
                       // Edit and Delete links added in the Action column
                       // echo "<td class='non-print'><a href='edit_bobin.php?id=" . $row['id'] . "'>Edit</a> | <a href='delete_bobin.php?id=" . $row['id'] . "'>Delete</a></td>";
                       echo "</tr>";
                       $serialNumber++;
                     }
                   } else {
-                    echo "<tr><td colspan='4'>0 results</td></tr>";
+                    echo "<tr><td colspan='5'>0 results</td></tr>";
                   }
                   ?>
                 </tbody>
@@ -227,7 +218,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <input type="hidden" id="box_no_edi" name="box_no_edi" required>
                 </div>
                 <div class="form-group">
-                  <label for="empty_wght">Bobin Empty Weight</label>
+                  <label for="empty_wght">Empty Box Weight</label>
                   <input type="number" id="empty_wght" name="empty_wght" required>
                 </div>
                 <div class="form-group">
