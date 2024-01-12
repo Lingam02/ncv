@@ -15,11 +15,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
   $locationid = $_POST['hidden_location_id'];
   $location = $_POST['location'];
 
+
+  $boxid = $_POST['hidden_box_id'];
+  $box = $_POST['boxes'];
   $wept_colours_id = $_POST['hidden_weft_id'];
   $wept_colours = $_POST['wept_colours'];
   $wghts = $_POST['wghts'];
   $qtys = $_POST['qtys'];
 
+  $boxid2 = $_POST['hidden_box2_id'];
+  $box2 = $_POST['boxes2'];
   $zari_id = $_POST['hidden_zari_id'];
   $zari = $_POST['zarinames'];
   $wghts2 = $_POST['wghts2'];
@@ -42,17 +47,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
       // echo "Records with loc_id = $loc deleted successfully.";
     }
 
-    $itm_type = "PS";
-    $tbl_type1 = "WEFTPS";
+    $itm_type = "PS";//PIRN STORE
+    $tbl_type1 = "WEFTPS";// WEFT PIRN STORE
 
     // First table INSERT
-    $query1 = "INSERT INTO `tbl_opening`(`loc_id`, `loc_name`, `itm_type`, `tbl_type`, `col_id`, `col_nam`, `wght`, `qty`) VALUES (?,?,?,?,?,?,?,?)";
+    $query1 = "INSERT INTO `tbl_opening`(`loc_id`, `loc_name`, `itm_type`, `tbl_type`, `col_id`, `col_nam`, `wght`, `qty`,box_id, box_no) VALUES (?,?,?,?,?,?,?,?,?,?)";
     $stmt1 = mysqli_prepare($con, $query1);
 
     if ($stmt1) {
       for ($key = 0; $key < count($wept_colours_id); $key++) {
         if ($wept_colours_id[$key] !== "") {
-          mysqli_stmt_bind_param($stmt1, "ssssssdd", $locationid, $location, $itm_type, $tbl_type1, $wept_colours_id[$key], $wept_colours[$key], $wghts[$key], $qtys[$key]);
+          mysqli_stmt_bind_param($stmt1, "ssssssddss", $locationid, $location, $itm_type, $tbl_type1, $wept_colours_id[$key], $wept_colours[$key], $wghts[$key], $qtys[$key],$boxid[$key],$box[$key]);
           mysqli_stmt_execute($stmt1);
         }
       }
@@ -60,15 +65,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     } else {
       echo "Statement preparation failed: " . mysqli_error($con);
     }
-    $tbl_type2 = "ZARIPS";
+    $tbl_type2 = "ZARIPS";//ZARI PIRN STORE
     // Second table INSERT
-    $query2 = "INSERT INTO `tbl_opening`(`loc_id`, `loc_name`, `itm_type`, `tbl_type`, `itm_id`, `itm_nam`, `wght`, `qty`) VALUES (?,?,?,?,?,?,?,?)";
+    $query2 = "INSERT INTO `tbl_opening`(`loc_id`, `loc_name`, `itm_type`, `tbl_type`, `itm_id`, `itm_nam`, `wght`, `qty`,`box_id`,`box_no`) VALUES (?,?,?,?,?,?,?,?,?,?)";
     $stmt2 = mysqli_prepare($con, $query2);
 
     if ($stmt2) {
       for ($key = 0; $key < count($zari_id); $key++) {
         if ($zari_id[$key] !== "") {
-          mysqli_stmt_bind_param($stmt2, "ssssssdd", $locationid, $location, $itm_type, $tbl_type2, $zari_id[$key], $zari[$key], $wghts2[$key], $qtys2[$key]);
+          mysqli_stmt_bind_param($stmt2, "ssssssddss", $locationid, $location, $itm_type, $tbl_type2, $zari_id[$key], $zari[$key], $wghts2[$key], $qtys2[$key],$boxid2[$key],$box2[$key]);
           mysqli_stmt_execute($stmt2);
         }
       }

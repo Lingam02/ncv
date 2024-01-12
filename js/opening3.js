@@ -25,6 +25,56 @@ fromloc.addEventListener('change', function (event) {
 });
 
 
+  function getitembox(rid){
+    const rrow = rid.closest("tr");
+    const rowname = rrow.querySelector("[name='boxes[]']");
+    //console.log(rowname);
+    const rowid = rrow.querySelector("[name='hidden_box_id[]']");
+    const datalistOptions = document.getElementById('box_nos');
+    
+    const options = datalistOptions.getElementsByTagName('option');
+      for (let i = 0; i < options.length; i++) {
+          const option = options[i];
+          const optionValue = option.value;
+  
+          if (optionValue === rowname.value) {
+              var selectedAcid = option.getAttribute('data-acid'); // Assign value to selectedAcid
+  
+             rowid.value = selectedAcid;
+           
+            console.log("weft id-->",selectedAcid);
+            console.log("weft value-->",rowname.value);
+              break;
+          }
+      }
+  }
+  //---------------
+
+  function getitembox2(rid){
+    const rrow = rid.closest("tr");
+    const rowname = rrow.querySelector("[name='boxes2[]']");
+    //console.log(rowname);
+    const rowid = rrow.querySelector("[name='hidden_box2_id[]']");
+    const datalistOptions = document.getElementById('box_nos2');
+    
+    const options = datalistOptions.getElementsByTagName('option');
+      for (let i = 0; i < options.length; i++) {
+          const option = options[i];
+          const optionValue = option.value;
+  
+          if (optionValue === rowname.value) {
+              var selectedAcid = option.getAttribute('data-acid'); // Assign value to selectedAcid
+  
+             rowid.value = selectedAcid;
+           
+            console.log("weft id-->",selectedAcid);
+            console.log("weft value-->",rowname.value);
+              break;
+          }
+      }
+  }
+  //-----------------
+
   function getitemcolor(rid){
     const rrow = rid.closest("tr");
     const rowname = rrow.querySelector("[name='wept_colours[]']");
@@ -140,6 +190,8 @@ document.getElementById("location").addEventListener('change',function fetchstoc
         const lastRow = table.rows[table.rows.length - 1]; // Get the last row
 
         // Populate the last row with your data
+        lastRow.querySelector("[name='hidden_box_id[]']").value = invoice.box_id;
+        lastRow.querySelector("[name='boxes[]']").value = invoice.box_no;
         lastRow.querySelector("[name='hidden_weft_id[]']").value = invoice.col_id;
         lastRow.querySelector("[name='wept_colours[]']").value = invoice.col_nam;
         lastRow.querySelector("[name='wghts[]']").value = invoice.wght;
@@ -168,6 +220,8 @@ document.getElementById("location").addEventListener('change',function fetchstoc
         const lastRow = table.rows[table.rows.length - 1]; // Get the last row
 
         // Populate the last row with your data
+        lastRow.querySelector("[name='hidden_box2_id[]']").value = invoice.box_id;
+        lastRow.querySelector("[name='boxes2[]']").value = invoice.box_no;
         lastRow.querySelector("[name='hidden_zari_id[]']").value = invoice.itm_id;
         lastRow.querySelector("[name='zarinames[]']").value = invoice.itm_nam;
         lastRow.querySelector("[name='wghts2[]']").value = invoice.wght;
