@@ -73,8 +73,8 @@
                                      <th>S.NO</th>
                                      <th>Location</th>
                                      <th>Bobin Id</th>
-                                     <th>Wept Colour</th>
-                                     <th>Wept Weight</th>
+                                     <th>Weft Colour</th>
+                                     <th>Weft Weight</th>
                                      <!-- <th>Wept Qty</th> -->
                                  </tr>
                              </thead>
@@ -90,7 +90,6 @@
                                             echo "<td>" . $row["col_nam"] . "</td>";
                                             echo "<td>" . $row["wght"] . "</td>";
                                             // echo "<td>" . $row["qty"] . "</td>";
-
                                             echo "</tr>";
                                             $serialNumber++; // Increment serial number for the next row
                                         }

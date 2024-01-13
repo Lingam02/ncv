@@ -135,8 +135,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
             </tr>
             <tr>
               <th>Bobin Id</th>
-              <th>Wept Colour</th>
-              <th>Weft Wght</th>
+              <th>Weft Colour</th>
+              <th>Weft Weight</th>
             </tr>
           </thead>
           <tbody id="tbody_bs_wept">
@@ -203,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
             <tr>
               <th>Bobin Id</th>
               <th>Zari Name</th>
-              <th>Zari Wght</th>
+              <th>Zari Weight</th>
  
             </tr>
           </thead>

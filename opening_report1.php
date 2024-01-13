@@ -108,8 +108,8 @@
                                  <tr>
                                      <th>S.NO</th>
                                      <th>Location</th>
-                                     <th>Wept Colour</th>
-                                     <th>Wept Weight</th>
+                                     <th>Weft Colour</th>
+                                     <th>Weft Weight</th>
                                  </tr>
                              </thead>
                              <tbody>
