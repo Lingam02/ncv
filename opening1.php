@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
               </tr>
               <tr>
                 <th>Warp</th>
-                <th>Warp Wght</th>
+                <th>Warp Weight</th>
                 <!-- <th>Warp Qty</th> -->
               </tr>
             </thead>
@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
               </tr>
               <tr>
                 <th>Wept colour</th>
-                <th>Wept Wght</th>
+                <th>Wept Weight</th>
                
               </tr>
             </thead>
@@ -213,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
               </tr>
               <tr>
                 <th>Zari</th>
-                <th>Zari Wght</th>
+                <th>Zari Weight</th>
                 <!-- <th>Zari Qty</th> -->
               </tr>
             </thead>
