@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
               <tr>
 
                 <th>Pirn Box No</th>
-                <th>Wept Colour</th>
+                <th>Weft Colour</th>
                 <th>Weft Wght</th>
                 <th>No of Pirns</th>
               </tr>
