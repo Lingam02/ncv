@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
 
                 <th>Pirn Box No</th>
                 <th>Weft Colour</th>
-                <th>Weft Wght</th>
+                <th>Weft Weight</th>
                 <th>No of Pirns</th>
               </tr>
             </thead>
@@ -194,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
               <tr>
                 <th>Pirn Box No</th>
                 <th>Zari Name</th>
-                <th>Zari Wght</th>
+                <th>Zari Weight</th>
                 <th>No of Pirns</th>
               </tr>
             </thead>
