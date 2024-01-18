@@ -6,7 +6,7 @@
 // $user = "root"; /* User */
 // //$user = "admin"; /* User */
 // $password = ""; /* Password */
-// $dbname = "dyl23"; /* Database name */
+// $dbname = "ncv24"; /* Database name */
 // //$dbname = "pcw"; /* Database name */
 // $con = mysqli_connect($host, $user, $password,$dbname);
 // // Check connection
@@ -28,6 +28,5 @@ $con = mysqli_connect($host, $user, $password,$dbname);
 if (!$con) {
  die("Connection failed: " . mysqli_connect_error());
 }
-
 
 ?>

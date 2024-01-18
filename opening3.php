@@ -163,9 +163,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
                   <input type="text" list="colornamess" name="wept_colours[]" class="form-control" placeholder="Select Colour" onchange="getitemcolor(this)">
                   <datalist id="colornamess">
                     <?php
-                    $sql = mysqli_query($con, "SELECT nam,id FROM cnf where cls='COLOR' order by nam");
+                    $sql = mysqli_query($con, "SELECT nam,auto_id FROM cnf where cls='COLOR' order by nam");
                     while ($row = $sql->fetch_assoc()) {
-                      echo "<option class='text-uppercase' value='" . $row['nam'] . "' data-acid='" . $row['id'] . "'></option>";
+                      echo "<option class='text-uppercase' value='" . $row['nam'] . "' data-acid='" . $row['auto_id'] . "'></option>";
                     }
                     ?>
                   </datalist>

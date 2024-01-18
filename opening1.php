@@ -110,7 +110,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Opening Balance Form</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/opening.css">
+  <!-- <link rel="stylesheet" href="css/opening.css"> -->
+  <link rel="stylesheet" href="css/opening.css?<?php echo filemtime('css/opening.css'); ?>">
 
 </head>
 
@@ -183,9 +184,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
                   <input type="text" list="colornamess" id="wept_colours" name="wept_colours[]" class="form-control" placeholder="Select Colour" onchange="getitemcolor(this)">
                   <datalist id="colornamess">
                     <?php
-                    $sql = mysqli_query($con, "SELECT nam,id FROM cnf where cls='COLOR' order by nam");
+                    $sql = mysqli_query($con, "SELECT nam,auto_id FROM cnf where cls='COLOR' order by nam");
                     while ($row = $sql->fetch_assoc()) {
-                      echo "<option class='text-uppercase' value='" . $row['nam'] . "' data-acid='" . $row['id'] . "'></option>";
+                      echo "<option class='text-uppercase' value='" . $row['nam'] . "' data-acid='" . $row['auto_id'] . "'></option>";
                     }
                     ?>
                   </datalist>
@@ -258,7 +259,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
   </div>
  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/opening1.js"></script>
+ 
+  <script src="js/opening1.js?<?php echo filemtime('js/opening1.js'); ?>"></script>
   <!-- <script>
 
 document.getElementById('save').addEventListener('click', function saveForm1(event) {
