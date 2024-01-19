@@ -159,8 +159,10 @@ function addzariRow() {
 /* --------------------- ADD ROW FOR (  ZARI DYEDSILKS TBL3 )  ENDS -------------------------------- */
 
 document.getElementById("location").addEventListener('change',function fetchstock() {
+  simulateAsyncDataFetching()
   var id = document.getElementById("hidden_location_id").value;
   console.log(id);
+
 
   $.ajax({
     url: 'fetch_opening1.php',
@@ -233,3 +235,38 @@ document.getElementById("location").addEventListener('change',function fetchstoc
   });
 });
 
+document.getElementById("location").addEventListener('input',function() {
+  if (document.getElementById("location").value == "") {
+    location.reload();
+  } 
+  })
+
+  document.getElementById('loader').style.display = 'none';
+function simulateAsyncDataFetching() {
+  // Display the loader while data is being fetched
+  document.getElementById('loader').style.display = 'block';
+
+  // Simulate an Ajax request delay (replace this with your actual data fetching code)
+  setTimeout(function () {
+    // Hide the loader
+    document.getElementById('loader').style.display = 'none';
+  }, 500); // Simulated 2-second delay for data fetching
+}
+
+// function scrollToBottom() {
+//   // Scroll to the bottom of the page
+//   window.scrollTo(0, document.body.scrollHeight);
+// }
+document.getElementById('scroll').innerHTML = 'Fast Scroll'
+function toggleScroll() {
+  var currentPosition = window.scrollY || document.documentElement.scrollTop;
+
+  if (currentPosition === 0) {
+    // If at the top, scroll to the bottom
+    window.scrollTo(0, document.body.scrollHeight);
+  } else {
+    // If at the bottom, scroll to the top
+    window.scrollTo(0, 0);
+
+  }
+}

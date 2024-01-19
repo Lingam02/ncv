@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
           <input list="locations" id="location" name="location" class="form-control" required>
           <datalist id="locations">
             <?php
-            $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores  order by loc_nam");
+            $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores WHERE loc_nam ='PIRN STORE' order by loc_nam");
             while ($row = $sql->fetch_assoc()) {
               echo "<option class='text-uppercase' value='" . $row['loc_nam'] . "' data-acid='" . $row['id'] . "'></option>";
             }
@@ -247,6 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
         </div>
       </div>
       <input type="hidden" name="hidden_location_id" id="hidden_location_id">
+      <div id="loader" class="loader"></div>
 
     </form>
   </div>

@@ -163,6 +163,7 @@ function addzariRow() {
 /* --------------------- ADD ROW FOR (PIRN STORE ZARI TBL2 )  ENDS -------------------------------- */
 
 document.getElementById("location").addEventListener('change',function fetchstock() {
+  simulateAsyncDataFetching()
   var id = document.getElementById("hidden_location_id").value;
   console.log(id);
 
@@ -239,3 +240,21 @@ document.getElementById("location").addEventListener('change',function fetchstoc
   });
 });
 
+document.getElementById("location").addEventListener('input',function() {
+  if (document.getElementById("location").value == "") {
+    location.reload();
+  } 
+  })
+
+  
+  document.getElementById('loader').style.display = 'none';
+function simulateAsyncDataFetching() {
+  // Display the loader while data is being fetched
+  document.getElementById('loader').style.display = 'block';
+
+  // Simulate an Ajax request delay (replace this with your actual data fetching code)
+  setTimeout(function () {
+    // Hide the loader
+    document.getElementById('loader').style.display = 'none';
+  }, 500); // Simulated 2-second delay for data fetching
+}

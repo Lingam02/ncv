@@ -52,3 +52,39 @@ td {
   top: 10px;
   left: 10px;
 }
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: auto; /* Set margin to auto to horizontally center */
+  position: fixed; /* Set position to fixed for vertical centering */
+  top: 50%; /* Set top to 50% for vertical centering */
+  left: 50%; /* Set left to 50% for horizontal centering */
+  transform: translate(-50%, -50%); /* Use transform to center precisely */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hidden {
+  display: none;
+}
+
+
+.scroll-toggle-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
