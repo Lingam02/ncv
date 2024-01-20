@@ -214,12 +214,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="form-group">
                   <label for="box_no">Box No</label>
-                  <input type="text" id="box_no" name="box_no" required>
+                  <input type="text" id="box_no" name="box_no" pattern="\d{4}" title="Please enter a four-digit number." required>
                   <input type="hidden" id="box_no_edi" name="box_no_edi" required>
                 </div>
                 <div class="form-group">
                   <label for="empty_wght">Empty Box Weight</label>
-                  <input type="number" id="empty_wght" name="empty_wght" required>
+                  <input type="number" id="empty_wght" name="empty_wght" pattern="\d{2}" title="Please enter a two-digit number." required>
                 </div>
                 <div class="form-group">
                   <label for="no_of_pirns">No of Pirns</label>

@@ -42,6 +42,8 @@ $sql3 = "SELECT
             t1.loc_name,
             t1.reff_nam,
             t1.itm_nam,
+            t1.wght,
+            t2.empty_wt,
             t1.wght - t2.empty_wt AS calculated_wght
         FROM
             tbl_opening t1
@@ -99,9 +101,9 @@ $result3 = $con->query($sql3);
                                     <th>Location</th>
                                     <th>Bobin No</th>
                                     <th>Weft Colour</th>
-                                    <th>Weft Weight</th>
-                                    <th>Empty Bobin</th>
-                                    <th>Calculated Weft Weight</th>
+                                    <th>Weft Gross Weight</th>
+                                    <th>Empty Bobin Weight</th>
+                                    <th>Weft Net Weight</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -121,7 +123,7 @@ $result3 = $con->query($sql3);
                                         $serialNumber++; // Increment serial number for the next row
                                     }
                                 } else {
-                                    echo "<tr><td colspan='6'>0 results</td></tr>";
+                                    echo "<tr><td colspan='7'>0 results</td></tr>";
                                 }
                                 ?>
                             </tbody>
@@ -132,15 +134,16 @@ $result3 = $con->query($sql3);
                         <table>
                             <thead>
                                 <tr>
-                                    <td class="tbl_heading" colspan="6">Zari Opening Stock in grams</td>
+                                    <td class="tbl_heading" colspan="7">Zari Opening Stock in grams</td>
                                 </tr>
                                 <tr>
                                     <th>S.NO</th>
                                     <th>Location</th>
-                                    <th>Bobin Id</th>
+                                    <th>Bobin No</th>
                                     <th>Zari Name</th>
-                                    <th>Zari Weight</th>
-                                    <th>Calculated Zari Weight</th>
+                                    <th>Zari Gross Weight</th>
+                                    <th>Empty Bobin Weight</th>
+                                    <th>Zari Net Weight</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,12 +157,13 @@ $result3 = $con->query($sql3);
                                         echo "<td>" . $row["reff_nam"] . "</td>";
                                         echo "<td>" . $row["itm_nam"] . "</td>";
                                         echo "<td>" . $row["wght"] . "</td>";
+                                        echo "<td>" . $row["empty_wt"] . "</td>";
                                         echo "<td>" . $row["calculated_wght"] . "</td>";
                                         echo "</tr>";
                                         $serialNumber++; // Increment serial number for the next row
                                     }
                                 } else {
-                                    echo "<tr><td colspan='6'>0 results</td></tr>";
+                                    echo "<tr><td colspan='7'>0 results</td></tr>";
                                 }
                                 ?>
                             </tbody>

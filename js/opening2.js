@@ -189,6 +189,7 @@ document.getElementById("location").addEventListener('change',function fetchstoc
 
         // Populate the last row with your data
         lastRow.querySelector("[name='bobins[]']").value = invoice.reff_nam;
+        lastRow.querySelector("[name='hidden_bobins_id[]']").value = invoice.reff_id;
         lastRow.querySelector("[name='wept_colours[]']").value = invoice.col_nam;
         lastRow.querySelector("[name='hidden_weft_id[]']").value = invoice.col_id;
         lastRow.querySelector("[name='wghts[]']").value = invoice.wght;
@@ -218,6 +219,7 @@ document.getElementById("location").addEventListener('change',function fetchstoc
 
         // Populate the last row with your data
         lastRow.querySelector("[name='bobins2[]']").value = invoice.reff_nam;
+        lastRow.querySelector("[name='hidden_bobins_id2[]']").value = invoice.reff_id;
         lastRow.querySelector("[name='zarinames[]']").value = invoice.itm_nam;
         lastRow.querySelector("[name='hidden_zari_id[]']").value = invoice.itm_id;
         lastRow.querySelector("[name='wghts2[]']").value = invoice.wght;

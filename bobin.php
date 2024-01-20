@@ -212,12 +212,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="form-group">
                   <label for="bobin_id">Bobin Id / No</label>
-                  <input type="text" id="bobin_id" name="bobin_id" required>
+                  <input type="text" id="bobin_id" name="bobin_id" pattern="\d{4}" title="Please enter a four-digit number." required>
                   <input type="hidden" id="bobin_id_edi" name="bobin_id_edi" required>
                 </div>
                 <div class="form-group">
                   <label for="empty_wt">Bobin Empty Weight</label>
-                  <input type="number" id="empty_wt" name="empty_wt" required>
+                  <input type="number" id="empty_wt" name="empty_wt" pattern="\d{3}" title="Please enter a Three-digit number." required>
                 </div>
 
                 <div class="form-group buttons">

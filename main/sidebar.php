@@ -22,7 +22,7 @@
 
     <a href="opening1.php">Opening</a>
     <a href="opening2.php">Opening Bobin Type</a>
-    <a href="opening_report_net.php">Opening Bobin Type2</a>
+   
     <a href="opening3.php">Opening Pirn Type</a>
 
 
@@ -60,7 +60,8 @@
   <div class="collapse" id="report_toggle">
 
     <a href="opening_report1.php"> Openings</a>
-    <a href="opening_report2.php">Bobin Type Openings</a>
+    <!-- <a href="opening_report2.php">Bobin Type Openings</a> -->
+    <a href="opening_report_net.php">Bobin Type Openings</a>
     <a href="opening_report3.php">Pirn Type Openings</a>
     <a href="user_list.php">User list</a>
     <!-- <a href="r_bobin_trans.php">Bobin Transaction</a> -->
