@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
       mysqli_stmt_execute($stmt);
       // echo "Records with loc_id = $loc deleted successfully.";
     }
-
+    if ($location == 'DYED SILK STORE') {
     $itm_type = "DSS";
     $tbl_type1 = "WARP";
 
@@ -63,8 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     } else {
       echo "Statement preparation failed: " . mysqli_error($con);
     }
-
-    //---------------------------
+  } else{
+   //---------------------------
     //raw store starts
     $itm_type_RS = "RS"; //Raw Store
     $tbl_type0 = "WARP";
@@ -86,6 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     }
     //ENDS RAW STORE
     //-----------------------------
+  }
+
+ 
     // Second table INSERT
     if ($location == 'DYED SILK STORE') {
       $itm_type = "DSS";
@@ -95,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
   
       if ($stmt2) {
         for ($key = 0; $key < count($wept_colours_id); $key++) {
-          if ($wept_colours_id[$key] !== "") {
+          if ($wept_colours_id[$key] > 0 && $wept_colours[$key] !== "" ) {
             mysqli_stmt_bind_param($stmt2, "ssssssd", $locationid, $location, $itm_type, $tbl_type2, $wept_colours_id[$key], $wept_colours[$key], $wept_wghts[$key]);
             mysqli_stmt_execute($stmt2);
           }
@@ -115,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
 
     if ($stmt21) {
       for ($key = 0; $key < count($wept_colours_id); $key++) {
-        if ($wept_colours_id[$key] !== "") {
+        if ($wept_colours_id[$key] > 0 && $wept_colours[$key] !== "" ) {
           mysqli_stmt_bind_param($stmt21, "ssssssd", $locationid, $location, $itm_type_RS, $tbl_type2, $wept_colours_id[$key], $wept_colours[$key], $wept_wghts[$key]);
           mysqli_stmt_execute($stmt21);
         }
@@ -157,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
 
   if ($stmt23) {
     for ($key = 0; $key < count($zari_id); $key++) {
-      if ($zari_id[$key] !== "") {
+      if ($zari_id[$key] > 0 && $zari_wghts[$key] > 0 && $zari[$key] !== "") {
         mysqli_stmt_bind_param($stmt23, "ssssssd", $locationid, $location, $itm_type_RS, $tbl_type3, $zari_id[$key], $zari[$key], $zari_wghts[$key]);
         mysqli_stmt_execute($stmt23);
       }
@@ -297,11 +300,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
           <table id="wept_tbl">
             <thead>
               <tr class="tbl_heading">
-                <td colspan="3">Wept</td>
+                <td colspan="3">Weft</td>
               </tr>
               <tr>
-                <th>Wept colour</th>
-                <th>Wept Weight</th>
+                <th>Weft colour</th>
+                <th>Weft Weight</th>
               </tr>
             </thead>
             <tbody id="tbody_ds_wept">
