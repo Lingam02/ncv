@@ -1,0 +1,92 @@
+
+.container-custom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#div_login {
+    background-color:#ddc2ff;
+    padding: 25px;
+    
+    border-radius: 10px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); */
+    text-align: start;
+    max-width: 400px;
+    width: 100%;
+}
+#div_login input[type="text"],input[type="password"] {
+  color: blue;
+  font-weight: 600;
+}
+#div_login input:focus{
+  outline-width: 10px;
+  outline-color:rgb(255, 175, 55);
+}
+label{
+ 
+  font-weight: 600;
+  font-size: large;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 5px;
+}
+
+.textbox {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: #ddc2ff;
+    font-size: 16px;
+}
+
+#but_submit {
+  background-color: #50D050;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#but_submit:hover {
+  background-color: #50D050;
+}
+
+
+
+button:focus {
+  outline-width: 10px;
+      outline-color:#FDCA40;
+    }
+  a:focus {
+  outline-width: 10px;
+      outline-color:#FDCA40;
+    }
+
+
+     /* CSS for the Snackbar */
+     .snackbar {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: #ff0c0c;
+      color: #fff;
+      text-align: center;
+      border-radius: 2px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 30px;
+  }
+
+  .show {
+      visibility: visible;
+  }
