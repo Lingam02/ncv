@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
       mysqli_stmt_execute($stmt);
       // echo "Records with loc_id = $loc deleted successfully.";
     }
-    if ($location == 'RAW STORE') {
+    if ($location == 'RAW MATERIAL STORE') {
    //---------------------------
     //raw store starts
     $itm_type_RS = "RS"; //Raw Store
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
 
  
     // Second table INSERT
-    if ($location == 'RAW STORE') {
+    if ($location == 'RAW MATERIAL STORE') {
        // RS table INSERT
     $itm_type_RS = "RS"; //Raw Store
     $tbl_type2 = "WEFT";
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     }
     //second end
     }
-    if ($location == 'RAW STORE') {
+    if ($location == 'RAW MATERIAL STORE') {
     // Third table INSERT
   $itm_type_RS = "RS";
   $tbl_type3 = "ZARI";

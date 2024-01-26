@@ -32,7 +32,7 @@
   <div class="list-group list-group-flush my-3">
     <a href="admin/" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Admin Panel</a>
     <a href="admin.php" class="list-group-item list-group-item-action second-text active"><i class="fas fa-home me-2"></i>Home</a>
-    <a href="#" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Invard Raw Material</a>
+    <!-- <a href="inward.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>InWard Raw Material</a> -->
     <a href="seperation.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Separation</a>
     <a href="sizeing.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Sizing</a>
     <a href="dyer_form.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Dyeing</a>

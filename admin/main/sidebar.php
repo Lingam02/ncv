@@ -15,17 +15,8 @@
   </div> -->
   <div class="list-group list-group-flush my-3">
   <a href="../admin.php" class="list-group-item list-group-item-action text-primary "><i class="fas fa-home me-2"></i>User Panel</a>
-    <!-- openings -->
-    <a href="#" class="list-group-item list-group-item-action text-white bg-primary fw-bold fs-6"><i class="fas fa-file me-2"></i>
-      Opening Stocks
-    </a>
-    <a href="opening_raw.php" class="list-group-item list-group-item-action text-primary "><i class="fas fa-home me-2"></i>Raw Store Opening</a>
-    <a href="opening1.php" class="list-group-item list-group-item-action text-primary "><i class="fas fa-home me-0"></i>Dyed Silk Store Opening</a>
-    <a href="opening2.php" class="list-group-item list-group-item-action text-primary "><i class="fas fa-home me-2"></i>Bobin Store Opening</a>
-    <a href="opening3.php" class="list-group-item list-group-item-action text-primary "><i class="fas fa-home me-2"></i>Pirn Store Opening</a>
-    <!-- openings -->
-    <!-- creations -->
-    <a href="#" class="list-group-item list-group-item-action text-white bg-primary fw-bold fs-6"><i class="fas fa-file me-2"></i>
+   <!-- creations -->
+   <a href="#" class="list-group-item list-group-item-action text-white bg-primary fw-bold fs-6"><i class="fas fa-file me-2"></i>
       Basic Creations
     </a>
     <a href="user.php" class="list-group-item list-group-item-action text-success "><i class="fas fa-layer-group me-2"></i>
@@ -49,8 +40,23 @@
     <a href="workunit.php" class="list-group-item list-group-item-action text-success "><i class="fas fa-layer-group me-2"></i>
       Unit Creation
     </a>
+    <!-- inward -->
+    <a href="inward.php" class="list-group-item list-group-item-action text-dark "><i class="fas fa-layer-group me-2"></i>
+      Inward Raw Material
+    </a>
+    <!-- inward -->
  
     <!-- creations -->
+    <!-- openings -->
+    <a href="#" class="list-group-item list-group-item-action text-white bg-primary fw-bold fs-6"><i class="fas fa-file me-2"></i>
+      Opening Stocks
+    </a>
+    <a href="opening_raw.php" class="list-group-item list-group-item-action text-primary "><i class="fas fa-home me-2"></i>Raw Store Opening</a>
+    <a href="opening1.php" class="list-group-item list-group-item-action text-primary "><i class="fas fa-home me-0"></i>Dyed Silk Store Opening</a>
+    <a href="opening2.php" class="list-group-item list-group-item-action text-primary "><i class="fas fa-home me-2"></i>Bobin Store Opening</a>
+    <a href="opening3.php" class="list-group-item list-group-item-action text-primary "><i class="fas fa-home me-2"></i>Pirn Store Opening</a>
+    <!-- openings -->
+   
 
     <!-- Reports -->
     <a href="#" class="list-group-item list-group-item-action text-white bg-primary fw-bold fs-6"><i class="fas fa-file me-2"></i>
