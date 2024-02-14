@@ -214,4 +214,6 @@ button:focus {
       left:0%;
     }
 
-    
+    .active{
+      background-color: green;
+    }

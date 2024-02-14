@@ -216,10 +216,10 @@ $trans_id =  $_POST['id'];
 
                                     <select name="txn_nam" id="txn_nam" style='width:400px; background-color:transparent;margin:0;padding:6px;' required>
                                         <option name="txn_nam" value="">--Select--</option>
-                                        <option name="txn_nam" id="KORA_ISS" value="KORA_ISS">Kora Issue</option>
+                                        <option name="txn_nam" id="KORA_ISS" value="KORA_ISS"> Issue</option>
                                         <!-- <option name="txn_nam" id="KORA_RET" value="KORA_RET">Kora Return</option> -->
                                         <!-- <option value="Kora Waste">Kora Waste</option> -->
-                                        <option name="txn_nam" id="SILK_RET" value="SILK_RET">Silk Return</option>
+                                        <option name="txn_nam" id="SILK_RET" value="SILK_RET">Return</option>
                                         <option name="txn_nam" id="EDIT" value="EDIT">Edit</option>
                                     </select>
                                 </div>
@@ -293,6 +293,20 @@ $trans_id =  $_POST['id'];
                                 </div>
                                 <div class="form-group row">
                                     <label for="iss_itm_nam" class="col-sm-6 col-form-label text-right">Issue Item Name</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" list="item_list" class="form-control" id="iss_itm_nam" name="iss_itm_nam" placeholder="" onchange="checkForSubstring2()" onkeydown="handleEnterKey(event, 'iss_desc')" onclick="this.select()">
+                                        <datalist id="item_list">
+                                            <?php
+                                            $sql = mysqli_query($con, "SELECT * FROM `itm` WHERE itm_sl='D/T' ORDER BY `itm_nam`");
+                                            while ($row = $sql->fetch_assoc()) {
+                                                echo "<option value='" . $row['itm_nam'] . "' data-grpid='" . $row['itm_id'] . "'>";
+                                            }
+                                            ?>
+                                        </datalist> <input type="hidden" class="form-control" id="iss_itm_id" name="iss_itm_id" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="iss_itm_nam" class="col-sm-6 col-form-label text-right">Issue Item</label>
                                     <div class="col-sm-6">
                                         <input type="text" list="item_list" class="form-control" id="iss_itm_nam" name="iss_itm_nam" placeholder="" onchange="checkForSubstring2()" onkeydown="handleEnterKey(event, 'iss_desc')" onclick="this.select()">
                                         <datalist id="item_list">

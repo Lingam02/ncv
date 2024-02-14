@@ -41,9 +41,9 @@
       Unit Creation
     </a>
     <!-- inward -->
-    <a href="inward.php" class="list-group-item list-group-item-action text-dark "><i class="fas fa-layer-group me-2"></i>
+    <!-- <a href="inward.php" class="list-group-item list-group-item-action text-dark "><i class="fas fa-layer-group me-2"></i>
       Inward Raw Material
-    </a>
+    </a> -->
     <!-- inward -->
  
     <!-- creations -->
@@ -62,7 +62,7 @@
     <a href="#" class="list-group-item list-group-item-action text-white bg-primary fw-bold fs-6"><i class="fas fa-file me-2"></i>
       Basic Reports
     </a>
-    <a href="opening_report1.php" class="list-group-item list-group-item-action text-dark"><i class="fas fa-arrow-right me-2"></i>
+    <!-- <a href="opening_report1.php" class="list-group-item list-group-item-action text-dark"><i class="fas fa-arrow-right me-2"></i>
       Raw Store Openings
     </a>
     <a href="opening_report1.php" class="list-group-item list-group-item-action text-dark"><i class="fas fa-arrow-right me-2"></i>
@@ -73,7 +73,7 @@
     </a>
     <a href="opening_report3.php" class="list-group-item list-group-item-action text-dark"><i class="fas fa-arrow-right me-2"></i>
       Pirn Store Openings
-    </a>
+    </a> -->
     <!-- <a href="user_list.php" class="list-group-item list-group-item-action text-dark"><i class="fas fa-arrow-right me-2"></i>
       User list
     </a> -->

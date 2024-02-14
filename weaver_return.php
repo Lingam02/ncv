@@ -65,7 +65,7 @@ if (isset($_POST['log-out'])) {
 <body>
 
   <div class="container bgcolor">
-    <h2>Weaver Return</h2>
+    <h2>Loom Return</h2>
 
     <form action="" method="post" autocomplete="off">
 
