@@ -60,6 +60,7 @@
             background-color:#fff;
             padding: 20px;
             border-radius: 8px;
+            
          }
      </style>
      <!-- attach form css link here ends-->
@@ -129,9 +130,40 @@
                                             ?>
                                      </datalist>
                                  </div>
-                                 <div class="form-group">
+                                   <!-- <div class="form-group">
                                      <label for="iss_wght">Item Weight</label>
                                      <input type="number" name="iss_wght" id="iss_wght">
+                                 </div> -->
+                                 <div class="form-group" id="warp_focus">
+                                     <label for="iss_warp">Warp</label>
+                                     <input list="iss_warps" name="iss_warp" id="iss_warp" class="form-control" placeholder="Select Unit" >
+                                     <datalist id="iss_warps">
+                                         <?php
+                                            $sql = mysqli_query($con, "SELECT * FROM inward where tbl_type='section1' order by reff_id");
+                                            while ($row = $sql->fetch_assoc()) {
+                                                // echo "<option class='text-uppercase' value='" . $row['reff_id'] . "' data-acid='" . $row['reff_id'] . "'></option>";
+                                                echo "<option value='WARPID" . trim($row['reff_id']) . "   weight (" . trim($row['warp_wght']) . " )  " . trim($row['warp_ply']) . "ply' data-id='" . $row['reff_id'] . "'> </option>";
+
+                                                
+
+                                            }
+                                            ?>
+                                     </datalist>
+                                 </div>
+                               
+                                 <div class="form-group" id="weft_focus">
+                                     <label for="iss_weft">Weft</label>
+                                     <input list="iss_wefts" name="iss_weft" id="iss_weft" class="form-control" placeholder="Select Unit" >
+                                     <datalist id="iss_wefts">
+                                         <?php
+                                            $sql = mysqli_query($con, "SELECT * FROM inward where tbl_type='section2' order by weft_batch_no");
+                                            while ($row = $sql->fetch_assoc()) {
+                                                // echo "<option class='text-uppercase' value='" . $row['weft_batch_no'] . "' data-acid='" . $row['reff_id'] . "'></option>";
+                                                echo "<option value='" . trim($row['weft_batch_no']) . " ( " . trim($row['weft_wght']) . " )' data-id='" . $row['reff_id'] . "'> </option>";
+
+                                            }
+                                            ?>
+                                     </datalist>
                                  </div>
                                  <div class="form-group">
                                      <label for="iss_remarks">Remarks</label>
@@ -161,6 +193,14 @@
      <!-- attach form js code here  -->
 
      <script>
+        document.getElementById('iss_warp').addEventListener('focus',function dis_none_weft() {
+            document.getElementById('weft_focus').style.display = 'none';
+            
+        })
+        document.getElementById('iss_weft').addEventListener('focus',function dis_none_warp() {
+            document.getElementById('warp_focus').style.display = 'none';
+            
+        })
          //============ script for date set default in input field visible starts===============
          window.onload = function() {
              var currentDate = new Date();

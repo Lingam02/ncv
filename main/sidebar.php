@@ -99,9 +99,9 @@
     <!-- <a href="user_list.php" class="list-group-item list-group-item-action text-dark"><i class="fas fa-arrow-right me-2"></i>
       User list
     </a> -->
-    <a href="r_dyer.php" class="list-group-item list-group-item-action text-dark"><i class="fas fa-arrow-right me-2"></i>
+    <!-- <a href="r_dyer.php" class="list-group-item list-group-item-action text-dark"><i class="fas fa-arrow-right me-2"></i>
       Dyer Transaction
-    </a>
+    </a> -->
 
     <!-- Reports -->
   </div>

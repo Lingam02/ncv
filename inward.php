@@ -256,7 +256,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       <table id="warp_tbl">
                         <thead>
                           <tr class="">
-                            <td colspan="3">
+                            <td colspan="4">
                               <select name="ply_type" id="ply_type" onkeypress="handleEnterKey(event,'no_of_warp')">
                                 <option name="ply_type" value="0"> Select Ply Type</option>
                                 <option name="ply_type" value="1"> 1</option>
@@ -264,20 +264,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <option name="ply_type" value="3"> 3</option>
                               </select>
                             </td>
-                            <td colspan="2">
+                            <td colspan="3">
                               <input type="number" class="form-control" onkeypress="handleEnterKey(event,'warp_wghts')" id="no_of_warp" name="no_of_warp" placeholder="ENTER NO OF WARP">
 
                             </td>
                           </tr>
                           <tr class="tbl_heading">
-                            <td colspan="5">Warp</td>
+                            <td colspan="7">Warp</td>
                           </tr>
                           <tr>
                             <th style="width: 10%;">Warp No</th>
-                            <th style="width: 30%;">Warp Weight</th>
+                            <th style="width: 20%;">Warp Weight</th>
+                            <th style="width: 10%;">Yard</th>
+                            <th style="width: 10%;">Mozham</th>
                             <th style="width: 20%;">Section</th>
                             <th style="width: 20%;">One Section</th>
-                            <th style="width: 20%;">Count</th>
+                            <th style="width: 10%;">Count</th>
                           </tr>
                         </thead>
                         <tbody id="tbody_ds_warp">
@@ -286,8 +288,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td>
                               1
                             </td>
+                            <td style="display:none">
+                              <input type="number" name="warp_sno" id="warp_sno">
+                            </td>
                             <td>
-                              <input type="number" onkeypress="handleEnterKeys(event,'section')" class="form-control" id="warp_wghts" name="warp_wghts[]" class="form-control">
+                              <input type="number" onkeypress="handleEnterKeys(event,'yard')" class="form-control" id="warp_wghts" name="warp_wghts[]" class="form-control">
+                            </td>
+                            <td>
+                              <input type="number" onkeypress="handleEnterKeys(event,'mozham')" class="form-control" id="yard" name="yard[]" class="form-control">
+                            </td>
+                            <td>
+                              <input type="number" onkeypress="handleEnterKeys(event,'section')" class="form-control" id="mozham" name="mozham[]" class="form-control">
                             </td>
                             <td>
                               <input type="number" onkeypress="handleEnterKeys(event,'one_section')" class="form-control" id="section" name="section[]" class="form-control" oninput="multiply_section()">
@@ -441,7 +452,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       </select>
                     </div>
                     <div class="col-lg-2">
-                    <label for="">Zari Weights </label>
+                     <label for="">Grams</label> <!--Zari Weights -->
                       <input type="number" class="form-control" name="zari_wghts" class="form-control">
                     </div>
                   </div>
@@ -498,7 +509,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       // Update the serial number in the new row
       newRow.querySelector("td:first-child").textContent = S_NO;
-
+      // newRow.querySelector("td:first-child").textContent = newRow.querySelector("input[type='hidden']").value;
       // Clear the input fields in the new row
       const addinginputs = newRow.querySelectorAll("input[type='text'], input[type='number']");
       addinginputs.forEach((input) => (input.value = ""));
