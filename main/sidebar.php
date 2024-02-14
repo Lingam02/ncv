@@ -33,8 +33,8 @@
     <a href="admin/" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Admin Panel</a>
     <a href="admin.php" class="list-group-item list-group-item-action second-text active"><i class="fas fa-home me-2"></i>Home</a>
     <a href="inward.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Inward Raw Material</a>
-    <a href="seperation.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Transfer to Separation Section</a>
-    <a href="seperation.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Return from Separation Section</a>
+    <a href="seperation_iss.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Transfer to Separation Section</a>
+    <a href="seperation_ret.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Return from Separation Section</a>
     <a href="dyer_form.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Transfer to Dyeing Section</a>
     <a href="dyer_form.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Return from Dyeing Section</a>
     <a href="sizeing.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Transfer to Sizing Section</a>

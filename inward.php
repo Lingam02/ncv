@@ -287,16 +287,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               1
                             </td>
                             <td>
-                              <input type="number" onkeypress="handleEnterKeys(event,'section')" class="form-control" id="warp_wghts" value="0" name="warp_wghts[]" class="form-control">
+                              <input type="number" onkeypress="handleEnterKeys(event,'section')" class="form-control" id="warp_wghts" name="warp_wghts[]" class="form-control">
                             </td>
                             <td>
-                              <input type="number" onkeypress="handleEnterKeys(event,'one_section')" class="form-control" id="section" value="0" name="section[]" class="form-control" oninput="multiply_section()">
+                              <input type="number" onkeypress="handleEnterKeys(event,'one_section')" class="form-control" id="section" name="section[]" class="form-control" oninput="multiply_section()">
                             </td>
                             <td>
-                              <input type="number" onkeypress="handleEnterKeys(event,'count')" class="form-control" id="one_section" value="0" name="one_section[]" class="form-control" oninput="multiply_section()">
+                              <input type="number" onkeypress="handleEnterKeys(event,'count')" class="form-control" id="one_section" name="one_section[]" class="form-control" oninput="multiply_section()">
                             </td>
                             <td>
-                              <input type="number" onkeypress="handleEnterKeys(event,'warp_wghts')" class="form-control" id="count" value="0" readonly name="count[]" class="form-control">
+                              <input type="number" onkeypress="handleEnterKeys(event,'warp_wghts')" class="form-control" id="count" readonly name="count[]" class="form-control">
                             </td>
                             <!-- <td>1 </td> -->
                           </tr>
@@ -347,9 +347,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
               <!-- 3 -->
               <div id="section3" class="content-section">
-                <div class="container">
+                <div class="container p-0">
                   <div class="row">
-                    <div class="my-2 col-md-6">
+                    <div class="col-md-6">
                       <label for="">Select item</label>
                       <input type="text" list="itemnamess" id="zarinames" name="zarinames" class="form-control" placeholder="Select" onchange="getitemname(this)">
                       <datalist id="itemnamess">
@@ -361,19 +361,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         ?>
                       </datalist>
 
-                      <label for="">Select No of Reel </label>
-                      <select name="reel_no" id="reel_no">
-                        <option value="select">select</option>
-                        <option value="4">4</option>
-                        <option value="8">8</option>
-                      </select>
+                      
 
-                      <label for="">Enter No of Marc </label>
-                      <input type="number" id="no_of_marc" name="no_of_marc" class="my-2" placeholder="ENTER NO OF MARC">
+                     
                       <!-- <label for=""> NO of Reel</label>
                       <input type="number" class="form-control" value="0" name="zari_reel" class="form-control"> -->
-                      <label for="">Zari Weights </label>
-                      <input type="number" class="form-control" name="zari_wghts" class="form-control">
+                    
 
 
 
@@ -428,6 +421,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
+                    </div>
+                   
+                  </div>
+                </div>
+                <div class="container p-0">
+                  <div class="row">
+                  <div class="col-lg-2">
+                    <label for="">Enter No of Marc </label>
+                      <input type="number" id="no_of_marc" name="no_of_marc" class="" placeholder="ENTER NO OF MARC">
+                    </div>
+                    <div class="col-lg-2">
+                    
+                    <label for="">Select No of Reel </label>
+                      <select name="reel_no" id="reel_no">
+                        <option value="select">select</option>
+                        <option value="4">4</option>
+                        <option value="8">8</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-2">
+                    <label for="">Zari Weights </label>
+                      <input type="number" class="form-control" name="zari_wghts" class="form-control">
                     </div>
                   </div>
                 </div>
