@@ -22,7 +22,7 @@
 
      <!-- attach form css link here-->
      <style>
-       label {
+         label {
              display: flex;
              width: 150px;
          }
@@ -34,33 +34,37 @@
          h4 {
              text-align: center;
              background-color: #007bff;
-             margin:10px 0;
+             margin: 10px 0;
              color: #fff;
              padding: 10px;
          }
-         #issue_div{
-            border: 1px solid lightblue;
-            padding: 20px;
-            margin-bottom: 10px;
-            /* background:#FFF; */
+
+         #issue_div {
+             border: 1px solid lightblue;
+             padding: 20px;
+             margin-bottom: 10px;
+             /* background:#FFF; */
          }
-         #return_div{
-            border: 1px solid lightblue;
-            padding: 20px;
-            margin-bottom: 10px;
-            /* background: lightblue; */
+
+         #return_div {
+             border: 1px solid lightblue;
+             padding: 20px;
+             margin-bottom: 10px;
+             /* background: lightblue; */
          }
-         .select_type{
-            border: 1px solid lightblue;
-            padding: 20px;
-            margin-bottom: 10px;
-            /* background: #fff; */
+
+         .select_type {
+             border: 1px solid lightblue;
+             padding: 20px;
+             margin-bottom: 10px;
+             /* background: #fff; */
          }
-         .container_seperation{
-            background-color:#fff;
-            padding: 20px;
-            border-radius: 8px;
-            
+
+         .container_seperation {
+             background-color: #fff;
+             padding: 20px;
+             border-radius: 8px;
+
          }
      </style>
      <!-- attach form css link here ends-->
@@ -130,51 +134,65 @@
                                             ?>
                                      </datalist>
                                  </div>
-                                   <!-- <div class="form-group">
+                                 <!-- <div class="form-group">
                                      <label for="iss_wght">Item Weight</label>
                                      <input type="number" name="iss_wght" id="iss_wght">
                                  </div> -->
                                  <div class="form-group" id="warp_focus">
                                      <label for="iss_warp">Warp</label>
-                                     <input list="iss_warps" name="iss_warp" id="iss_warp" class="form-control" placeholder="Select Unit" >
+                                     <input list="iss_warps" name="iss_warp" id="iss_warp" class="form-control" placeholder="Select Unit">
                                      <datalist id="iss_warps">
                                          <?php
-                                            $sql = mysqli_query($con, "SELECT * FROM inward where tbl_type='section1' order by reff_id");
+                                            $sql = mysqli_query($con, "SELECT DISTINCT reff_id FROM inward where tbl_type='section1' order by reff_id");
                                             while ($row = $sql->fetch_assoc()) {
-                                                // echo "<option class='text-uppercase' value='" . $row['reff_id'] . "' data-acid='" . $row['reff_id'] . "'></option>";
-                                                echo "<option value='WARPID" . trim($row['reff_id']) . "   weight (" . trim($row['warp_wght']) . " )  " . trim($row['warp_ply']) . "ply' data-id='" . $row['reff_id'] . "'> </option>";
-
-                                                
-
+                                                echo "<option class='text-uppercase' value='WP-" . $row['reff_id'] . "' data-id='" . $row['reff_id'] . "'></option>";
+                                                // echo "<option value='WARPID" . trim($row['save_date']) . "   weight (" . trim($row['warp_wght']) . " )  " . trim($row['warp_ply']) . "ply' data-id='" . $row['reff_id'] . "'> </option>";
                                             }
                                             ?>
                                      </datalist>
+                                     <input type="hidden" name="hidden_iss_warp" id="hidden_iss_warp">
                                  </div>
-                               
+
                                  <div class="form-group" id="weft_focus">
                                      <label for="iss_weft">Weft</label>
-                                     <input list="iss_wefts" name="iss_weft" id="iss_weft" class="form-control" placeholder="Select Unit" >
+                                     <input list="iss_wefts" name="iss_weft" id="iss_weft" class="form-control" placeholder="Select Unit">
                                      <datalist id="iss_wefts">
                                          <?php
                                             $sql = mysqli_query($con, "SELECT * FROM inward where tbl_type='section2' order by weft_batch_no");
                                             while ($row = $sql->fetch_assoc()) {
                                                 // echo "<option class='text-uppercase' value='" . $row['weft_batch_no'] . "' data-acid='" . $row['reff_id'] . "'></option>";
                                                 echo "<option value='" . trim($row['weft_batch_no']) . " ( " . trim($row['weft_wght']) . " )' data-id='" . $row['reff_id'] . "'> </option>";
-
                                             }
                                             ?>
                                      </datalist>
+                                     <input type="hidden" name="hidden_iss_weft" id="hidden_iss_weft">
+
                                  </div>
-                                 <div class="form-group">
-                                     <label for="iss_remarks">Remarks</label>
-                                     <input type="text" name="iss_remarks" id="iss_remarks">
-                                 </div>
+                                
                              </div>
-                            
+                             <table id="modaltable">
+                                 <thead>
+                                     <tr>
+                                         <th>Ply</th>
+                                         <th>Warp Weight</th>
+                                         <th>Section</th>
+                                         <th>Count</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody id="tbody">
+                                     <tr>
+                                         <td><input class="form-control" type="text" name="ply[]" value="" readonly></td>
+                                         <td><input class="form-control" type="text" name="warp_wghts[]" value="" readonly></td>
+                                         <td><input class="form-control" type="text" name="sections[]" value="" readonly></td>
+                                         <td><input class="form-control" type="text" name="count[]" value="" readonly></td>
+                                     </tr>
+                                 </tbody>
+                             </table>
+
                              <div class="buttons">
-                                <button type="submit" onclick="save()">Save</button>
-                                <button type="button" onclick="location.reload()">New</button>
-                                <button type="button" id="home">Home</button>
+                                 <button type="submit" onclick="save()">Save</button>
+                                 <button type="button" onclick="location.reload()">New</button>
+                                 <button type="button" id="home">Home</button>
                              </div>
                          </div>
                      </form>
@@ -191,16 +209,16 @@
      <!-- footer ends -->
 
      <!-- attach form js code here  -->
-
+     <script src="js/separation_iss.js"></script>
      <script>
-        document.getElementById('iss_warp').addEventListener('focus',function dis_none_weft() {
-            document.getElementById('weft_focus').style.display = 'none';
-            
-        })
-        document.getElementById('iss_weft').addEventListener('focus',function dis_none_warp() {
-            document.getElementById('warp_focus').style.display = 'none';
-            
-        })
+         document.getElementById('iss_warp').addEventListener('focus', function dis_none_weft() {
+             document.getElementById('weft_focus').style.display = 'none';
+
+         })
+         document.getElementById('iss_weft').addEventListener('focus', function dis_none_warp() {
+             document.getElementById('warp_focus').style.display = 'none';
+
+         })
          //============ script for date set default in input field visible starts===============
          window.onload = function() {
              var currentDate = new Date();
@@ -213,34 +231,34 @@
 
              // Set the value attribute of the input field
              document.getElementById('iss_date').value = formattedDate;
-            //  document.getElementById('ret_date').value = formattedDate;
+             //  document.getElementById('ret_date').value = formattedDate;
 
          };
 
-        //  document.getElementById('return_div').style.display = 'none';
+         //  document.getElementById('return_div').style.display = 'none';
 
-        //  document.getElementById('txn_type').addEventListener('change', function() {
+         //  document.getElementById('txn_type').addEventListener('change', function() {
 
-        //      console.log(document.getElementById('txn_type').value);
-        //      if (document.getElementById('txn_type').value == "ISS") {
-        //          document.getElementById('heading').innerHTML = 'Issue to Seperation';
-        //          document.getElementById('issue_div').style.display = 'block';
-        //          document.getElementById('return_div').style.display = 'none';
-        //      } else if (document.getElementById('txn_type').value == "RET") {
-        //         document.getElementById('heading').innerHTML = 'Return From Seperation';
+         //      console.log(document.getElementById('txn_type').value);
+         //      if (document.getElementById('txn_type').value == "ISS") {
+         //          document.getElementById('heading').innerHTML = 'Issue to Seperation';
+         //          document.getElementById('issue_div').style.display = 'block';
+         //          document.getElementById('return_div').style.display = 'none';
+         //      } else if (document.getElementById('txn_type').value == "RET") {
+         //         document.getElementById('heading').innerHTML = 'Return From Seperation';
 
-        //          document.getElementById('issue_div').style.display = 'none';
-        //          document.getElementById('return_div').style.display = 'block';
-        //      }
+         //          document.getElementById('issue_div').style.display = 'none';
+         //          document.getElementById('return_div').style.display = 'block';
+         //      }
 
-        //  })
-         document.getElementById('home').addEventListener('click',function () {
-            window.location = 'admin.php';
+         //  })
+         document.getElementById('home').addEventListener('click', function() {
+             window.location = 'admin.php';
          })
-// function save() {
-//     document.getElementById('form').submit();
-    
-// }         //=============== script for date ends ================= 
+         // function save() {
+         //     document.getElementById('form').submit();
+
+         // }         //=============== script for date ends ================= 
      </script>
      <!-- attach form js code here  -->
  </body>

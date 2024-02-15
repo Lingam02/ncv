@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $zari_wghts = $_POST['zari_wghts'];
   $zari_item_nam = $_POST['zarinames'];
   $bill_no = $_POST['bill_no'];
+  $bill_no2 = $_POST['bill_no2'];
   $remarks = $_POST['remarks'];
   $pur_wght = $_POST['pur_tot_wght'];
   $acname = $_POST['pur_acname'];
@@ -55,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql = "INSERT INTO inward (reff_id,save_date, save_time, tbl_type, loc_id, loc_name, warp_wght, section, one_section, count, warp_ply, no_of_warp) 
                         VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = mysqli_prepare($con, $sql);
-            mysqli_stmt_bind_param($stmt, "ssssssssssss",$last_id1, $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $warp_wght[$keys], $section[$keys], $one_section[$keys], $count[$keys], $warp_ply, $no_of_warp);
+            mysqli_stmt_bind_param($stmt, "ssssssssssss", $last_id1, $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $warp_wght[$keys], $section[$keys], $one_section[$keys], $count[$keys], $warp_ply, $no_of_warp);
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
           }
@@ -77,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "INSERT INTO inward (reff_id,save_date, save_time, tbl_type, loc_id, loc_name, weft_batch_no, weft_wght) 
                         VALUES (?, ?, ?, ?, ?, ?, ?,?)";
         $stmt = mysqli_prepare($con, $sql);
-        mysqli_stmt_bind_param($stmt, "sssssssd",$reff_id2, $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $weft_batch_no[$i], $weft_wght[$i]);
+        mysqli_stmt_bind_param($stmt, "sssssssd", $reff_id2, $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $weft_batch_no[$i], $weft_wght[$i]);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
       }
@@ -87,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $sql = "INSERT INTO inward_hd (save_date, save_time, tbl_type, loc_id, loc_name, bill_no, pur_wght, remarks, acname, pur_date) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
       $stmt = mysqli_prepare($con, $sql);
-      mysqli_stmt_bind_param($stmt, "ssssssssss", $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $bill_no, $pur_wght, $remarks, $acname, $pur_date);
+      mysqli_stmt_bind_param($stmt, "ssssssssss", $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $bill_no2, $pur_wght, $remarks, $acname, $pur_date);
       mysqli_stmt_execute($stmt);
       mysqli_stmt_close($stmt);
       $reff_id3 = mysqli_insert_id($con);
@@ -98,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $sql = "INSERT INTO inward (reff_id,save_date, save_time, tbl_type, loc_id, loc_name,zari_item_name, no_of_marc, reel_no, zari_wght) 
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
       $stmt = mysqli_prepare($con, $sql);
-      mysqli_stmt_bind_param($stmt, "sssssssssd",$reff_id3, $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $zari_item_nam, $no_of_marc, $reel, $zari_wghts);
+      mysqli_stmt_bind_param($stmt, "sssssssssd", $reff_id3, $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $zari_item_nam, $no_of_marc, $reel, $zari_wghts);
       mysqli_stmt_execute($stmt);
       mysqli_stmt_close($stmt);
       // }
@@ -180,16 +181,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <h4 class="text-center mt-2 text-success">Inward Raw Material</h4>
               <!-- MAIN TAB-->
               <div class="row">
-                <div class="col-lg-2">
-
-                  <label for="tbl_type">Select a Type:</label>
-                  <select id="tbl_type" name="tbl_type" onchange="openSection()" onkeypress="handleEnterKey(event, 'location')">
-                    <option value="select">SELECT</option>
-                    <option value="section1">Warp</option>
-                    <option value="section2">Weft</option>
-                    <option value="section3">Zari</option>
-                  </select>
-                </div>
                 <div class="col-lg-5">
                   <label for="location">Location</label>
                   <input list="locations" id="location" type="text" name="location" class="form-control" required onkeypress="handleEnterKey(event, 'bill_no')">
@@ -204,18 +195,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <input type="hidden" name="hidden_location_id" id="hidden_location_id">
 
                 </div>
-                <div class="col-lg-2 mb-1">
-                  <label for="bill_no">Select Bill No</label>
+                <div class="col-lg-2">
+
+                  <label for="tbl_type">Select a Type:</label>
+                  <select id="tbl_type" name="tbl_type" onchange="openSection()" onkeypress="handleEnterKey(event, 'location')">
+                    <option value="select">SELECT</option>
+                    <option value="section1">Warp</option>
+                    <option value="section2">Weft</option>
+                    <option value="section3">Zari</option>
+                  </select>
+                </div>
+
+                <div class="col-lg-2 mb-1" id="kora_bill">
+                  <label for="bill_no">Select Kora Bill No</label>
                   <input onkeypress="handleEnterKey(event, 'remarks')" type="text" list="pur_bill" id="bill_no" name="bill_no" onclick="this.select()" placeholder="SELECT BILL NO">
                   <datalist id="pur_bill">
                     <?php
-                    $sql = mysqli_query($con, "SELECT id,auto_id FROM pur_hd WHERE vch_id = 'RAW_PUR' order by id");
+                    $sql = mysqli_query($con, "SELECT id,auto_id FROM pur_hd WHERE vch_id = 'RAW_PUR' and pur_acid = 'KPUR001' order by id");
                     while ($row = $sql->fetch_assoc()) {
                       echo "<option class='text-uppercase' value='" . $row['id'] . "' data-acid='" . $row['auto_id'] . "'></option>";
                     }
                     ?>
                   </datalist>
                   <input type="hidden" name="pur_bill_id" id="pur_bill_id">
+                </div>
+                <div class="col-lg-2 mb-1" id="zari_bill">
+                  <label for="bill_no2">Select Zari Bill No</label>
+                  <input onkeypress="handleEnterKey(event, 'remarks')" type="text" list="pur_bill2" id="bill_no2" name="bill_no2" onclick="this.select()" placeholder="SELECT BILL NO">
+                  <datalist id="pur_bill2">
+                    <?php
+                    $sql = mysqli_query($con, "SELECT id,auto_id FROM pur_hd WHERE vch_id = 'RAW_PUR' and pur_acid = 'JPUR001' order by id");
+                    while ($row = $sql->fetch_assoc()) {
+                      echo "<option class='text-uppercase' value='" . $row['id'] . "' data-acid='" . $row['auto_id'] . "'></option>";
+                    }
+                    ?>
+                  </datalist>
+                  <input type="hidden" name="pur_bill_id2" id="pur_bill_id2">
                 </div>
                 <div class="col-lg-3 mb-1">
                   <label for="warp_page_date">Today Date</label>
@@ -292,7 +307,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               <input type="number" name="warp_sno" id="warp_sno">
                             </td>
                             <td>
-                              <input type="number" onkeypress="handleEnterKeys(event,'yard')" class="form-control" id="warp_wghts" name="warp_wghts[]" class="form-control">
+                              <input type="number" oninput="calculateTotalSum()" onkeypress="handleEnterKeys(event,'yard')" class="form-control" id="warp_wghts" name="warp_wghts[]" class="form-control">
                             </td>
                             <td>
                               <input type="number" onkeypress="handleEnterKeys(event,'mozham')" class="form-control" id="yard" name="yard[]" class="form-control">
@@ -301,7 +316,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               <input type="number" onkeypress="handleEnterKeys(event,'section')" class="form-control" id="mozham" name="mozham[]" class="form-control">
                             </td>
                             <td>
-                              <input type="number" onkeypress="handleEnterKeys(event,'one_section')" class="form-control" id="section" name="section[]" class="form-control" oninput="multiply_section()">
+                              <input type="number"oninput="calculateTotalSum2()" onkeypress="handleEnterKeys(event,'one_section')" class="form-control" id="section" name="section[]" class="form-control" oninput="multiply_section()">
                             </td>
                             <td>
                               <input type="number" onkeypress="handleEnterKeys(event,'count')" class="form-control" id="one_section" name="one_section[]" class="form-control" oninput="multiply_section()">
@@ -311,8 +326,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </td>
                             <!-- <td>1 </td> -->
                           </tr>
-
+                          
                         </tbody>
+                        <tfoot>
+                          <tr>
+                            <td>
+                              Total
+                            </td>
+                            <td>
+                              <input readonly type="number" name="ttl_warp_wghts" id="ttl_warp_wghts">
+                            </td>
+                            <td colspan="2">
+                              Total Section
+                            </td>
+                            
+                            <td>
+                              <input readonly type="number" name="ttl_section" id="ttl_section">
+                            </td>
+                            <td>
+                            Total Count
+                            </td>
+                            <td>
+                              <input readonly type="number" name="ttl_count" id="ttl_count">
+                            </td>
+                            <!-- ..//.. -->
+                         
+                          </tr>
+                        </tfoot>
                       </table>
                     </div>
 
@@ -372,12 +412,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         ?>
                       </datalist>
 
-                      
 
-                     
+
+
                       <!-- <label for=""> NO of Reel</label>
                       <input type="number" class="form-control" value="0" name="zari_reel" class="form-control"> -->
-                    
+
 
 
 
@@ -433,18 +473,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
                     </div>
-                   
+
                   </div>
                 </div>
                 <div class="container p-0">
                   <div class="row">
-                  <div class="col-lg-2">
-                    <label for="">Enter No of Marc </label>
+                    <div class="col-lg-2">
+                      <label for="">Enter No of Marc </label>
                       <input type="number" id="no_of_marc" name="no_of_marc" class="" placeholder="ENTER NO OF MARC">
                     </div>
                     <div class="col-lg-2">
-                    
-                    <label for="">Select No of Reel </label>
+
+                      <label for="">Select No of Reel </label>
                       <select name="reel_no" id="reel_no">
                         <option value="select">select</option>
                         <option value="4">4</option>
@@ -452,7 +492,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       </select>
                     </div>
                     <div class="col-lg-2">
-                     <label for="">Grams</label> <!--Zari Weights -->
+                      <label for="">Grams</label> <!--Zari Weights -->
                       <input type="number" class="form-control" name="zari_wghts" class="form-control">
                     </div>
                   </div>

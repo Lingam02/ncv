@@ -11,8 +11,19 @@ function openSection() {
   }
   // Show the selected content section
   document.getElementById(selectedValue).style.display = 'block';
-}
 
+  if (selectedValue === 'section1' || selectedValue === 'section2') {
+    document.getElementById('zari_bill').style.display = 'none';
+    document.getElementById('kora_bill').style.display = 'block';
+  }
+  if (selectedValue === 'section3') {
+    document.getElementById('kora_bill').style.display = 'none';
+    document.getElementById('zari_bill').style.display = 'block';
+
+  }
+}
+document.getElementById('kora_bill').style.display = 'none';
+document.getElementById('zari_bill').style.display = 'none';
 //---------------------------------------------------------------------------------------
 
 const bill_no_input = document.getElementById('bill_no');
@@ -40,6 +51,33 @@ bill_no_input.addEventListener('change', function (event) {
   console.log("pur_bill_id-->", selectedAcid);
   console.log("bill_no_input value-->", bill_no_input.value);
   fetch_bill_id();
+});
+
+const bill_no_input2 = document.getElementById('bill_no2');
+
+bill_no_input2.addEventListener('change', function (event) {
+  const selectedOption = event.target.value;
+  const datalistOptions = document.getElementById('pur_bill2');
+
+  const options = datalistOptions.getElementsByTagName('option');
+  for (let i = 0; i < options.length; i++) {
+    const option = options[i];
+    const optionValue = option.value;
+
+    if (optionValue === selectedOption) {
+      var selectedAcid = option.getAttribute('data-acid'); // Assign value to selectedAcid
+      //console.log('ok',selectedAcid);
+
+      document.getElementById("pur_bill_id2").value = selectedAcid;
+
+      break;
+    }
+  }
+  var id = document.getElementById("pur_bill_id2").value;
+
+  console.log("pur_bill_id-->", selectedAcid);
+  console.log("bill_no_input2 value-->", bill_no_input2.value);
+  fetch_bill_id2();
 });
 
 const location_input = document.getElementById('location');
@@ -109,6 +147,23 @@ document.getElementById('pur_date').value = work.dat;
     }
   });
 }
+function fetch_bill_id2() {
+
+  var id = document.getElementById("pur_bill_id2").value;
+  console.log(id);
+  $.ajax({
+    url: 'fetch_inward.php',
+    method: 'POST',
+    data: { id: id },
+    dataType: 'json',
+    success: function (work) {
+document.getElementById('remarks').value = work.remarks;
+document.getElementById('pur_tot_wght').value = work.tot_qty;
+document.getElementById('pur_acname').value = work.ac_nam;
+document.getElementById('pur_date').value = work.dat;
+    }
+  });
+}
 
 
 //---------------------
@@ -127,6 +182,7 @@ function multiply_section() {
          
       }
   }
+  calculateTotalSum3();
 }
 //---------------------
 function clearpage(){
@@ -195,3 +251,65 @@ window.onload = function () {
 };
 
 //=============== script for date ends ================= 
+
+
+// Select the input field where you want to display the sum
+const returnWeightInput = document.getElementById('ttl_warp_wghts');
+
+// Function to calculate and update the total sum
+function calculateTotalSum() {
+  const weightInputs = document.querySelectorAll('input[name="warp_wghts[]"]');
+  let totalSum = 0;
+
+  weightInputs.forEach((input) => {
+    const value = input.value.trim();
+    if (value) {
+      const weight = parseFloat(value);
+      if (!isNaN(weight)) {
+        totalSum += weight;
+      }
+    }
+  });
+
+  // Update the "returnweight" input field with the calculated sum
+  returnWeightInput.value = totalSum;
+  //document.getElementById('returnweight').value = document.getElementById('itemopb').value - totalSum;
+}
+function calculateTotalSum2() {
+  const weightInputs = document.querySelectorAll('input[name="section[]"]');
+  let totalSum = 0;
+
+  weightInputs.forEach((input) => {
+    const value = input.value.trim();
+    if (value) {
+      const weight = parseFloat(value);
+      if (!isNaN(weight)) {
+        totalSum += weight;
+      }
+    }
+  });
+
+  // Update the "returnweight" input field with the calculated sum
+  document.getElementById('ttl_section').value = totalSum;
+  //document.getElementById('returnweight').value = document.getElementById('itemopb').value - totalSum;
+}
+function calculateTotalSum3() {
+  const weightInputs = document.querySelectorAll('input[name="count[]"]');
+  let totalSum = 0;
+
+  weightInputs.forEach((input) => {
+    const value = input.value.trim();
+    if (value) {
+      const weight = parseFloat(value);
+      if (!isNaN(weight)) {
+        totalSum += weight;
+      }
+    }
+  });
+
+  // Update the "returnweight" input field with the calculated sum
+  document.getElementById('ttl_count').value = totalSum;
+  //document.getElementById('returnweight').value = document.getElementById('itemopb').value - totalSum;
+}
+
+
