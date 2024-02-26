@@ -291,9 +291,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <th style="width: 10%;">Warp No</th>
                             <th style="width: 20%;">Warp Weight</th>
                             <th style="width: 10%;">Yard</th>
+                            <th style="width: 10%;">No Of Saree</th>
                             <th style="width: 10%;">Mozham</th>
                             <th style="width: 20%;">Section</th>
-                            <th style="width: 20%;">One Section</th>
+                            <th style="width: 10%;">One Section</th>
                             <th style="width: 10%;">Count</th>
                           </tr>
                         </thead>
@@ -310,7 +311,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               <input type="number" oninput="calculateTotalSum()" onkeypress="handleEnterKeys(event,'yard')" class="form-control" id="warp_wghts" name="warp_wghts[]" class="form-control">
                             </td>
                             <td>
-                              <input type="number" onkeypress="handleEnterKeys(event,'mozham')" class="form-control" id="yard" name="yard[]" class="form-control">
+                              <input type="number" onkeypress="handleEnterKeys(event,'no_of_saree')" class="form-control" id="yard" name="yard[]" class="form-control">
+                            </td>
+                            <td>
+                              <input type="number" onkeypress="handleEnterKeys(event,'mozham')" class="form-control" id="no_of_saree" name="no_of_saree[]" class="form-control">
                             </td>
                             <td>
                               <input type="number" onkeypress="handleEnterKeys(event,'section')" class="form-control" id="mozham" name="mozham[]" class="form-control">
@@ -336,7 +340,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td>
                               <input readonly type="number" name="ttl_warp_wghts" id="ttl_warp_wghts">
                             </td>
-                            <td colspan="2">
+                            <td colspan="3">
                               Total Section
                             </td>
                             
@@ -508,6 +512,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit" id="save" name="save" class="btn btn-primary float-end mx-3">Save</button>
 
               </div>
+              <!-- <form id="myForm">
+                <input type="TEXT" name="zari_item_name" id="zari_item_name" placeholder="Enter your email">
+                <input type="text" name="weft_batch_no" id="weft_batch_no" placeholder="Enter your name">
+    <button type="button" id="submitBtn">Submit</button>
+</form> -->
+<div id="response"></div>
 
 
 
@@ -539,6 +549,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <script src="js/inward.js?<?php echo filemtime('js/inward.js'); ?>"></script>
   <Script>
+$(document).ready(function(){
+    $('#submitBtn').click(function(){
+        // Get form data
+        var formData = {
+            'zari_item_name' : $('#zari_item_name').val(),
+            'weft_batch_no' : $('#weft_batch_no').val()
+        };
+
+        // AJAX request
+        $.ajax({
+            type: 'POST',
+            url: 'submit.php', // Change 'submit.php' to your server-side script URL
+            data: formData,
+            success: function(response){
+                $('#response').html(response); // Display response in the 'response' div
+            },
+            error: function(xhr, status, error){
+                console.error(xhr.responseText); // Log any errors to the console
+            }
+        });
+    });
+});
+
+
+
     //---------------------------------------------------------------------------------------
     // Function to add a new row to the table
     // Function to add a new row to the table with a serial number
@@ -552,7 +587,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       // newRow.querySelector("td:first-child").textContent = newRow.querySelector("input[type='hidden']").value;
       // Clear the input fields in the new row
       const addinginputs = newRow.querySelectorAll("input[type='text'], input[type='number']");
-      addinginputs.forEach((input) => (input.value = ""));
+      // addinginputs.forEach((input) => (input.value = ""));
 
       // Append the new row to the table body
       tableBody.appendChild(newRow);

@@ -1,5 +1,6 @@
 <div class="bg-white non-print" id="sidebar-wrapper">
-  <div class="sidebar-heading text-bottom primary-text  fw-bold  border-bottom"> <img class="pcw" src="img/PCW.ico" alt=""> AcPro</div>
+  <!-- <div class="sidebar-heading text-bottom primary-text  fw-bold  border-bottom"> <img class="pcw" src="img/PCW.ico" alt=""> AcPro</div> -->
+  <div class="sidebar-heading text-bottom primary-text  fw-bold  border-bottom"> <img class="pcw" src="img/ncv_img.png" alt=""></div>
 
   <!-- <div href="#" class="list-group-item list-group-item-action second-text fw-bold dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#togglefour"><i class="fas fas fa-layer-group me-2"></i>Basic Creations
   </div>
