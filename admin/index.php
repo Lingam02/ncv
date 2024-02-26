@@ -51,63 +51,63 @@
          <!-- attach form container here starts -->
          <div class="row">
            <div class="col-lg-4">
-             <div class="card shadow">
+             <div class="card shadow mb-3">
                <div class="card-body">
                  Location 1
                </div>
              </div>
            </div>
            <div class="col-lg-4">
-             <div class="card shadow">
+             <div class="card shadow mb-3">
                <div class="card-body">
                  Location 1
                </div>
              </div>
            </div>
            <div class="col-lg-4">
-             <div class="card shadow">
+             <div class="card shadow mb-3">
                <div class="card-body">
                  Location 1
                </div>
              </div>
            </div>
            <div class="col-lg-4">
-             <div class="card shadow">
+             <div class="card shadow mb-3">
                <div class="card-body">
                  Location 1
                </div>
              </div>
            </div>
            <div class="col-lg-4">
-             <div class="card shadow">
+             <div class="card shadow mb-3">
                <div class="card-body">
                  Location 1
                </div>
              </div>
            </div>
            <div class="col-lg-4">
-             <div class="card shadow">
+             <div class="card shadow mb-3">
                <div class="card-body">
                  Location 1
                </div>
              </div>
            </div>
            <div class="col-lg-4">
-             <div class="card shadow">
+             <div class="card shadow mb-3">
                <div class="card-body">
                  Location 1
                </div>
              </div>
            </div>
            <div class="col-lg-4">
-             <div class="card shadow">
+             <div class="card shadow mb-3">
                <div class="card-body">
                  Location 1
                </div>
              </div>
            </div>
            <div class="col-lg-4">
-             <div class="card shadow">
+             <div class="card shadow mb-3">
                <div class="card-body">
                  Location 1
                </div>
