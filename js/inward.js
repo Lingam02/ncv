@@ -12,18 +12,25 @@ function openSection() {
   // Show the selected content section
   document.getElementById(selectedValue).style.display = 'block';
 
-  if (selectedValue === 'section1' || selectedValue === 'section2') {
+  if (selectedValue === 'section1') {
     document.getElementById('zari_bill').style.display = 'none';
     document.getElementById('kora_bill').style.display = 'block';
+    document.getElementById('weft_bill').style.display = 'none';
+  }
+  if (selectedValue === 'section2') {
+    document.getElementById('zari_bill').style.display = 'none';
+    document.getElementById('weft_bill').style.display = 'block';
+    document.getElementById('kora_bill').style.display = 'none';
   }
   if (selectedValue === 'section3') {
     document.getElementById('kora_bill').style.display = 'none';
     document.getElementById('zari_bill').style.display = 'block';
-
+    document.getElementById('weft_bill').style.display = 'none';
   }
 }
 document.getElementById('kora_bill').style.display = 'none';
 document.getElementById('zari_bill').style.display = 'none';
+document.getElementById('weft_bill').style.display = 'none';
 //---------------------------------------------------------------------------------------
 
 const bill_no_input = document.getElementById('bill_no');
@@ -80,6 +87,33 @@ bill_no_input2.addEventListener('change', function (event) {
   fetch_bill_id2();
 });
 
+const bill_no_input3 = document.getElementById('bill_no3');
+
+bill_no_input3.addEventListener('change', function (event) {
+  const selectedOption = event.target.value;
+  const datalistOptions = document.getElementById('pur_bill3');
+
+  const options = datalistOptions.getElementsByTagName('option');
+  for (let i = 0; i < options.length; i++) {
+    const option = options[i];
+    const optionValue = option.value;
+
+    if (optionValue === selectedOption) {
+      var selectedAcid = option.getAttribute('data-acid'); // Assign value to selectedAcid
+      //console.log('ok',selectedAcid);
+
+      document.getElementById("pur_bill_id3").value = selectedAcid;
+
+      break;
+    }
+  }
+  var id = document.getElementById("pur_bill_id3").value;
+
+  console.log("pur_bill_id 3-->", selectedAcid);
+  console.log("bill_no_input3 value-->", bill_no_input3.value);
+  fetch_bill_id3();
+});
+
 const location_input = document.getElementById('location');
 
 location_input.addEventListener('change', function (event) {
@@ -106,44 +140,21 @@ location_input.addEventListener('change', function (event) {
   console.log("location_input value-->", location_input.value);
 });
 
-
-// function fetch_bill_id() {
-//     var id = document.getElementById("pur_bill_id").value;
-//     //console.log(id);
-
-//     $.ajax({
-//       url: 'fetch_inward.php',
-//       method: 'POST',
-//       data: { id: id },
-//       dataType: 'json',
-//       success: function (work) {
-//         //  console.log(myData);
-//          console.log(work.id)
-
-//         // Update your HTML elements with fetched data
-//         // document.getElementById("unit").value = work.dept;
-//         // document.getElementById("itemopb").value = work.opb_wght;
-//         // document.getElementById("bobin_qty").value = work.no_bobins;
-
-
-//       }
-//     });
-//   }
-
 function fetch_bill_id() {
 
   var id = document.getElementById("pur_bill_id").value;
   console.log(id);
   $.ajax({
-    url: 'fetch_inward.php',
+    url: 'fetch_inward_warp.php',
     method: 'POST',
     data: { id: id },
     dataType: 'json',
     success: function (work) {
-document.getElementById('remarks').value = work.remarks;
-document.getElementById('pur_tot_wght').value = work.tot_qty;
-document.getElementById('pur_acname').value = work.ac_nam;
-document.getElementById('pur_date').value = work.dat;
+      document.getElementById('remarks').value = work.remarks;
+      document.getElementById('sup_id').value = work.ac_id;
+      document.getElementById('pur_tot_wght').value = work.tot_qty;
+      document.getElementById('pur_acname').value = work.ac_nam;
+      document.getElementById('pur_date').value = work.dat;
     }
   });
 }
@@ -157,10 +168,28 @@ function fetch_bill_id2() {
     data: { id: id },
     dataType: 'json',
     success: function (work) {
-document.getElementById('remarks').value = work.remarks;
-document.getElementById('pur_tot_wght').value = work.tot_qty;
-document.getElementById('pur_acname').value = work.ac_nam;
-document.getElementById('pur_date').value = work.dat;
+      document.getElementById('remarks').value = work.remarks;
+      document.getElementById('pur_tot_wght').value = work.tot_qty;
+      document.getElementById('pur_acname').value = work.ac_nam;
+      document.getElementById('pur_date').value = work.dat;
+    }
+  });
+}
+function fetch_bill_id3() {
+
+  var id = document.getElementById("pur_bill_id3").value;
+  console.log(id);
+  $.ajax({
+    url: 'fetch_inward_weft.php',
+    method: 'POST',
+    data: { id: id },
+    dataType: 'json',
+    success: function (work) {
+      console.table(work);
+      document.getElementById('remarks').value = work.remarks;
+      document.getElementById('pur_tot_wght').value = work.tot_qty;
+      document.getElementById('pur_acname').value = work.ac_nam;
+      document.getElementById('pur_date').value = work.dat;
     }
   });
 }
@@ -173,20 +202,20 @@ function multiply_section() {
   var counts = document.getElementsByName('count[]');
 
   for (var i = 0; i < sections.length; i++) {
-      var section_value = parseFloat(sections[i].value);
-      var one_section_value = parseFloat(one_sections[i].value);
+    var section_value = parseFloat(sections[i].value);
+    var one_section_value = parseFloat(one_sections[i].value);
 
-      if (!isNaN(section_value) && !isNaN(one_section_value)) {
-          counts[i].value = section_value * one_section_value;
-      } else {
-         
-      }
+    if (!isNaN(section_value) && !isNaN(one_section_value)) {
+      counts[i].value = section_value * one_section_value;
+    } else {
+
+    }
   }
   calculateTotalSum3();
 }
 //---------------------
-function clearpage(){
-  location.reload();  
+function clearpage() {
+  location.reload();
 }
 
 
@@ -312,4 +341,188 @@ function calculateTotalSum3() {
   //document.getElementById('returnweight').value = document.getElementById('itemopb').value - totalSum;
 }
 
+//----------------------------------------------------------------------
+// function frmsave() {
+//   var totsrl = document.getElementById('no_of_warp').value;
+//   console.log(totsrl);
+//   $.ajax({
+//     url: 'getwarpno.php',
+//     method: 'POST',
+//     data: { totsrl: totsrl },
+//     dataType: 'json',
+//     success: function (work) {
+//       console.table(work);
 
+//       const tableBody3 = document.getElementById("tbody_ds_warp");
+//       const maxrec3 = work.length;
+
+//       work.forEach(function (warp_num, index) {
+//         console.log('inv', warp_num);
+
+//         const table = document.getElementById("warp_tbl"); // Replace with your table ID
+//         const lastRow = table.rows[table.rows.length - 1]; // Get the last row
+
+//         // Populate the last row with your data
+//         // lastRow.querySelector("[name='warpsrl[]']").value = warp_num.warp_no;
+//         lastRow.querySelector("[name='warpsrl[]']").value = warp_num;
+
+//       });
+
+//     }
+//   });
+// }
+//-------------------------------------------
+
+function frmsave() {
+  // var totsrl = document.getElementById('no_of_warp').value;
+  // console.log(totsrl);
+  // $.ajax({
+  //   url: 'getwarpno.php',
+  //   method: 'POST',
+  //   data: { totsrl: totsrl },
+  //   dataType: 'json',
+  //   success: function (work) {
+  //     console.table(work);
+  //     const table = document.getElementById("warp_tbl");
+  //     // Loop through the input fields and populate their values
+  //     for (let i = 0; i < work.length; i++) {
+  //       const lastRow = table.rows[table.rows.length - i]; // Get the last row
+  //       lastRow.querySelector("[name='warpsrl[]']").value = work[i] || "";
+  //         console.log(work[i]);
+  //     }
+
+  //   }
+  // });
+  var totsrl = document.getElementById('no_of_warp').value;
+  console.log(totsrl);
+  $.ajax({
+    url: 'getwarpno.php',
+    method: 'POST',
+    data: { totsrl: totsrl },
+    dataType: 'json',
+    success: function (work) {
+      console.log('Received work array:', work);
+  
+      // Select all input fields with the name 'warpsrl[]' within the tbody
+      var inputFields = document.querySelectorAll('#tbody_ds_warp input[name="warpsrl[]"]');
+  
+      // Loop through each input field and assign values from the array
+      inputFields.forEach(function(input, index) {
+        var valueIndex = index % work.length; // Use modulo operator to cycle through the values of the array
+        // console.log('Assigning value:', work[valueIndex], 'to input field at index', index);
+        input.setAttribute('value', work[valueIndex]); // Set the value attribute of the current input field
+      });
+    }
+
+    // error: function(jqXHR, textStatus, errorThrown) {
+    //   console.error('AJAX Error:', textStatus, errorThrown);
+    // }
+  });
+ 
+if (document.getElementById('location').value == "" || document.getElementById('tbl_type').value == "" || document.getElementById('ply_type').value == "" || document.getElementById('no_of_warp').value == "") {
+alert('fill the required fields')
+}
+else{
+  setTimeout(function() {
+    document.getElementById('form1').submit();
+  }, 1000);
+}
+
+
+}
+
+
+//----------------------------------------
+function addwarpRows() {
+  const tableBody = document.getElementById("tbody_ds_warp");
+  const firstRow = tableBody.querySelector("tr");
+  const newRow = firstRow.cloneNode(true);
+
+  // Update the serial number in the new row
+  // newRow.querySelector("td:first-child").textContent = S_NO;
+  // newRow.querySelector("td:first-child").textContent = newRow.querySelector("input[type='hidden']").value;
+  // Clear the input fields in the new row
+  const addinginputs = newRow.querySelectorAll("input[type='text'], input[type='number']");
+  // addinginputs.forEach((input) => (input.value = ""));
+
+  // Append the new row to the table body
+  tableBody.appendChild(newRow);
+
+  // Increment the serial number for the next row
+  S_NO++;
+}
+
+//---------------------------------------------------------------------
+
+
+// Function to add a new row to the table with a serial number
+function addRow_warp(S_NO) {
+  const tableBody = document.getElementById("tbody_ds_warp");
+  const firstRow = tableBody.querySelector("tr");
+  const newRow = firstRow.cloneNode(true);
+
+  // Update the serial number in the new row
+  newRow.querySelector("td:first-child").textContent = S_NO;
+  // newRow.querySelector("td:first-child").textContent = newRow.querySelector("input[type='hidden']").value;
+  // Clear the input fields in the new row
+  const addinginputs = newRow.querySelectorAll("input[type='text'], input[type='number']");
+  // addinginputs.forEach((input) => (input.value = ""));
+
+  // Append the new row to the table body
+  tableBody.appendChild(newRow);
+
+  // Increment the serial number for the next row
+  S_NO++;
+}
+
+// Event listener for the input field specifying the number of rows
+document.getElementById("no_of_warp").addEventListener('change', function() {
+
+  //----------------------------------
+  var table = document.getElementById('tbody_ds_warp');
+
+  // Iterate over rows starting from the second row (index 1)
+  for (var i = table.rows.length - 1; i > 0; i--) {
+    // Remove the row
+    table.deleteRow(i);
+  }
+
+  //-----------------------------------
+  var numrows = document.getElementById("no_of_warp").value;
+  let S_NO = 2; // Start with 2 to avoid leading '1'
+  for (let i = 0; i < numrows - 1; i++) {
+    addRow_warp(S_NO);
+    S_NO++;
+  }
+  
+  // frmsave();
+});
+function deleteRowsExceptLast() {
+  const tableBody = document.getElementById("tbody_ds_warp");
+  const rows = tableBody.querySelectorAll("tr");
+
+  // Keep the last row and remove the others
+  for (let i = 0; i < rows.length - 1; i++) {
+    rows[i].remove();
+  }
+  // Clear the input fields in the last row
+  const lastRowInputs = rows[rows.length - 1].querySelectorAll("input[type='text'], input[type='number']");
+  lastRowInputs.forEach((input) => (input.value = ""));
+}
+
+function updateTime() {
+  // Get the current time
+  var currentTime = new Date();
+
+  // Format the time as desired (e.g., HH:MM:SS)
+  var formattedTime = currentTime.getHours() + ":" + currentTime.getMinutes() + ":" + currentTime.getSeconds();
+
+  // Set the formatted time to the input field
+  document.getElementById("currentTime").value = formattedTime;
+}
+
+// Call updateTime initially to set the time immediately
+updateTime();
+
+// Update the time every second (1000 milliseconds)
+setInterval(updateTime, 1000);

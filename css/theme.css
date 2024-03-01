@@ -1,0 +1,23 @@
+/* variables.css */
+:root {
+    --main-bg-color: #EAF6FF;
+    --main-text-color: #009d63;
+    --second-bg-color:  #f3c809;
+    --second-text-color: #bbbec5;
+    --table-bg:#2A2A72;
+    --table-blue-bg:#009FFD;
+    --table-yellow-hover:#ffa400;
+    --white:#fff;
+    --input-border:#ccc;
+    --side-bg:#f7f6f8;
+    --side-in-color:#4b03db;
+    --tbl-bg-purc:#004E98;
+    --tbl-bg-sale:#214F4B; 
+      --tbl-bg-sale2:#16C172;
+      --text2_color: #009d63;
+      --btnbg_color:#0b3972;
+      --btntext_color: #fff;
+      --btnhover_color: #035fd1;
+  
+  }
+  

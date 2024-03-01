@@ -13,13 +13,16 @@ if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Retrieve form data
   date_default_timezone_set('Asia/Kolkata'); // Set the time zone to India Standard Time
-  $save_time = date("H:i:s"); // Get the current time in 24-hour format (e.g., 14:30:00)
+  $save_time = $_POST['currentTime']; // Get the current time in 24-hour format (e.g., 14:30:00)
   $save_date = $_POST['warp_page_date'];
   // $save_time = date("H:i:s"); // Assuming you want to save the current time
   $tbl_type = $_POST['tbl_type'];
   $loc_id = $_POST['hidden_location_id']; // Assuming you have a hidden input field for location ID
   $loc_name = $_POST['location'];
   $warp_wght = $_POST['warp_wghts']; // Assuming this is an array of warp weights
+  $yard = $_POST['yard']; // Assuming this is an array of warp weights
+  $muzham = $_POST['mozham']; // Assuming this is an array of warp weights
+  $no_of_saree = $_POST['no_of_saree']; // Assuming this is an array of section values
   $section = $_POST['section']; // Assuming this is an array of section values
   $one_section = $_POST['one_section']; // Assuming this is an array of one_section values
   $count = $_POST['count']; // Assuming this is an array of count values
@@ -33,10 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $zari_item_nam = $_POST['zarinames'];
   $bill_no = $_POST['bill_no'];
   $bill_no2 = $_POST['bill_no2'];
+  $bill_no3 = $_POST['bill_no3'];
   $remarks = $_POST['remarks'];
   $pur_wght = $_POST['pur_tot_wght'];
   $acname = $_POST['pur_acname'];
   $pur_date = $_POST['pur_date'];
+  $warp_tag = $_POST['warpsrl'];
+  $sup_id = $_POST['sup_id'];
+  $sep = '1';
 
   // Prepare and execute the INSERT statement based on table type
   switch ($tbl_type) {
@@ -53,15 +60,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Loop through the submitted data and insert each row into the database
         for ($keys = 0; $keys < count($warp_wght); $keys++) {
           if ($warp_wght[$keys] > 0.00 && $count[$keys] > 0.00) {
-            $sql = "INSERT INTO inward (reff_id,save_date, save_time, tbl_type, loc_id, loc_name, warp_wght, section, one_section, count, warp_ply, no_of_warp) 
-                        VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO warp_details (warp_no,hd_id,pur_date,iss_date, iss_time,pur_invno,sup_id,wght, tbl_type, loc_id, loc_nam, silk_wght,yard,no_saree,muzham, section, one_section, s_count, ply, no_warp) /*20*/
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = mysqli_prepare($con, $sql);
-            mysqli_stmt_bind_param($stmt, "ssssssssssss", $last_id1, $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $warp_wght[$keys], $section[$keys], $one_section[$keys], $count[$keys], $warp_ply, $no_of_warp);
+            mysqli_stmt_bind_param($stmt, "ssssssssssssssssssss",$warp_tag[$keys], $last_id1,$pur_date, $save_date, $save_time,$bill_no,$sup_id, $pur_wght, $tbl_type, $loc_id, $loc_name, $warp_wght[$keys],$yard[$keys],$no_of_saree[$keys],$muzham[$keys], $section[$keys], $one_section[$keys], $count[$keys], $warp_ply, $no_of_warp);
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
           }
         }
-
+        $sql = "UPDATE pur_det SET sepration = ? WHERE id = ? ";
+        $stmt = mysqli_prepare($con, $sql);
+        mysqli_stmt_bind_param($stmt, "ss", $sep, $bill_no);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
         header("location: inward.php");
       }
       break;
@@ -69,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $sql = "INSERT INTO inward_hd (save_date, save_time, tbl_type, loc_id, loc_name, bill_no, pur_wght, remarks, acname, pur_date) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
       $stmt = mysqli_prepare($con, $sql);
-      mysqli_stmt_bind_param($stmt, "ssssssssss", $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $bill_no, $pur_wght, $remarks, $acname, $pur_date);
+      mysqli_stmt_bind_param($stmt, "ssssssssss", $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $bill_no3, $pur_wght, $remarks, $acname, $pur_date);
       mysqli_stmt_execute($stmt);
       mysqli_stmt_close($stmt);
       $reff_id2 = mysqli_insert_id($con);
@@ -135,6 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <!-- attach form css link here-->
   <link rel="stylesheet" href="css/opening.css?<?php echo filemtime('css/opening.css'); ?>">
+  <link rel="stylesheet" href="css/reportbills.css?<?php echo filemtime('css/reportbills.css'); ?>">
   <style>
     .content-section {
       display: none;
@@ -143,6 +155,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     select {
       color: blue;
       font-weight: bold;
+    }
+    #warp_tbl input{
+      padding:2px;
     }
   </style>
 
@@ -203,15 +218,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <option value="section1">Warp</option>
                     <option value="section2">Weft</option>
                     <option value="section3">Zari</option>
+                    <option value="section4">View Warp Details</option>
                   </select>
                 </div>
 
                 <div class="col-lg-2 mb-1" id="kora_bill">
-                  <label for="bill_no">Select Kora Bill No</label>
-                  <input onkeypress="handleEnterKey(event, 'remarks')" type="text" list="pur_bill" id="bill_no" name="bill_no" onclick="this.select()" placeholder="SELECT BILL NO">
+                  <label for="bill_no">Select Warp Bill No</label>
+                  <input onkeypress="handleEnterKey(event, 'remarks')" type="text" list="pur_bill" id="bill_no" name="bill_no" placeholder="SELECT BILL NO">
                   <datalist id="pur_bill">
                     <?php
-                    $sql = mysqli_query($con, "SELECT id,auto_id FROM pur_hd WHERE vch_id = 'RAW_PUR' and pur_acid = 'KPUR001' order by id");
+                    $sql = mysqli_query($con, "SELECT id,auto_id FROM pur_det WHERE it_id = 'IT0005' and sepration = 0 order by id");
                     while ($row = $sql->fetch_assoc()) {
                       echo "<option class='text-uppercase' value='" . $row['id'] . "' data-acid='" . $row['auto_id'] . "'></option>";
                     }
@@ -219,6 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   </datalist>
                   <input type="hidden" name="pur_bill_id" id="pur_bill_id">
                 </div>
+               
                 <div class="col-lg-2 mb-1" id="zari_bill">
                   <label for="bill_no2">Select Zari Bill No</label>
                   <input onkeypress="handleEnterKey(event, 'remarks')" type="text" list="pur_bill2" id="bill_no2" name="bill_no2" onclick="this.select()" placeholder="SELECT BILL NO">
@@ -232,11 +249,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   </datalist>
                   <input type="hidden" name="pur_bill_id2" id="pur_bill_id2">
                 </div>
+                <div class="col-lg-2 mb-1" id="weft_bill">
+                  <label for="bill_no3">Select Weft Bill No</label>
+                  <input onkeypress="handleEnterKey(event, 'remarks')" type="text" list="pur_bill3" id="bill_no3" name="bill_no3" onclick="this.select()" placeholder="SELECT BILL NO">
+                  <datalist id="pur_bill3">
+                    <?php
+                    $sql = mysqli_query($con, "SELECT id,auto_id FROM pur_det WHERE it_id = 'IT0008' order by id");
+                    while ($row = $sql->fetch_assoc()) {
+                      echo "<option class='text-uppercase' value='" . $row['id'] . "' data-acid='" . $row['auto_id'] . "'></option>";
+                    }
+                    ?>
+                  </datalist>
+                  <input type="hidden" name="pur_bill_id3" id="pur_bill_id3">
+                </div>
                 <div class="col-lg-3 mb-1">
                   <label for="warp_page_date">Today Date</label>
                   <input onkeypress="handleEnterKey(event, 'remarks')" class="form-control" type="date" id="warp_page_date" name="warp_page_date">
 
                 </div>
+                <!-- <div class="col-lg-3 mb-1"> -->
+                  <!-- <label for="warp_page_date">Time</label> -->
+                  <input type="hidden" class="form-control shadow-none ms-2" id="currentTime" name="currentTime" readonly >
+                <!-- </div> -->
                 <div class="col-lg-12 mb-1">
                   <label for="remarks">Remarks</label>
                   <textarea onkeypress="handleEnterKey(event,'ply_type')" class="form-control" name="remarks" id="remarks" cols="60" rows="2"></textarea>
@@ -248,6 +282,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="col-lg-3 mb-1">
                   <label for="">Purchased From</label>
                   <input type="text" class="form-control" onkeypress="handleEnterKey(event,'warp_wghts')" id="pur_acname" name="pur_acname">
+                <input type="hidden" id="sup_id" name="sup_id">
                 </div>
                 <div class="col-lg-3 mb-1">
                   <label for="">Purchased Date</label>
@@ -266,7 +301,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-                    <div class="col-lg-7 col-md-6">
+                    <div class="col-lg-9 col-md-9">
+                    <!-- <div class="col-lg-12"> -->
 
                       <table id="warp_tbl">
                         <thead>
@@ -279,23 +315,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <option name="ply_type" value="3"> 3</option>
                               </select>
                             </td>
-                            <td colspan="3">
-                              <input type="number" class="form-control" onkeypress="handleEnterKey(event,'warp_wghts')" id="no_of_warp" name="no_of_warp" placeholder="ENTER NO OF WARP">
+                            <td colspan="4">
+                              <input type="number" class="form-control" required onkeypress="handleEnterKey(event,'warp_wghts')" id="no_of_warp" name="no_of_warp" placeholder="ENTER NO OF WARP">
 
                             </td>
                           </tr>
                           <tr class="tbl_heading">
-                            <td colspan="7">Warp</td>
+                            <td colspan="8">Warp</td>
                           </tr>
                           <tr>
-                            <th style="width: 10%;">Warp No</th>
+                            <th>S.No</th>
+                            <th>Warp Weight</th>
+                            <th>Yard</th>
+                            <th>No Of Saree</th>
+                            <th>Mozham</th>
+                            <th>Section</th>
+                            <th>One Section</th>
+                            <th>Count</th>
+                            <th>Warp No</th>
+                            
+                            <!-- <th style="width: 10%;">Warp No</th>
                             <th style="width: 20%;">Warp Weight</th>
                             <th style="width: 10%;">Yard</th>
                             <th style="width: 10%;">No Of Saree</th>
                             <th style="width: 10%;">Mozham</th>
                             <th style="width: 20%;">Section</th>
                             <th style="width: 10%;">One Section</th>
-                            <th style="width: 10%;">Count</th>
+                            <th style="width: 10%;">Count</th> -->
                           </tr>
                         </thead>
                         <tbody id="tbody_ds_warp">
@@ -304,9 +350,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td>
                               1
                             </td>
-                            <td style="display:none">
-                              <input type="number" name="warp_sno" id="warp_sno">
-                            </td>
+                            
                             <td>
                               <input type="number" oninput="calculateTotalSum()" onkeypress="handleEnterKeys(event,'yard')" class="form-control" id="warp_wghts" name="warp_wghts[]" class="form-control">
                             </td>
@@ -320,7 +364,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               <input type="number" onkeypress="handleEnterKeys(event,'section')" class="form-control" id="mozham" name="mozham[]" class="form-control">
                             </td>
                             <td>
-                              <input type="number"oninput="calculateTotalSum2()" onkeypress="handleEnterKeys(event,'one_section')" class="form-control" id="section" name="section[]" class="form-control" oninput="multiply_section()">
+                              <input type="number" oninput="calculateTotalSum2()" onkeypress="handleEnterKeys(event,'one_section')" class="form-control" id="section" name="section[]" class="form-control" oninput="multiply_section()">
                             </td>
                             <td>
                               <input type="number" onkeypress="handleEnterKeys(event,'count')" class="form-control" id="one_section" name="one_section[]" class="form-control" oninput="multiply_section()">
@@ -328,9 +372,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td>
                               <input type="number" onkeypress="handleEnterKeys(event,'warp_wghts')" class="form-control" id="count" readonly name="count[]" class="form-control">
                             </td>
+                            <td>
+                            <input type="text"readonly name="warpsrl[]" id="warpsrl">
+                            </td>
                             <!-- <td>1 </td> -->
                           </tr>
-                          
+
                         </tbody>
                         <tfoot>
                           <tr>
@@ -343,18 +390,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td colspan="3">
                               Total Section
                             </td>
-                            
+
                             <td>
                               <input readonly type="number" name="ttl_section" id="ttl_section">
                             </td>
                             <td>
-                            Total Count
+                              Total Count
                             </td>
                             <td>
                               <input readonly type="number" name="ttl_count" id="ttl_count">
                             </td>
                             <!-- ..//.. -->
-                         
+
                           </tr>
                         </tfoot>
                       </table>
@@ -502,26 +549,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   </div>
                 </div>
               </div>
-
-
-              <!-- MAIN TAB-->
-
-              <div class="mt-3 col-md-6">
+            <!--  -->
+            
+            <div class="mt-3 col-md-6">
                 <button type="button" id="refresh" name="refresh" onclick="clearpage()" class="btn btn-primary float-end mx-3">Clear</button>
                 <a href="admin.php" class="btn btn-success float-end">Home</a>
-                <button type="submit" id="save" name="save" class="btn btn-primary float-end mx-3">Save</button>
+                <button type="button" id="save" name="save" class="btn btn-primary float-end mx-3" onclick="frmsave()">Save</button>
 
               </div>
-              <!-- <form id="myForm">
-                <input type="TEXT" name="zari_item_name" id="zari_item_name" placeholder="Enter your email">
-                <input type="text" name="weft_batch_no" id="weft_batch_no" placeholder="Enter your name">
-    <button type="button" id="submitBtn">Submit</button>
-</form> -->
-<div id="response"></div>
+            
 
-
-
-              <!-- <div id="loader" class="loader"></div> -->
+            <!--  -->
+            
+              <!-- MAIN TAB-->
 
             </div><!-- container div -->
 
@@ -529,6 +569,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           </div>
           <!-- attach form container here ends -->
+
+        </div>
+        <div id="tag_reports" class="table-frame mt-4">
+              <table id="warp_report_tbl">
+                <thead>
+                  <tr>
+                    <td colspan="2" class="fw-bold">View Warp Bill No</td>
+                     <td colspan="2">
+                        <input onkeypress="handleEnterKey(event, 'remarks')" type="text" onclick="this.select()" list="pur_bill4" id="bill_no4" name="bill_no4" placeholder="SELECT BILL NO">
+                          <datalist id="pur_bill4">
+                            <?php
+                            $sql = mysqli_query($con, "SELECT * FROM inward_hd WHERE tbl_type = 'section1' order by id");
+                            while ($row = $sql->fetch_assoc()) {
+                              echo "<option class='text-uppercase' value='" . $row['bill_no'] . "' data-acid='" . $row['id'] . "'></option>";
+                            }
+                            ?>
+                           </datalist>
+                          <input type="hidden" name="pur_bill_id4" id="pur_bill_id4">
+                         </td>
+          
+                  </tr>
+                  <tr>
+                    <th>Warp No</th>
+                    <th>Silk Weight</th>
+                    <th>Yard</th>
+                    <th>No of Saree</th>
+                    <th>Muzham</th>
+                    <th>Section</th>
+                    <th>One Section</th>
+                    <th>Count</th>
+                 </tr>
+                </thead>
+                      <tbody>
+                      </tbody>
+              </table>
 
         </div>
     </div>
@@ -543,149 +618,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <!-- footer ends -->
 
   <!-- attach form js code here  -->
-
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
   <script src="js/inward.js?<?php echo filemtime('js/inward.js'); ?>"></script>
-  <Script>
-$(document).ready(function(){
-    $('#submitBtn').click(function(){
-        // Get form data
-        var formData = {
-            'zari_item_name' : $('#zari_item_name').val(),
-            'weft_batch_no' : $('#weft_batch_no').val()
-        };
-
-        // AJAX request
-        $.ajax({
-            type: 'POST',
-            url: 'submit.php', // Change 'submit.php' to your server-side script URL
-            data: formData,
-            success: function(response){
-                $('#response').html(response); // Display response in the 'response' div
-            },
-            error: function(xhr, status, error){
-                console.error(xhr.responseText); // Log any errors to the console
-            }
-        });
-    });
-});
-
-
-
-    //---------------------------------------------------------------------------------------
-    // Function to add a new row to the table
-    // Function to add a new row to the table with a serial number
-    function addRow_warp(S_NO) {
-      const tableBody = document.getElementById("tbody_ds_warp");
-      const firstRow = tableBody.querySelector("tr");
-      const newRow = firstRow.cloneNode(true);
-
-      // Update the serial number in the new row
-      newRow.querySelector("td:first-child").textContent = S_NO;
-      // newRow.querySelector("td:first-child").textContent = newRow.querySelector("input[type='hidden']").value;
-      // Clear the input fields in the new row
-      const addinginputs = newRow.querySelectorAll("input[type='text'], input[type='number']");
-      // addinginputs.forEach((input) => (input.value = ""));
-
-      // Append the new row to the table body
-      tableBody.appendChild(newRow);
-
-      // Increment the serial number for the next row
-      S_NO++;
-    }
-
-    // Event listener for the input field specifying the number of rows
-    document.getElementById("no_of_warp").addEventListener('change', function() {
-      var numrows = document.getElementById("no_of_warp").value;
-      let S_NO = 2; // Start with 2 to avoid leading '1'
-      for (let i = 0; i < numrows - 1; i++) {
-        addRow_warp(S_NO);
-        S_NO++;
-      }
-    });
-
-
-    document.getElementById("no_of_marc").addEventListener('change', function() {
-      var numrows_marc = document.getElementById("no_of_marc").value;
-      // deleteRowsExceptLast();
-      for (let i = 1; i < numrows_marc; i++) {
-        addRow_marc(i);
-      }
-    });
-    document.getElementById("reel_no").addEventListener('change', function() {
-      var numrows_reel = document.getElementById("reel_no").value;
-      deleteRowsExceptLast();
-      for (let i = 1; i < numrows_reel; i++) {
-        addRow_reel();
-      }
-    });
-
-    /* ------------------------------------------------------------------------------------------------------------------------------  */
-
-    // function addRow_warp(S_NO) {
-    //   const tableBody = document.getElementById("tbody_ds_warp");
-    //   const firstRow = tableBody.querySelector("tr");
-    //   const newRow = firstRow.cloneNode(true);
-    //   const rowNumber = parseInt(newRow.querySelector("td:first-child").textContent);
-
-    //   newRow.querySelector("td:first-child").textContent = S_NO ++;
-
-    //   // Clear the input fields in the new row
-    //   const addinginputs = newRow.querySelectorAll("input[type='text'], input[type='number']");
-    //   addinginputs.forEach((input) => (input.value = ""));
-
-    //   // Append the new row to the table body
-    //   tableBody.appendChild(newRow);
-    // }
-
-    function addRow_marc(i) {
-      // alert('ok')
-
-
-      const tableBody = document.getElementById("t_one");
-      const firstRow = tableBody.querySelector(".t_class");
-      const newRow = firstRow.cloneNode(true);
-
-      // Clear the input fields in the new row
-      const addinginputs = newRow.querySelectorAll(".tbl_adding");
-      addinginputs.forEach((input) => (input.value = ""));
-
-      // Append the new row to the table body
-      tableBody.appendChild(newRow);
-    }
-
-    function addRow_reel() {
-      // alert('ok')
-      const tableBody = document.getElementById("sub");
-      const firstRow = tableBody.querySelector(".zari_row");
-      const newRow = firstRow.cloneNode(true);
-
-      // Clear the input fields in the new row
-      const addinginputs = newRow.querySelectorAll("input[type='text'], input[type='number']");
-      addinginputs.forEach((input) => (input.value = ""));
-
-      // Append the new row to the table body
-      tableBody.appendChild(newRow);
-    }
-
-
-    function deleteRowsExceptLast() {
-      const tableBody = document.getElementById("tbody_ds_warp");
-      const rows = tableBody.querySelectorAll("tr");
-
-      // Keep the last row and remove the others
-      for (let i = 0; i < rows.length - 1; i++) {
-        rows[i].remove();
-      }
-      // Clear the input fields in the last row
-      const lastRowInputs = rows[rows.length - 1].querySelectorAll("input[type='text'], input[type='number']");
-      lastRowInputs.forEach((input) => (input.value = ""));
-    }
-
-    /* ------------------------------------------------------------------------------------------------------------------------------  */
-  </Script>
+  <script src="js/warp_det_display.js?<?php echo filemtime('js/warp_det_display.js'); ?>"></script>
   <script src="//code.jquery.com/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <!-- attach form js code here  -->
