@@ -81,3 +81,58 @@ function addRow() {
   // Append the new row to the table body
   tableBody.appendChild(newRow);
 }
+
+
+$(document).ready(function() {
+  $("#iss_warp").change(function() {
+      var id = document.getElementById("hidden_iss_warp").value;
+          console.log(id);
+      // console.log('ok');
+   
+      // Make AJAX request
+      $.ajax({
+          url: 'fetch/fetch_tag_pop.php',
+          method: "POST",
+          data: { id: id },
+          success: function(data) {
+              console.log(data);
+              // Populate table with data and calculate totals
+              populateTable(data);
+          }
+      });
+  });
+});
+// document.getElementById('tag_reports').style.display = 'none';
+
+function populateTable(data) {
+  // Clear existing table rows
+  $("#tag_pop tbody").empty();
+
+
+  // Check if data is an array
+  if (Array.isArray(data)) {
+      // Loop through data and append rows to table
+      data.forEach(function(item) {
+          console.log("Item:", item);
+          var row = "<tr class ='t_row'>" +
+          "<td>" + item.pur_invno + "</td>" +
+          "<td>" + item.warp_no + "</td>" +
+          "<td>" + item.wght + "</td>" +
+          "<td>" + item.ply + "</td>" +
+          "<td>" + item.yard + "</td>" +
+          "<td>" + item.no_saree + "</td>" +
+          "<td>" + item.muzham + "</td>" +
+          "<td>" + item.section + "</td>" +
+          "<td>" + item.one_section + "</td>" +
+          "<td>" + item.s_count + "</td>" +
+          "<td>" + item.silk_wght + "</td>" +
+          "</tr>";
+$("#tag_pop tbody").append(row);
+
+      });
+
+
+  } else {
+      console.log("Data is not an array:", data);
+  }
+}

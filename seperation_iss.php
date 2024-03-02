@@ -19,7 +19,7 @@
         include_once "main/headlinks.php";
         ?>
      <!-- headlinks ends -->
-
+<link rel="stylesheet" href="css/table.css">
      <!-- attach form css link here-->
      <style>
          label {
@@ -67,6 +67,7 @@
 
          }
      </style>
+     
      <!-- attach form css link here ends-->
 
 
@@ -104,9 +105,10 @@
                                  </div>
                              </div> -->
                              <div id="issue_div">
-                                 <div class="form-group">
-                                     <label for="iss_date">Issue Date</label>
+                                 <div class="form-group d-flex">
+                                     <!-- <label for="iss_date">Issue Date</label> -->
                                      <input type="date" name="iss_date" id="iss_date" class="form-control">
+                                     <input type="text" class="form-control shadow-none ms-2" id="currentTime" name="currentTime" readonly >
 
                                  </div>
                                  <div class="form-group">
@@ -143,9 +145,9 @@
                                      <input list="iss_warps" name="iss_warp" id="iss_warp" class="form-control" placeholder="Select Unit">
                                      <datalist id="iss_warps">
                                          <?php
-                                            $sql = mysqli_query($con, "SELECT DISTINCT reff_id FROM inward where tbl_type='section1' order by reff_id");
+                                            $sql = mysqli_query($con, "SELECT * FROM warp_details where tbl_type='section1' order by id");
                                             while ($row = $sql->fetch_assoc()) {
-                                                echo "<option class='text-uppercase' value='WP-" . $row['reff_id'] . "' data-id='" . $row['reff_id'] . "'></option>";
+                                                echo "<option class='text-uppercase' value='" . $row['warp_no'] . "' data-id='" . $row['id'] . "'></option>";
                                                 // echo "<option value='WARPID" . trim($row['save_date']) . "   weight (" . trim($row['warp_wght']) . " )  " . trim($row['warp_ply']) . "ply' data-id='" . $row['reff_id'] . "'> </option>";
                                             }
                                             ?>
@@ -168,9 +170,13 @@
                                      <input type="hidden" name="hidden_iss_weft" id="hidden_iss_weft">
 
                                  </div>
-                                
+                                 <div class="buttons">
+                                 <button type="submit" onclick="save()">Save</button>
+                                 <button type="button" onclick="location.reload()">New</button>
+                                 <button type="button" id="home">Home</button>
                              </div>
-                             <table id="modaltable">
+                             </div>
+                             <!-- <table id="modaltable">
                                  <thead>
                                      <tr>
                                          <th>Ply</th>
@@ -187,13 +193,33 @@
                                          <td><input class="form-control" type="text" name="count[]" value="" readonly></td>
                                      </tr>
                                  </tbody>
-                             </table>
+                             </table> -->
 
-                             <div class="buttons">
-                                 <button type="submit" onclick="save()">Save</button>
-                                 <button type="button" onclick="location.reload()">New</button>
-                                 <button type="button" id="home">Home</button>
-                             </div>
+                           
+
+                             
+                             <table id="tag_pop">
+                                        <thead>
+                                            <tr>
+                                            
+                                                <th>Purchase Invoice No</th>
+                                                <th>Warp No</th>
+                                                <th>Weight</th>
+                                                <th>Ply</th>
+                                                <th>Yard</th>
+                                                <th>No of Saree</th>
+                                                <th>Muzham</th>
+                                                <th>Section</th>
+                                                <th>One Section</th>
+                                                <th>Count</th>
+                                                <th>Silk Weight</th>
+                                        
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Rows for data will be added dynamically -->
+                                        </tbody>
+                             </table>
                          </div>
                      </form>
                  </div>
@@ -210,6 +236,7 @@
 
      <!-- attach form js code here  -->
      <script src="js/separation_iss.js"></script>
+     <script src="js/date_time.js"></script>
      <script>
          document.getElementById('iss_warp').addEventListener('focus', function dis_none_weft() {
              document.getElementById('weft_focus').style.display = 'none';
@@ -219,39 +246,7 @@
              document.getElementById('warp_focus').style.display = 'none';
 
          })
-         //============ script for date set default in input field visible starts===============
-         window.onload = function() {
-             var currentDate = new Date();
-             var day = currentDate.getDate();
-             var month = currentDate.getMonth() + 1; // Month is zero-based
-             var year = currentDate.getFullYear();
-
-             // Format the date as YYYY-MM-DD (ISO format)
-             var formattedDate = year + '-' + month.toString().padStart(2, '0') + '-' + day.toString().padStart(2, '0');
-
-             // Set the value attribute of the input field
-             document.getElementById('iss_date').value = formattedDate;
-             //  document.getElementById('ret_date').value = formattedDate;
-
-         };
-
-         //  document.getElementById('return_div').style.display = 'none';
-
-         //  document.getElementById('txn_type').addEventListener('change', function() {
-
-         //      console.log(document.getElementById('txn_type').value);
-         //      if (document.getElementById('txn_type').value == "ISS") {
-         //          document.getElementById('heading').innerHTML = 'Issue to Seperation';
-         //          document.getElementById('issue_div').style.display = 'block';
-         //          document.getElementById('return_div').style.display = 'none';
-         //      } else if (document.getElementById('txn_type').value == "RET") {
-         //         document.getElementById('heading').innerHTML = 'Return From Seperation';
-
-         //          document.getElementById('issue_div').style.display = 'none';
-         //          document.getElementById('return_div').style.display = 'block';
-         //      }
-
-         //  })
+       
          document.getElementById('home').addEventListener('click', function() {
              window.location = 'admin.php';
          })
