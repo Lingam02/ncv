@@ -82,6 +82,7 @@
          <!-- sidebar ends -->
          <!-- Page Content -->
          <div id="page-content-wrapper">
+             <form id="form" action="" method="post">
              <!-- navbar starts -->
              <?php
                 include_once "main/navbar.php";
@@ -90,7 +91,6 @@
              <div class="container-fluid px-4">
                  <!-- attach form container here starts -->
                  <div class="body">
-                     <form id="form" action="" method="post">
                          <div class="container_seperation">
                              <h4 id="heading" class="m-4">Transfer To Seperation</h4>
                              <!-- <div class="select_type">
@@ -105,12 +105,7 @@
                                  </div>
                              </div> -->
                              <div id="issue_div">
-                                 <div class="form-group d-flex">
-                                     <!-- <label for="iss_date">Issue Date</label> -->
-                                     <input type="date" name="iss_date" id="iss_date" class="form-control">
-                                     <input type="text" class="form-control shadow-none ms-2" id="currentTime" name="currentTime" readonly >
-
-                                 </div>
+                                 
                                  <div class="form-group">
                                      <label for="iss_fromloc">From:</label>
                                      <input list="iss_fromlocs" name="iss_fromloc" id="iss_fromloc" class="form-control" placeholder="Select Where" required>

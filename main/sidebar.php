@@ -1,4 +1,4 @@
-<div class="bg-white non-print" id="sidebar-wrapper">
+<div class="bg-white non-print shadow" id="sidebar-wrapper">
   <!-- <div class="sidebar-heading text-bottom primary-text  fw-bold  border-bottom"> <img class="pcw" src="img/PCW.ico" alt=""> AcPro</div> -->
   <div class="sidebar-heading text-bottom primary-text  fw-bold  border-bottom"> <img class="pcw" src="img/ncv_img.png" alt=""></div>
 

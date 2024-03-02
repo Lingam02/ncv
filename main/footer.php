@@ -8,4 +8,5 @@
 <!-- <link src="https://eloquent-capybara-207553.netlify.app"> -->
 <!-- main js link -->
 <script src="js/main.js"></script>
+<script src="js/date_time.js"></script>
 
