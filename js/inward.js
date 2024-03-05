@@ -510,19 +510,19 @@ function deleteRowsExceptLast() {
   lastRowInputs.forEach((input) => (input.value = ""));
 }
 
-function updateTime() {
-  // Get the current time
-  var currentTime = new Date();
+// function updateTime() {
+//   // Get the current time
+//   var currentTime = new Date();
 
-  // Format the time as desired (e.g., HH:MM:SS)
-  var formattedTime = currentTime.getHours() + ":" + currentTime.getMinutes() + ":" + currentTime.getSeconds();
+//   // Format the time as desired (e.g., HH:MM:SS)
+//   var formattedTime = currentTime.getHours() + ":" + currentTime.getMinutes() + ":" + currentTime.getSeconds();
 
-  // Set the formatted time to the input field
-  document.getElementById("currentTime").value = formattedTime;
-}
+//   // Set the formatted time to the input field
+//   document.getElementById("currentTime").value = formattedTime;
+// }
 
-// Call updateTime initially to set the time immediately
-updateTime();
+// // Call updateTime initially to set the time immediately
+// updateTime();
 
-// Update the time every second (1000 milliseconds)
-setInterval(updateTime, 1000);
+// // Update the time every second (1000 milliseconds)
+// setInterval(updateTime, 1000);

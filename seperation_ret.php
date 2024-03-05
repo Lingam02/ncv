@@ -123,13 +123,17 @@
                                  </div>
 
                                  <div class="form-group">
-                                     <label for="ret_unitname">To / Unit:</label>
+                                     <label for="ret_unitname">To:</label>
                                      <input list="ret_unitnames" name="ret_unitname" id="ret_unitname" class="form-control" placeholder="Select Unit" required>
                                      <datalist id="ret_unitnames">
                                          <?php
-                                            $sql = mysqli_query($con, "SELECT nam,auto_id,maj_nam FROM cnf where cls='WRK_UNIT' and val!='Loom'order by nam");
+                                            // $sql = mysqli_query($con, "SELECT nam,auto_id,maj_nam FROM cnf where cls='WRK_UNIT' and val!='Loom'order by nam");
+                                            // while ($row = $sql->fetch_assoc()) {
+                                            //     echo "<option value='" . trim($row['nam']) . " ( " . trim($row['maj_nam']) . " )' data-id='" . $row['auto_id'] . "'> </option>";
+                                            // }
+                                            $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores  order by loc_nam");
                                             while ($row = $sql->fetch_assoc()) {
-                                                echo "<option value='" . trim($row['nam']) . " ( " . trim($row['maj_nam']) . " )' data-id='" . $row['auto_id'] . "'> </option>";
+                                                echo "<option class='text-uppercase' value='" . $row['loc_nam'] . "' data-acid='" . $row['id'] . "'></option>";
                                             }
                                             ?>
                                      </datalist>

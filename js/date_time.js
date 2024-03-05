@@ -6,7 +6,7 @@ function updateTime() {
     var formattedTime = currentTime.getHours() + ":" + currentTime.getMinutes() + ":" + currentTime.getSeconds();
   
     // Set the formatted time to the input field
-    document.getElementById("currentTime").value = formattedTime;
+    document.getElementById("page_time").value = formattedTime;
   }
   
   // Call updateTime initially to set the time immediately
@@ -29,7 +29,7 @@ window.onload = function () {
     // Set the value attribute of the input field
     // document.getElementById('doc_date').value = formattedDate;
     // document.getElementById('reff_date').value = formattedDate;
-    document.getElementById('iss_date').value = formattedDate;
+    document.getElementById('page_date').value = formattedDate;
 
   
   };

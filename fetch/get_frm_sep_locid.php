@@ -2,7 +2,7 @@
 
 include "../config.php";
 $id = $_POST['id'];
-$query = "SELECT * FROM warp_details WHERE warp_no = '" . $id . "'";
+$query = "SELECT * FROM sep WHERE loom_id = '" . $id . "'";
 $result = $con->query($query);
 
 $cust = mysqli_fetch_array($result);
@@ -15,7 +15,7 @@ echo "Error: " . $sql . "" . mysqli_error($con);
 // include "../config.php";
 // $id = $_POST['id'];
 // // $query = "SELECT * FROM bobin_trans WHERE reff_id = '" . $id . "'";
-// $query = "SELECT * FROM inward WHERE reff_id = $id ";
+// $query = "SELECT * FROM sep WHERE loom_id = $id ";
 
 // $result = mysqli_query($con,$query);
 // $invdet = array(); // Initialize an empty array to store the data

@@ -50,7 +50,7 @@ table {
     text-align: center;
 }
 
- th {
+#entry_table_div2 th {
     height: 30px;
      background-color: var(--table-bg,#2A2A72);
     color: #f8f7fa;
@@ -59,7 +59,7 @@ table {
     border-right: 1px solid;
 }
 
- td {
+#entry_table_div2 td {
 
     vertical-align: top;
     padding-top: 1px !important;
@@ -133,7 +133,7 @@ label {
 
 /* style for button starts */
 
-.buttons button {
+.buttonss button {
     background-color: var(--table-bg,#2A2A72);
     color: var(--white,#FFF);
     border-radius: 3px;
@@ -288,7 +288,7 @@ input::-webkit-inner-spin-button {
 
 
 /* report table body data */
->tbody>tr>td:nth-child(1) {
+#entry_table_div2>tbody>tr>td:nth-child(1) {
     /* width: 8%; */
     color:#000;
 }

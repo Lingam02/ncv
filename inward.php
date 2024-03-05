@@ -13,8 +13,8 @@ if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Retrieve form data
   date_default_timezone_set('Asia/Kolkata'); // Set the time zone to India Standard Time
-  $save_time = $_POST['currentTime']; // Get the current time in 24-hour format (e.g., 14:30:00)
-  $save_date = $_POST['warp_page_date'];
+  $save_time = $_POST['page_time']; // Get the current time in 24-hour format (e.g., 14:30:00)
+  $save_date = $_POST['page_date'];
   // $save_time = date("H:i:s"); // Assuming you want to save the current time
   $tbl_type = $_POST['tbl_type'];
   $loc_id = $_POST['hidden_location_id']; // Assuming you have a hidden input field for location ID
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql = "INSERT INTO warp_details (warp_no,hd_id,pur_date,iss_date, iss_time,pur_invno,sup_id,wght, tbl_type, loc_id, loc_nam, silk_wght,yard,no_saree,muzham, section, one_section, s_count, ply, no_warp) /*20*/
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = mysqli_prepare($con, $sql);
-            mysqli_stmt_bind_param($stmt, "ssssssssssssssssssss",$warp_tag[$keys], $last_id1,$pur_date, $save_date, $save_time,$bill_no,$sup_id, $pur_wght, $tbl_type, $loc_id, $loc_name, $warp_wght[$keys],$yard[$keys],$no_of_saree[$keys],$muzham[$keys], $section[$keys], $one_section[$keys], $count[$keys], $warp_ply, $no_of_warp);
+            mysqli_stmt_bind_param($stmt, "sssssssssssdssssssss",$warp_tag[$keys], $last_id1,$pur_date, $save_date, $save_time,$bill_no,$sup_id, $pur_wght, $tbl_type, $loc_id, $loc_name, $warp_wght[$keys],$yard[$keys],$no_of_saree[$keys],$muzham[$keys], $section[$keys], $one_section[$keys], $count[$keys], $warp_ply, $no_of_warp);
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
           }
@@ -177,13 +177,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
+    <form id="form1" action="" method="post" autocomplete="off">
 
       <!-- navbar starts -->
       <?php
       include_once "main/navbar.php";
       ?>
       <!-- navbar ends -->
-      <form id="form1" action="" method="post" autocomplete="off">
         <div class="container-fluid px-4">
 
           <!-- attach form container here starts -->
@@ -262,11 +262,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   </datalist>
                   <input type="hidden" name="pur_bill_id3" id="pur_bill_id3">
                 </div>
-                <div class="col-lg-3 mb-1">
+                <!-- <div class="col-lg-3 mb-1">
                   <label for="warp_page_date">Today Date</label>
                   <input onkeypress="handleEnterKey(event, 'remarks')" class="form-control" type="date" id="warp_page_date" name="warp_page_date">
 
-                </div>
+                </div> -->
                 <!-- <div class="col-lg-3 mb-1"> -->
                   <!-- <label for="warp_page_date">Time</label> -->
                   <input type="hidden" class="form-control shadow-none ms-2" id="currentTime" name="currentTime" readonly >
@@ -621,6 +621,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/inward.js?<?php echo filemtime('js/inward.js'); ?>"></script>
   <script src="js/warp_det_display.js?<?php echo filemtime('js/warp_det_display.js'); ?>"></script>
+  <script src="js/date_time.js?<?php echo filemtime('js/date_time.js'); ?>"></script>
   <script src="//code.jquery.com/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <!-- attach form js code here  -->

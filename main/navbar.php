@@ -42,12 +42,12 @@
     <!-- <div class="year_gstin"> -->
     <div class="child1 col-lg-3">
       <span class="nav_color">
-      <input type="date" name="iss_date" id="iss_date" class="form-control">
+      <input type="date" name="page_date" id="page_date" class="form-control">
 
       </span>
     </div>
     <div class="child2 col-lg-3">
-    <input type="text" class="form-control shadow-none ms-2" id="currentTime" name="currentTime" readonly >
+    <input type="text" class="form-control shadow-none ms-2" id="page_time" name="page_time" readonly >
 
     </div>
     <!-- </div> -->
