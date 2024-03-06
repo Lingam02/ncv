@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $save_time = $_POST['page_time']; // Get the current time in 24-hour format (e.g., 14:30:00)
     $save_date = $_POST['page_date'];
     // $save_time = date("H:i:s"); // Assuming you want to save the current time
-    $tbl_type = "warp";
+    $tbl_type = "WPSEPISS";
    
 
     $loom_nam = $_POST['loom_nam'];
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $sql = "INSERT INTO sep (date, time, tnx_type,warp_no, loc_id,typ, loc_nam, loom_id, loom_nam, ply,section,wght,loc_id2,loc_nam2,position) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
                 $stmt = mysqli_prepare($con, $sql);
-                mysqli_stmt_bind_param($stmt, "ssissssssssdiss", $save_date, $save_time, $tbl_type,$warp_no ,$loc_id,$border_nam, $loc_nam,$loom_id, $loom_nam, $ply,$section,$wght,$loc_id2,$loc_nam2,$no);
+                mysqli_stmt_bind_param($stmt, "sssssssssssdiss", $save_date, $save_time, $tbl_type,$warp_no ,$loc_id,$border_nam, $loc_nam,$loom_id, $loom_nam, $ply,$section,$wght,$loc_id2,$loc_nam2,$no);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_close($stmt);
                 $last_id1 = mysqli_insert_id($con);

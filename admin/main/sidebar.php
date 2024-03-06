@@ -25,6 +25,9 @@
     <a href="colour_creation.php" class="list-group-item list-group-item-action text-success "><i class="fas fa-layer-group me-2"></i>
       Color Creation
     </a>
+    <a href="saree_union.php" class="list-group-item list-group-item-action text-success "><i class="fas fa-layer-group me-2"></i>
+     Creation Types
+    </a>
     <a href="stores.php" class="list-group-item list-group-item-action text-success "><i class="fas fa-layer-group me-2"></i>
       Store Creation
     </a>

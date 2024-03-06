@@ -15,7 +15,7 @@
 include "../config.php";
 $id = $_POST['id'];
 // $query = "SELECT * FROM bobin_trans WHERE reff_id = '" . $id . "'";
-$query = "SELECT * FROM sep WHERE loom_id = $id ";
+$query = "SELECT * FROM sep WHERE loom_id = $id AND position !='FRM-RET'";
 
 $result = mysqli_query($con,$query);
 $invdet = array(); // Initialize an empty array to store the data

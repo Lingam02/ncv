@@ -1,3 +1,31 @@
+
+//get dyer id 
+const dyername = document.getElementById('dyer_nam');
+
+dyername.addEventListener('change', function (event) {
+  const selectedOption = event.target.value;
+  const datalistOptions = document.getElementById('twisterlist');
+
+  const options = datalistOptions.getElementsByTagName('option');
+  for (let i = 0; i < options.length; i++) {
+    const option = options[i];
+    const optionValue = option.value;
+
+    if (optionValue === selectedOption) {
+      var selectedAcid = option.getAttribute('data-grpid'); // Assign value to selectedAcid
+      //console.log('ok',selectedAcid);
+
+      document.getElementById("dyer_id").value = selectedAcid;
+
+      break;
+    }
+  }
+  var id = document.getElementById("dyer_id").value;
+
+  console.log("dyer id-->", selectedAcid);
+  console.log("dyername value-->", dyername.value);
+});
+
 //---------------------------------------------------------------------------------------
 const loom_nam = document.getElementById('loom_nam');
 
@@ -13,9 +41,7 @@ loom_nam.addEventListener('change', function (event) {
     if (optionValue === selectedOption) {
       var selectedAcid = option.getAttribute('data-acid'); // Assign value to selectedAcid
       //console.log('ok',selectedAcid);
-
       document.getElementById("loom_id").value = selectedAcid;
-
       break;
     }
   }
@@ -103,28 +129,43 @@ iss_warp.addEventListener('change', function (event) {
 
   console.log("hidden_iss_warp-->", selectedAcid);
   console.log("iss_warp value-->", iss_warp.value);
-  fetch_splitted_kora();
+  // fetch_splitted_kora();
 });
 //---------------------------------------------------------------------------------------
 
-function fetch_splitted_kora() {
+// function fetch_splitted_kora() {
 
-    var id = document.getElementById("hidden_iss_warp").value;
-    console.log('ok',id);
-    $.ajax({
-      url: 'fetch/fetch_splitted_kora.php',
-      method: 'POST',
-      data: { id: id },
-      dataType: 'json',
-      success: function (work) {
-        document.getElementById("ply").value = work.ply;
-        document.getElementById("section").value = work.section;
-        document.getElementById("wght").value = work.silk_wght;
-      }      
-    });
-  }
+//     var id = document.getElementById("hidden_iss_warp").value;
+//     console.log('ok',id);
+//     $.ajax({
+//       url: 'fetch/fetch_splitted_kora.php',
+//       method: 'POST',
+//       data: { id: id },
+//       dataType: 'json',
+//       success: function (work) {
+//         document.getElementById("ply").value = work.ply;
+//         document.getElementById("section").value = work.section;
+//         document.getElementById("wght").value = work.silk_wght;
+//       }      
+//     });
+//   }
   function get_frm_loomid() {
+
     var id = document.getElementById("loom_id").value;
+    console.log('ok',id);
+    // $.ajax({
+    //   url: 'fetch/get_frm_sep_locid.php',
+    //   method: 'POST',
+    //   data: { id: id },
+    //   dataType: 'json',
+    //   success: function (work) {
+    //     console.log('work',work);
+    //     document.getElementById("iss_location").value = work.loc_nam;
+    //     document.getElementById("loc_id").value = work.loc_id;
+    //     document.getElementById("iss_location2").value = work.loc_nam2;
+    //     document.getElementById("loc_id2").value = work.loc_id2;}
+        
+    //    } );
     $.ajax({
       url: 'fetch/get_frm_loomid.php',
       method: 'POST',
@@ -156,7 +197,6 @@ function fetch_splitted_kora() {
           lastRow.querySelector("[name='ply2[]']").value = invoice.ply;
           lastRow.querySelector("[name='section2[]']").value = invoice.section;
           lastRow.querySelector("[name='wght2[]']").value = invoice.wght;
-          showlocnam();
           // document.getElementById("entry_table2").style.Display = 'block';
           if (index < maxrec0 - 1) {
             addRow();
@@ -169,24 +209,7 @@ function fetch_splitted_kora() {
       }      
     });
   }
-function showlocnam() {
 
-  var id = document.getElementById("loom_id").value;
-  console.log('ok',id);
-  $.ajax({
-    url: 'fetch/get_frm_sep_locid.php',
-    method: 'POST',
-    data: { id: id },
-    dataType: 'json',
-    success: function (work) {
-      console.log('work',work);
-      document.getElementById("iss_location").value = work.loc_nam;
-      document.getElementById("loc_id").value = work.loc_id;
-      document.getElementById("iss_location2").value = work.loc_nam2;
-      document.getElementById("loc_id2").value = work.loc_id2;}
-      
-     } );  
-}
 //---------------------------------------------------------------------------------------
   
 function addRow() {

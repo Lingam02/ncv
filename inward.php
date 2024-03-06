@@ -308,7 +308,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <thead>
                           <tr class="">
                             <td colspan="4">
-                              <select name="ply_type" id="ply_type" onkeypress="handleEnterKey(event,'no_of_warp')">
+                              <select name="ply_type" required id="ply_type" onkeypress="handleEnterKey(event,'no_of_warp')">
                                 <option name="ply_type" value="0"> Select Ply Type</option>
                                 <option name="ply_type" value="1"> 1</option>
                                 <option name="ply_type" value="2"> 2</option>
