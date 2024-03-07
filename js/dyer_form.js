@@ -184,6 +184,32 @@ to_loc_name.addEventListener('change', function (event) {
   console.log("to_loc_id-->", id);
   console.log("to_loc_name value-->",to_loc_name.value);
 });
+//get warp_tag_no id
+const warp_tag_no = document.getElementById('warp_tag_no');
+
+warp_tag_no.addEventListener('change', function (event) {
+  const selectedOption = event.target.value;
+  const datalistOptions = document.getElementById('warp_tagids');
+
+  const options = datalistOptions.getElementsByTagName('option');
+  for (let i = 0; i < options.length; i++) {
+    const option = options[i];
+    const optionValue = option.value;
+
+    if (optionValue === selectedOption) {
+      var selectedAcid = option.getAttribute('data-acid'); // Assign value to selectedAcid
+      //console.log('ok',selectedAcid);
+
+      document.getElementById("warp_tagid").value = selectedAcid;
+
+      break;
+    }
+  }
+  var id = document.getElementById("warp_tagid").value;
+  get_sep_retdetails();
+  console.log("warp_tagid-->", id);
+  console.log("warp_tag_no value-->",warp_tag_no.value);
+});
 
 //dyer id get 
 const dyername = document.getElementById('dyer_nam');
@@ -526,4 +552,69 @@ function calculate_waste_wght() {
 
   document.getElementById('waste_wght').value = document.getElementById('iss_wght').value - document.getElementById('ret_wght').value;
 
+}
+
+
+function get_sep_retdetails() {
+var id = document.getElementById('warp_tagid').value;  
+$.ajax({
+  url: 'fetch/warp_tag_todyer.php',
+  method: 'POST',
+  data: { id: id },
+  dataType: 'json',
+  success: function (work) {
+    console.log('work',work);
+  
+
+    let tableBody0 = document.getElementById("sep_iss_body2");
+    let maxrec0 = work.length;
+    
+    // Remove all rows except the last one
+    while (tableBody0.rows.length > 1) {
+      tableBody0.deleteRow(0);
+    }
+//-------------------
+
+    work.forEach(function (invoice, index) {
+      console.log('inv',invoice);
+     const table = document.getElementById("entry_table2"); // Replace with your table ID
+     const lastRow = table.rows[table.rows.length - 1]; // Get the last row
+
+
+    //  document.getElementById("booking_id").value = invoice.new_warp_no;
+    //  const totalWght = work.reduce((sum, invoice) => sum + parseFloat(invoice.wght), 0);
+    //  document.getElementById("iss_wght").value = invoice.totalWght;
+    
+      // Populate the last row with your data
+      lastRow.querySelector("[name='warp_no2[]']").value = invoice.warp_no;
+      lastRow.querySelector("[name='border_nam2[]']").value = invoice.typ;
+      lastRow.querySelector("[name='ply2[]']").value = invoice.ply;
+      lastRow.querySelector("[name='section2[]']").value = invoice.iss_section;
+      lastRow.querySelector("[name='wght2[]']").value = invoice.iss_wght;
+      lastRow.querySelector("[name='section3[]']").value = invoice.section;
+      lastRow.querySelector("[name='wght3[]']").value = invoice.wght;
+      lastRow.querySelector("[name='section4[]']").value = invoice.bal_section;
+      lastRow.querySelector("[name='wght4[]']").value = invoice.bal_wght;
+// Assuming 'work' is an array of invoice objects
+
+      // document.getElementById("entry_table2").style.Display = 'block';
+      if (index < maxrec0 - 1) {
+        addRow();
+      }
+      
+      //-------------------------
+    });  
+//-------------------------------------------------------------uuuu---  
+    
+  }      
+});
+}
+
+function addRow() {
+  const tableBody = document.getElementById("sep_iss_body2");
+  const firstRow = tableBody.querySelector(".trow2");
+  const newRow = firstRow.cloneNode(true);
+  const addinginputs = newRow.querySelectorAll("input[type='text'], input[type='number']");
+  addinginputs.forEach((input) => (input.value = ""));
+  tableBody.appendChild(newRow);
 }

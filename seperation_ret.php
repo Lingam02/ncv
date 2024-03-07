@@ -1,12 +1,40 @@
- <!-- attach php code here -->
- <?php
-    include "config.php";
-    // Check if 'uname' session variable is not set or empty
-    if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
-        // Redirect to the login page
-        header("Location: index.php");
-        exit(); // Ensure that code stops executing after the redirect
+<!-- attach php code here -->
+<?php
+include "config.php";
+// Check if 'uname' session variable is not set or empty
+if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
+    // Redirect to the login page
+    header("Location: index.php");
+    exit(); // Ensure that code stops executing after the redirect
+}
+include_once("utils/utils.php");
+
+$result = $con->query("SELECT * from setup limit 1");
+if ($result->num_rows > 0) {
+    // Fetch the first row from the result set
+    $row = $result->fetch_assoc();
+
+    // Initialize an array to store the metadata
+    $meta = array();
+
+    // Process each key-value pair in the fetched row
+    foreach ($row as $key => $value) {
+        // Store the key-value pair in the $meta array
+        $meta[$key] = $value;
     }
+
+    // Assuming tagcals is a function defined in utils.php, process booking_id
+    if (isset($meta['warp_no2'])) {
+        $warp_dyetag = tagcals($meta['warp_no2']);
+    } else {
+        // Handle the case where 'warp_no2' is not set in the metadata
+        $warp_dyetag = null; // or assign a default value
+    }
+} else {
+    // Handle the case where no rows are returned from the query
+    // For example, display an error message or set default values for $meta and $booking_id
+}
+
 
 // Check if form has been submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -17,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // $save_time = date("H:i:s"); // Assuming you want to save the current time
     $tbl_type = "WPSEPRET";
    
-// ------------
+    // Retrieve other form data
     $loom_nam = $_POST['loom_nam'];
     $loom_id = $_POST['loom_id']; 
 
@@ -26,92 +54,184 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $loc_nam2 = $_POST['iss_location2'];
     $loc_id2 = $_POST['loc_id2']; 
-// ------------
+
     $dyer_nam = $_POST['dyer_nam']; 
     $dyer_id = $_POST['dyer_id']; 
-//-------------
-    $warp_no = $_POST['warp_no2']; 
-    // $new_warp_no = $warp_no + ''; 
 
+    $warp_no = $_POST['warp_no2']; 
     $border_nam = $_POST['border_nam2']; 
     $ply = $_POST['ply2']; 
-    $section = $_POST['section2']; 
-    $wght = $_POST['wght2']; 
+    $section2 = $_POST['section2']; 
+    $wght2 = $_POST['wght2']; 
     $section3 = $_POST['section3']; 
     $wght3 = $_POST['wght3']; 
+    $section4 = $_POST['section4']; 
+    $wght4 = $_POST['wght4']; 
     $position = 'FRM-RET';
-  
-        if (!empty($border_nam)) {
-            //--------------------------------  DELETE OLD VALUES -------------
-            $sql = "DELETE FROM sep WHERE loom_id = ? AND date = ?";
-            $stmt = mysqli_prepare($con, $sql);
-            
-            // Check for preparation errors
-            if ($stmt === false) {
-                die("Preparation failed: " . mysqli_error($con));
-            }
-            
-            // Bind parameters and execute the statement
-            mysqli_stmt_bind_param($stmt, "ss", $loom_id, $save_date);
-            if (mysqli_stmt_execute($stmt)) {
-                echo "Delete successful!";
-            } else {
-                // Display more informative error message
-                die("Delete failed: " . mysqli_stmt_error($stmt));
-            }
-            
-            // Close the prepared statement
-            mysqli_stmt_close($stmt);
-            //-----------------------------------------------------------------
-          // Loop through the submitted data and insert each row into the database
-          for ($key = 0; $key < count($border_nam); $key++) {
+
+
+// tag no genrating
+
+$con->begin_transaction();
+
+$warp_dyetag = $_POST['booking_id']; // Define $booking_id here
+
+$query = "SELECT * from setup ";
+$stmt = mysqli_prepare($con, $query);
+
+if ($stmt === false) {
+    die("Preparation failed: " . mysqli_error($con));
+}
+
+mysqli_stmt_execute($stmt);
+
+$result = mysqli_stmt_get_result($stmt);
+
+if (mysqli_num_rows($result) == 0) {
+    echo "booking id Config Error?";
+    return;
+}
+
+$setup = mysqli_fetch_array($result);
+
+if ($setup === false) {
+    die("Error fetching data: " . mysqli_error($con));
+}
+
+$book_id = tagcal($setup["warp_no2"]);
+
+if ($book_id === null) {
+    die("Error in tagcal function.");
+}
+
+$sql = "UPDATE setup SET warp_no2 = ? ";
+$stmt = mysqli_prepare($con, $sql);
+
+if ($stmt === false) {
+    die("Preparation failed: " . mysqli_error($con));
+}
+
+mysqli_stmt_bind_param($stmt, "s", $book_id); // Make sure $book_id holds the correct value
+if (mysqli_stmt_execute($stmt)) {
+    echo "Update successful!";
+} else {
+    echo "Update failed: " . mysqli_error($con);
+}
+
+mysqli_stmt_close($stmt);
+$con->commit();
+// tag no genrating
+
+    if (!empty($border_nam)) {  
+        //--------------------------------  DELETE OLD VALUES -------------
+        $sql = "DELETE FROM sep WHERE loom_id = ? AND date = ?";
+        $stmt = mysqli_prepare($con, $sql);
+        
+        // Check for preparation errors
+        if ($stmt === false) {
+            die("Preparation failed: " . mysqli_error($con));
+        }
+        
+        // Bind parameters and execute the statement
+        mysqli_stmt_bind_param($stmt, "ss", $loom_id, $save_date);
+        if (mysqli_stmt_execute($stmt)) {
+            echo "Delete successful!";
+        } else {
+            // Display more informative error message
+            die("Delete failed: " . mysqli_stmt_error($stmt));
+        }
+        
+        // Close the prepared statement
+        mysqli_stmt_close($stmt);
+        //-----------------------------------------------------------------
+        $tnx_id = 'sep_ret';
+        // Loop through the submitted data and insert each row into the database
+        for ($key = 0; $key < count($border_nam); $key++) {
             if ($border_nam != "") {
-                $sql = "INSERT INTO sep (dyer_nam,dyer_id,date, time, tnx_type,warp_no, loc_id,typ, loc_nam, loom_id, loom_nam, ply,section,wght,loc_id2,loc_nam2,position) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?)";
+                $sql = "INSERT INTO sep (tnx_id, date, time, tnx_type, warp_no, loc_id, typ, loc_nam, loom_id, loom_nam, ply, section, wght, loc_id2, loc_nam2, position) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = mysqli_prepare($con, $sql);
-                $new_warp_no = $warp_no[$key].'/'.($key+1);
-                mysqli_stmt_bind_param($stmt, "sssssssssssssdiss",$dyer_nam,$dyer_id,$save_date, $save_time, $tbl_type,$new_warp_no ,$loc_id,$border_nam[$key], $loc_nam,$loom_id, $loom_nam, $ply[$key],$section[$key],$wght[$key],$loc_id2,$loc_nam2,$position);
+                // $new_warp_no = $warp_no[$key].'/'.($key+1);
+                mysqli_stmt_bind_param($stmt, "ssssssssssssdiss", $tnx_id, $save_date, $save_time, $tbl_type, $warp_no[$key], $loc_id, $border_nam[$key], $loc_nam, $loom_id, $loom_nam, $ply[$key], $section4[$key], $wght4[$key], $loc_id2, $loc_nam2, $position);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_close($stmt);
                 // $last_id1 = mysqli_insert_id($con);
             }
         }
+      
+        // $sql = "UPDATE sep SET position = ? WHERE warp_no = ? ";
+        // $stmt = mysqli_prepare($con, $sql);
+        // mysqli_stmt_bind_param($stmt, "ss", $available, $warp_no);
+        // mysqli_stmt_execute($stmt);
+        // mysqli_stmt_close($stmt);
+
+        // header("location: seperation_ret.php");
+        $tnx_id = "sep_ret";
+        $inw = "inw";
+        if (!empty($wght4)) {
+            // Loop through the submitted data and insert each row into the database
+            for ($keys = 0; $keys < count($wght4); $keys++) {
+                if ($wght4[$keys] > 0.00) {
+
+                    $section1 = -1 * ($section4[$keys]);
+                    $wght1 = -1 * ($wght4[$keys]);
+                    $sql = "INSERT INTO warp_stock (tnx_id, reff_id, doc_id, date, time, inw, section, wght, section1, wght1) /*10*/
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $stmt = mysqli_prepare($con, $sql);
+                    mysqli_stmt_bind_param($stmt, "sssssssdsd", $tnx_id, $warp_no[$keys], $warp_no[$keys], $save_date, $save_time, $inw, $section4[$keys], $wght4[$keys], $section1, $wght1);
+                    mysqli_stmt_execute($stmt);
+                    mysqli_stmt_close($stmt);
+                }
+            }
           
-            // $sql = "UPDATE sep SET position = ? WHERE warp_no = ? ";
-            // $stmt = mysqli_prepare($con, $sql);
-            // mysqli_stmt_bind_param($stmt, "ss", $available, $warp_no);
-            // mysqli_stmt_execute($stmt);
-            // mysqli_stmt_close($stmt);
-
-        //   header("location: seperation_ret.php");
+            header("location: seperation_ret.php");
         }
-        // include_once "fetch/getwarpno_toloom.php";
-         // First table INSERT
-    $query1 = "INSERT INTO sep_ret (dyer_nam,dyer_id,date, time, tnx_type,warp_no, loc_id,typ, loc_nam, loom_id, ply,section,wght,loc_id2,loc_nam2,position) 
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    $stmt1 = mysqli_prepare($con, $query1);
-
-    if ($stmt1) {
-      for ($key = 0; $key < count($border_nam); $key++) {
-        if ($border_nam[$key] !== "") {
-          mysqli_stmt_bind_param($stmt1, "ssssssssssssdsss", $dyer_nam,$dyer_id,$save_date, $save_time, $tbl_type,$warp_no[$key],$loc_id,$border_nam[$key], $loc_nam,$loom_id, $ply[$key],$section3[$key],$wght3[$key],$loc_id2,$loc_nam2,$position);
-          mysqli_stmt_execute($stmt1);
-        }
-      }
-      echo "Details Saved successfully";
-      header("location: seperation_ret.php");
-    } else {
-      echo "Statement preparation failed: " . mysqli_error($con);
     }
-       
-    // echo "<pre>";
-    // print_r($_POST);
-    // echo "</pre>";
-  
-    // Close the database connection
-    mysqli_close($con);
-  }
-  ?>
+
+    if (!empty($wght3)) {
+        // Loop through the submitted data and insert each row into the database
+        for ($keys = 0; $keys < count($wght3); $keys++) {
+            if ($wght3[$keys] > 0.00) {
+
+                $section1 = -1 * ($section3[$keys]);
+                $wght1 = -1 * ($wght3[$keys]);
+                $sql = "INSERT INTO warp_stock (tnx_id, reff_id, doc_id, date, time, inw, section, wght, section1, wght1) /*10*/
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $stmt = mysqli_prepare($con, $sql);
+                mysqli_stmt_bind_param($stmt, "sssssssdsd", $tnx_id, $warp_no[$keys], $warp_no[$keys], $save_date, $save_time, $inw, $section3[$keys], $wght3[$keys], $section1, $wght1);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+            }
+        }
+      
+        header("location: seperation_ret.php");
+    }
+// }
+
+// First table INSERT
+$query1 = "INSERT INTO sep_ret (tnx_id, date, time,new_warp_no, tnx_type, warp_no, loc_id, typ, loc_nam, loom_id, ply, section, wght, loc_id2, loc_nam2, position, iss_section, iss_wght, bal_section, bal_wght) 
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+$stmt1 = mysqli_prepare($con, $query1);
+if ($stmt1) {
+    for ($key = 0; $key < count($border_nam); $key++) {
+        if ($border_nam[$key] !== "") {
+            $new_warp_no = $warp_no[$key] . '/S' . ($key + 1);
+
+            mysqli_stmt_bind_param($stmt1, "ssssssssssssdssssdsd", $tnx_id, $save_date, $save_time,$warp_dyetag, $tbl_type, $new_warp_no, $loc_id, $border_nam[$key], $loc_nam, $loom_id, $ply[$key], $section3[$key], $wght3[$key], $loc_id2, $loc_nam2, $position, $section2[$key], $wght2[$key], $section4[$key], $wght4[$key]);
+            mysqli_stmt_execute($stmt1);
+        }
+    }
+    echo "Details Saved successfully";
+    header("location: seperation_ret.php");
+} else {
+    echo "Statement preparation failed: " . mysqli_error($con);
+}
+   
+// Close the database connection
+mysqli_close($con);
+}
+?>
+
 
  <!-- attach php code here ends-->
  <!DOCTYPE html>
@@ -216,22 +336,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                  </div>
                                  <div class="form-group">                            
                                      <label for="iss_location">From:</label>
-                                     <input  onkeypress="handleEnterKey(event, 'iss_location2')" list="iss_locations" name="iss_location" id="iss_location" class="form-control" placeholder="Select Location" required>
-                                     <datalist id="iss_locations">
-                                         <?php
-                    
-                                            $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores  order by loc_nam");
-                                            while ($row = $sql->fetch_assoc()) {
-                                                echo "<option class='text-uppercase' value='" . $row['loc_nam'] . "' data-acid='" . $row['id'] . "'></option>";
-                                            }
-                                            ?>
-                                     </datalist>
+                                        <input  onkeypress="handleEnterKey(event, 'iss_location2')" list="iss_locations" name="iss_location" id="iss_location" class="form-control" placeholder="Select Location" required>
+                                        <datalist id="iss_locations">
+                                            <?php
+                        
+                                                $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores  order by loc_nam");
+                                                while ($row = $sql->fetch_assoc()) {
+                                                    echo "<option class='text-uppercase' value='" . $row['loc_nam'] . "' data-acid='" . $row['id'] . "'></option>";
+                                                }
+                                                ?>
+                                        </datalist>
                                      <input type="hidden" name="loc_id" id="loc_id">
 
                                  </div>
                                  <div class="form-group">
                                      <label for="iss_location2">To:</label>
-                                     <input  onkeypress="handleEnterKey(event, 'iss_warp')" list="iss_location2s" name="iss_location2" id="iss_location2" class="form-control" placeholder="Select Where" required>
+                                     <input  onkeypress="handleEnterKey(event, 'section3')" list="iss_location2s" name="iss_location2" id="iss_location2" class="form-control" placeholder="Select Where" required>
                                      <datalist id="iss_location2s">
                                          <?php
                                             $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores  order by loc_nam");
@@ -243,23 +363,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                      <input type="hidden" name="loc_id2" id="loc_id2">
 
                                  </div>
-                                 <div class="form-group">
+                                 <!-- <div class="form-group">
                                     <label for="dyer_nam">Dyer Name</label>
                                     
                                         <input type="text" list="twisterlist" class="form-control" id="dyer_nam" name="dyer_nam" placeholder="" onkeydown="handleEnterKey(event, 'iss_itm_nam')">
                                         <datalist id="twisterlist">
 
                                             <?php
-                                            $sql = mysqli_query($con, "SELECT ac_nam, ac_id FROM `acct`where ac_grp_nam ='DYER' ORDER BY `ac_nam`");
-                                            while ($row = $sql->fetch_assoc()) {
-                                                echo "<option value='" . $row['ac_nam'] . "' data-grpid='" . $row['ac_id'] . "'>";
-                                            }
+                                            // $sql = mysqli_query($con, "SELECT ac_nam, ac_id FROM `acct`where ac_grp_nam ='DYER' ORDER BY `ac_nam`");
+                                            // while ($row = $sql->fetch_assoc()) {
+                                            //     echo "<option value='" . $row['ac_nam'] . "' data-grpid='" . $row['ac_id'] . "'>";
+                                            // }
                                             ?>
                                         </datalist>
 
                                         <input type="hidden" class="form-control" id="dyer_id" name="dyer_id">
                                 
-                                </div>
+                                </div> -->
                                  <!-- <div class="form-group" id="weft_focus">
                                      <label for="iss_weft">Weft</label>
                                      <input list="iss_wefts" name="iss_weft" id="iss_weft" class="form-control" placeholder="Select Unit">
@@ -338,12 +458,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                  <table id="entry_table2">
                                         <thead>
                                            <tr>
+                                                <th colspan="2" style="background:none;">                                    
+                                                     <input type="text" class="form-control fw-bold text-success shadow-none" readonly value="<?php echo $warp_dyetag; ?>" name="booking_id" id="booking_id" required onkeydown="handleEnterKey(event, 'check_in_date')">
+                                                </th>
+                                            </tr>
+                                            <tr>
                                                 <th>Warp No</th>
                                                 <th>Type</th>
                                                 <th>Ply</th>
                                                 <th>Iss Section</th>
+                                                <th>Separate Sec</th>
                                                 <th>Ret Section</th>
                                                 <th>Iss Weight</th>
+                                                <th>Separate wght</th>
                                                 <th>Ret Weight</th>
                                                 <th>Action</th>
                                           </tr>
@@ -371,16 +498,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <input readonly onkeypress='handleEnterKey(event, "section2")' type="text" name="ply2[]" id="ply2">
                                                 </td>
                                                 <td>
-                                                <input readonly onkeypress='handleEnterKey(event, "wght2")' type="text" name="section2[]" id="section2">
+                                                <input readonly onkeypress='handleEnterKey(event, "wght2")' type="text" class="section2" name="section2[]" id="section2">
                                                 </td>
                                                 <td>
-                                                <input onkeypress='handleEnterKey(event, "wght2")' type="text" name="section3[]" id="section3">
+                                                <input class="form-control text-primary fw-bold section3" oninput="minus_inputs1()"  onkeypress='handleEnterKey(event, "wght3")' type="text" name="section3[]" id="section3">
                                                 </td>
                                                 <td>
-                                                <input readonly onkeypress='handleEnterKey(event, "row_ok")' type="number" name="wght2[]" id="wght2">
+                                                <input readonly onkeypress='handleEnterKey(event, "wght2")' type="text" class="section4" name="section4[]" id="section4">
                                                 </td>
                                                 <td>
-                                                <input onkeypress='handleEnterKey(event, "row_ok")' type="number" name="wght3[]" id="wght3">
+                                                <input readonly onkeypress='handleEnterKey(event, "row_ok")' type="number" class="wght2" name="wght2[]" id="wght2">
+                                                </td>
+                                                <td>
+                                                <input class="form-control text-primary fw-bold wght3" oninput="minus_inputs2()" onkeypress='handleEnterKey(event, "save")' type="number" name="wght3[]" id="wght3">
+                                                </td>
+                                                <td>
+                                                <input readonly onkeypress='handleEnterKey(event, "row_ok")' type="number" class="wght4" name="wght4[]" id="wght4">
                                                 </td>
                                                 <td>
                                                   <button id="row_delete" class="btn btn-danger" type="button">x</button>
@@ -393,7 +526,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                          
                                       <div class="buttonss mt-3">
                                     <!-- <button type="button" >Save</button> -->
-                                    <button  id="row_ok" class="btn btn-primary" type="submit">Save</button>
+                                    <button  id="save" class="btn btn-primary"type="submit">Save</button>
                                     <button type="button" onclick="location.reload()">New</button>
                                     <button type="button" id="home">Home</button>
                                  </div>

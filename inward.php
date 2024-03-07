@@ -73,6 +73,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_bind_param($stmt, "ss", $sep, $bill_no);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+        // header("location: inward.php");
+      }
+     //warp stock table 
+     $tnx_id = "warp_inw";
+     $inw = "inw";
+      if (!empty($warp_wght) && !empty($count)) {
+        // Loop through the submitted data and insert each row into the database
+        for ($keys = 0; $keys < count($warp_wght); $keys++) {
+          if ($warp_wght[$keys] > 0.00 && $count[$keys] > 0.00) {
+
+            $section1 = -1 * ($section[$keys]);
+            $wght1 = -1 * ($warp_wght[$keys]);
+            $sql = "INSERT INTO warp_stock (tnx_id,reff_id,doc_id,date, time,inw,section,wght,section1, wght1) /*10*/
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $sql);
+            mysqli_stmt_bind_param($stmt, "sssssssdsd",$tnx_id,  $warp_tag[$keys], $last_id1, $save_date, $save_time,$inw,$section[$keys],$warp_wght[$keys],$section1,$wght1);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+          }
+        }
+       
         header("location: inward.php");
       }
       break;

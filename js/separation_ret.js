@@ -1,30 +1,30 @@
 
-//get dyer id 
-const dyername = document.getElementById('dyer_nam');
+// //get dyer id 
+// const dyername = document.getElementById('dyer_nam');
 
-dyername.addEventListener('change', function (event) {
-  const selectedOption = event.target.value;
-  const datalistOptions = document.getElementById('twisterlist');
+// dyername.addEventListener('change', function (event) {
+//   const selectedOption = event.target.value;
+//   const datalistOptions = document.getElementById('twisterlist');
 
-  const options = datalistOptions.getElementsByTagName('option');
-  for (let i = 0; i < options.length; i++) {
-    const option = options[i];
-    const optionValue = option.value;
+//   const options = datalistOptions.getElementsByTagName('option');
+//   for (let i = 0; i < options.length; i++) {
+//     const option = options[i];
+//     const optionValue = option.value;
 
-    if (optionValue === selectedOption) {
-      var selectedAcid = option.getAttribute('data-grpid'); // Assign value to selectedAcid
-      //console.log('ok',selectedAcid);
+//     if (optionValue === selectedOption) {
+//       var selectedAcid = option.getAttribute('data-grpid'); // Assign value to selectedAcid
+//       //console.log('ok',selectedAcid);
 
-      document.getElementById("dyer_id").value = selectedAcid;
+//       document.getElementById("dyer_id").value = selectedAcid;
 
-      break;
-    }
-  }
-  var id = document.getElementById("dyer_id").value;
+//       break;
+//     }
+//   }
+//   var id = document.getElementById("dyer_id").value;
 
-  console.log("dyer id-->", selectedAcid);
-  console.log("dyername value-->", dyername.value);
-});
+//   console.log("dyer id-->", selectedAcid);
+//   console.log("dyername value-->", dyername.value);
+// });
 
 //---------------------------------------------------------------------------------------
 const loom_nam = document.getElementById('loom_nam');
@@ -105,32 +105,32 @@ iss_location2.addEventListener('change', function (event) {
 });
 //---------------------------------------------------------------------------------------
 
-const iss_warp = document.getElementById('iss_warp');
+// const iss_warp = document.getElementById('iss_warp');
 
-iss_warp.addEventListener('change', function (event) {
-  const selectedOption = event.target.value;
-  const datalistOptions = document.getElementById('iss_warps');
+// iss_warp.addEventListener('change', function (event) {
+//   const selectedOption = event.target.value;
+//   const datalistOptions = document.getElementById('iss_warps');
 
-  const options = datalistOptions.getElementsByTagName('option');
-  for (let i = 0; i < options.length; i++) {
-    const option = options[i];
-    const optionValue = option.value;
+//   const options = datalistOptions.getElementsByTagName('option');
+//   for (let i = 0; i < options.length; i++) {
+//     const option = options[i];
+//     const optionValue = option.value;
 
-    if (optionValue === selectedOption) {
-      var selectedAcid = option.getAttribute('data-acid'); // Assign value to selectedAcid
-      //console.log('ok',selectedAcid);
+//     if (optionValue === selectedOption) {
+//       var selectedAcid = option.getAttribute('data-acid'); // Assign value to selectedAcid
+//       //console.log('ok',selectedAcid);
 
-      document.getElementById("hidden_iss_warp").value = selectedAcid;
+//       document.getElementById("hidden_iss_warp").value = selectedAcid;
 
-      break;
-    }
-  }
-  var id = document.getElementById("hidden_iss_warp").value;
+//       break;
+//     }
+//   }
+//   var id = document.getElementById("hidden_iss_warp").value;
 
-  console.log("hidden_iss_warp-->", selectedAcid);
-  console.log("iss_warp value-->", iss_warp.value);
-  // fetch_splitted_kora();
-});
+//   console.log("hidden_iss_warp-->", selectedAcid);
+//   console.log("iss_warp value-->", iss_warp.value);
+//   // fetch_splitted_kora();
+// });
 //---------------------------------------------------------------------------------------
 
 // function fetch_splitted_kora() {
@@ -305,3 +305,38 @@ function handleEnterKey(event, nextElementId) {
 // }
 
 //---------------------------------------------------------------------------------------
+// Function to handle subtraction for section inputs
+function minus_inputs1() {
+  var row = this.closest('tr'); // Get the closest row element
+  var section2Value = parseFloat(row.querySelector('.section2').value);
+  var section3Value = parseFloat(row.querySelector('.section3').value);
+
+  if (!isNaN(section2Value) && !isNaN(section3Value)) {
+      row.querySelector('.section4').value = section2Value - section3Value;
+  } else {
+      console.error('One or both input values are not valid numbers.');
+  }
+}
+
+// Function to handle subtraction for weight inputs
+function minus_inputs2() {
+  var row = this.closest('tr'); // Get the closest row element
+  var wght2Value = parseFloat(row.querySelector('.wght2').value);
+  var wght3Value = parseFloat(row.querySelector('.wght3').value);
+  
+  if (!isNaN(wght2Value) && !isNaN(wght3Value)) {
+      row.querySelector('.wght4').value = wght2Value - wght3Value;
+  } else {
+      console.error('One or both input values are not valid numbers.');
+  }
+}
+
+// Event delegation for dynamically added rows
+document.getElementById('sep_iss_body2').addEventListener('input', function(event) {
+  if (event.target.classList.contains('section3')) {
+      minus_inputs1.call(event.target); // Call minus_inputs1 with the context of the input element
+  }
+  if (event.target.classList.contains('wght3')) {
+      minus_inputs2.call(event.target); // Call minus_inputs2 with the context of the input element
+  }
+});

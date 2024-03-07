@@ -35,19 +35,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ply = $_POST['ply']; 
     $section = $_POST['section']; 
     $wght = $_POST['wght']; 
-   $no = 'NO';
+   $no = 'FRM-ISS';
    $available = '1';
- 
+ $tnx_id = 'sep_iss';
     
       
   
         if (!empty($border_nam)) {
           // Loop through the submitted data and insert each row into the database
             if ($border_nam != "") {
-                $sql = "INSERT INTO sep (date, time, tnx_type,warp_no, loc_id,typ, loc_nam, loom_id, loom_nam, ply,section,wght,loc_id2,loc_nam2,position) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
+                $sql = "INSERT INTO sep (tnx_id,date, time, tnx_type,warp_no, loc_id,typ, loc_nam, loom_id, loom_nam, ply,section,wght,loc_id2,loc_nam2,position) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
                 $stmt = mysqli_prepare($con, $sql);
-                mysqli_stmt_bind_param($stmt, "sssssssssssdiss", $save_date, $save_time, $tbl_type,$warp_no ,$loc_id,$border_nam, $loc_nam,$loom_id, $loom_nam, $ply,$section,$wght,$loc_id2,$loc_nam2,$no);
+                mysqli_stmt_bind_param($stmt, "ssssssssssssdiss",$tnx_id, $save_date, $save_time, $tbl_type,$warp_no ,$loc_id,$border_nam, $loc_nam,$loom_id, $loom_nam, $ply,$section,$wght,$loc_id2,$loc_nam2,$no);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_close($stmt);
                 $last_id1 = mysqli_insert_id($con);
@@ -61,7 +61,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           header("location: seperation_iss.php");
         }
        
-   
+        $tnx_id = "sep_iss";
+        $inw = "out";
+         if (!empty($wght)) {
+           // Loop through the submitted data and insert each row into the database
+         
+               $section1 = -1 * ($section);
+               $wght1 = -1 * ($wght);
+               $sql = "INSERT INTO warp_stock (tnx_id,reff_id,doc_id,date, time,inw,section,wght,section1, wght1) /*10*/
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+               $stmt = mysqli_prepare($con, $sql);
+               mysqli_stmt_bind_param($stmt, "sssssssdsd",$tnx_id,  $warp_no, $last_id1, $save_date, $save_time,$inw,$section,$wght,$section1,$wght1);
+               mysqli_stmt_execute($stmt);
+               mysqli_stmt_close($stmt);
+               header("location: seperation_iss.php");
+         }
     // echo "<pre>";
     // print_r($_POST);
     // echo "</pre>";
@@ -243,7 +257,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                             $sql = mysqli_query($con, "SELECT * FROM warp_details where tbl_type='section1' and available = 0 order by warp_no");
                                                             while ($row = $sql->fetch_assoc()) {
                                                                 echo "<option class='text-uppercase' value='" . $row['warp_no'] . "' data-acid ='" . $row['warp_no'] . "'></option>";
-                                                                // echo "<option value='WARPID" . trim($row['save_date']) . "   weight (" . trim($row['warp_wght']) . " )  " . trim($row['warp_ply']) . "ply' data-id='" . $row['reff_id'] . "'> </option>";
+                                                                // echo "<option value='WARPID" . trim($row['save_date']) . "   weight (" . trim($row['wght']) . " )  " . trim($row['warp_ply']) . "ply' data-id='" . $row['reff_id'] . "'> </option>";
                                                             }
                                                             ?>
                                                     </datalist>

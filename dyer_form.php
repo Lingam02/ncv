@@ -180,6 +180,14 @@ $trans_id =  $_POST['id'];
 
     <!-- attach form css link here-->
     <link rel="stylesheet" href="css/dyer_form.css">
+    <link rel="stylesheet" href="css/table_sep.css">
+    <!-- <link rel="stylesheet" href="css/input.css"> -->
+    <style>
+table input{
+    color:blue;
+    font-weight:600;
+}
+        </style>
     <!-- attach form css link here ends-->
 
 
@@ -296,29 +304,34 @@ $trans_id =  $_POST['id'];
                                     <div class="col-sm-6">
                                         <input type="text" list="item_list" class="form-control" id="iss_itm_nam" name="iss_itm_nam" placeholder="" onchange="checkForSubstring2()" onkeydown="handleEnterKey(event, 'iss_desc')" onclick="this.select()">
                                         <datalist id="item_list">
+                                            <option value="Kora Warp">Kora Warp</option>
+                                            <option value="Kora Weft">Kora Weft</option>
                                             <?php
-                                            $sql = mysqli_query($con, "SELECT * FROM `itm` WHERE itm_sl='D/T' ORDER BY `itm_nam`");
-                                            while ($row = $sql->fetch_assoc()) {
-                                                echo "<option value='" . $row['itm_nam'] . "' data-grpid='" . $row['itm_id'] . "'>";
-                                            }
+                                            // $sql = mysqli_query($con, "SELECT * FROM `itm` WHERE itm_sl='D/T' ORDER BY `itm_nam`");
+                                            // while ($row = $sql->fetch_assoc()) {
+                                            //     echo "<option value='" . $row['itm_nam'] . "' data-grpid='" . $row['itm_id'] . "'>";
+                                            // }
                                             ?>
                                         </datalist> <input type="hidden" class="form-control" id="iss_itm_id" name="iss_itm_id" placeholder="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="iss_itm_nam" class="col-sm-6 col-form-label text-right">Issue Item</label>
+                                    <label for="warp_tag_no" class="col-sm-6 col-form-label text-right">Warp No</label>
                                     <div class="col-sm-6">
-                                        <input type="text" list="item_list" class="form-control" id="iss_itm_nam" name="iss_itm_nam" placeholder="" onchange="checkForSubstring2()" onkeydown="handleEnterKey(event, 'iss_desc')" onclick="this.select()">
-                                        <datalist id="item_list">
+                                        <input type="text" list="warp_tagids" class="form-control" id="warp_tag_no" name="warp_tag_no"  onkeydown="handleEnterKey(event, 'iss_desc')" onclick="this.select()">
+                                        <datalist id="warp_tagids">
+                                           
                                             <?php
-                                            $sql = mysqli_query($con, "SELECT * FROM `itm` WHERE itm_sl='D/T' ORDER BY `itm_nam`");
-                                            while ($row = $sql->fetch_assoc()) {
-                                                echo "<option value='" . $row['itm_nam'] . "' data-grpid='" . $row['itm_id'] . "'>";
-                                            }
+                                           $sql = mysqli_query($con, "SELECT DISTINCT new_warp_no,new_warp_no FROM `sep_ret` WHERE tnx_type = 'WPSEPRET' ORDER BY `new_warp_no`");
+                                           while ($row = mysqli_fetch_assoc($sql)) {
+                                               echo "<option value='" . $row['new_warp_no'] . "' data-acid='" . $row['new_warp_no'] . "'>";
+                                           }
+                                           
                                             ?>
-                                        </datalist> <input type="hidden" class="form-control" id="iss_itm_id" name="iss_itm_id" placeholder="">
+                                        </datalist> <input type="hidden" id="warp_tagid" name="warp_tagid">
                                     </div>
                                 </div>
+                              
                                 <div class="form-group row" id='color_div2' style="visibility:hidden">
                                     <label for="col_nam2" class="col-sm-6 col-form-label text-right">Issue Colour Name</label>
                                     <div class="col-sm-6">
@@ -347,6 +360,7 @@ $trans_id =  $_POST['id'];
                                         <input type="number" class="form-control" id="iss_wght" name="iss_wght" placeholder="">
                                     </div>
                                 </div>
+                                
                             </div>
 
                             <!-- Labels on the left side -->
@@ -436,7 +450,72 @@ $trans_id =  $_POST['id'];
 
                         </div>
 
-
+                        <div class="col-lg-12">
+    <div id="entry_table_div2">
+                                 <table id="entry_table2">
+                                        <thead>
+                                          
+                                            <tr>
+                                                <th>Warp No</th>
+                                                <th>Type</th>
+                                                <th>Ply</th>
+                                                <th>Iss Section</th>
+                                                <th>Separate Sec</th>
+                                                <th>Ret Section</th>
+                                                <th>Iss Weight</th>
+                                                <th>Separate wght</th>
+                                                <th>Ret Weight</th>
+                                                <th>Action</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody id="sep_iss_body2">
+                                            <tr class="trow2">
+                                                
+                                                <td>
+                                                 <input readonly onkeypress='handleEnterKey(event, "border_nam2")' type="text" name="warp_no2[]" id="warp_no2">
+                                                </td>
+                                                <td>
+                                                    <input readonly onkeypress='handleEnterKey(event, "ply2")' list="borders_nam2" type="text" name="border_nam2[]" id="border_nam2">
+                                                    <datalist id="borders_nam2">
+                                                        <?php
+                                                            $sql = mysqli_query($con, "SELECT * FROM saree_union order by id");
+                                                            while ($row = $sql->fetch_assoc()) {
+                                                                // echo "<option class='text-uppercase' value='" . $row['weft_batch_no'] . "' data-acid='" . $row['reff_id'] . "'></option>";
+                                                                echo "<option value='" . trim($row['saree_parts']) . "' data-id='" . $row['id'] . "'> </option>";
+                                                            }
+                                                            ?>
+                                                    </datalist>
+                                                    <input type="hidden" name="saree_union2[]" id="saree_union2">
+                                                </td>
+                                                <td>
+                                                <input readonly onkeypress='handleEnterKey(event, "section2")' type="text" name="ply2[]" id="ply2">
+                                                </td>
+                                                <td>
+                                                <input readonly onkeypress='handleEnterKey(event, "wght2")' type="text" class="section2" name="section2[]" id="section2">
+                                                </td>
+                                                <td>
+                                                <input class="form-control text-primary fw-bold section3" oninput="minus_inputs1()"  onkeypress='handleEnterKey(event, "wght3")' type="text" name="section3[]" id="section3">
+                                                </td>
+                                                <td>
+                                                <input readonly onkeypress='handleEnterKey(event, "wght2")' type="text" class="section4" name="section4[]" id="section4">
+                                                </td>
+                                                <td>
+                                                <input readonly onkeypress='handleEnterKey(event, "row_ok")' type="number" class="wght2" name="wght2[]" id="wght2">
+                                                </td>
+                                                <td>
+                                                <input class="form-control text-primary fw-bold wght3" oninput="minus_inputs2()" onkeypress='handleEnterKey(event, "save")' type="number" name="wght3[]" id="wght3">
+                                                </td>
+                                                <td>
+                                                <input readonly onkeypress='handleEnterKey(event, "row_ok")' type="number" class="wght4" name="wght4[]" id="wght4">
+                                                </td>
+                                                <td>
+                                                  <button id="row_delete" class="btn btn-danger" type="button">x</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                 </table>                                                                    
+                            </div>
+</div>
                         <!-- Submit button -->
                         <div class="row">
                             <div class="col-md-12">
