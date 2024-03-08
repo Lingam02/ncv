@@ -70,6 +70,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $position = 'FRM-RET';
 
 
+    $yard = $_POST['yard2']; 
+    $no_saree = $_POST['no_saree2']; 
+    $muzham = $_POST['muzham2']; 
+    $one_section = $_POST['one_section2']; 
+    $s_count = $_POST['s_count2']; 
+   
 // tag no genrating
 
 $con->begin_transaction();
@@ -148,11 +154,11 @@ $con->commit();
         // Loop through the submitted data and insert each row into the database
         for ($key = 0; $key < count($border_nam); $key++) {
             if ($border_nam != "") {
-                $sql = "INSERT INTO sep (tnx_id, date, time, tnx_type, warp_no, loc_id, typ, loc_nam, loom_id, loom_nam, ply, section, wght, loc_id2, loc_nam2, position) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO sep (tnx_id,yard,no_saree,muzham,one_section,s_count, date, time, tnx_type, warp_no, loc_id, typ, loc_nam, loom_id, loom_nam, ply, section, wght, loc_id2, loc_nam2, position) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = mysqli_prepare($con, $sql);
                 // $new_warp_no = $warp_no[$key].'/'.($key+1);
-                mysqli_stmt_bind_param($stmt, "ssssssssssssdiss", $tnx_id, $save_date, $save_time, $tbl_type, $warp_no[$key], $loc_id, $border_nam[$key], $loc_nam, $loom_id, $loom_nam, $ply[$key], $section4[$key], $wght4[$key], $loc_id2, $loc_nam2, $position);
+                mysqli_stmt_bind_param($stmt, "sssssdsssssssssssdiss", $tnx_id,$yard[$key],$no_saree[$key],$muzham[$key],$one_section[$key],$s_count[$key], $save_date, $save_time, $tbl_type, $warp_no[$key], $loc_id, $border_nam[$key], $loc_nam, $loom_id, $loom_nam, $ply[$key], $section4[$key], $wght4[$key], $loc_id2, $loc_nam2, $position);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_close($stmt);
                 // $last_id1 = mysqli_insert_id($con);
@@ -209,15 +215,15 @@ $con->commit();
 // }
 
 // First table INSERT
-$query1 = "INSERT INTO sep_ret (tnx_id, date, time,new_warp_no, tnx_type, warp_no, loc_id, typ, loc_nam, loom_id, ply, section, wght, loc_id2, loc_nam2, position, iss_section, iss_wght, bal_section, bal_wght) 
-VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+$query1 = "INSERT INTO sep_ret (tnx_id,yard,no_saree,muzham,one_section,s_count, date, time,new_warp_no, tnx_type, warp_no, loc_id, typ, loc_nam, loom_id, ply, section, wght, loc_id2, loc_nam2, position, iss_section, iss_wght, bal_section, bal_wght) 
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 $stmt1 = mysqli_prepare($con, $query1);
 if ($stmt1) {
     for ($key = 0; $key < count($border_nam); $key++) {
         if ($border_nam[$key] !== "") {
             $new_warp_no = $warp_no[$key] . '/S' . ($key + 1);
 
-            mysqli_stmt_bind_param($stmt1, "ssssssssssssdssssdsd", $tnx_id, $save_date, $save_time,$warp_dyetag, $tbl_type, $new_warp_no, $loc_id, $border_nam[$key], $loc_nam, $loom_id, $ply[$key], $section3[$key], $wght3[$key], $loc_id2, $loc_nam2, $position, $section2[$key], $wght2[$key], $section4[$key], $wght4[$key]);
+            mysqli_stmt_bind_param($stmt1, "sssssdsssssssssssdssssdsd", $tnx_id,$yard[$key],$no_saree[$key],$muzham[$key],$one_section[$key],$s_count[$key], $save_date, $save_time,$warp_dyetag, $tbl_type, $new_warp_no, $loc_id, $border_nam[$key], $loc_nam, $loom_id, $ply[$key], $section3[$key], $wght3[$key], $loc_id2, $loc_nam2, $position, $section2[$key], $wght2[$key], $section4[$key], $wght4[$key]);
             mysqli_stmt_execute($stmt1);
         }
     }
@@ -465,6 +471,13 @@ mysqli_close($con);
                                             <tr>
                                                 <th>Warp No</th>
                                                 <th>Type</th>
+                                                <!--  -->
+                                                <th>Yard</th>
+                                                <th>No of Saree</th>
+                                                <th>Mozham</th>
+                                                <th>One Section</th>
+                                                <th>Count</th>
+                                                <!--  -->
                                                 <th>Ply</th>
                                                 <th>Iss Section</th>
                                                 <th>Separate Sec</th>
@@ -494,6 +507,23 @@ mysqli_close($con);
                                                     </datalist>
                                                     <input type="hidden" name="saree_union2[]" id="saree_union2">
                                                 </td>
+                                                               <!--  -->
+                                                               <td>
+                                                <input class="form-control" type="text" name="yard2[]" id="yard2">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="no_saree2[]" id="no_saree2">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="muzham2[]" id="muzham2">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="one_section2[]" id="one_section2">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="s_count2[]" id="s_count2">
+                                                </td>
+                                                <!--  -->
                                                 <td>
                                                 <input readonly onkeypress='handleEnterKey(event, "section2")' type="text" name="ply2[]" id="ply2">
                                                 </td>
@@ -501,7 +531,7 @@ mysqli_close($con);
                                                 <input readonly onkeypress='handleEnterKey(event, "wght2")' type="text" class="section2" name="section2[]" id="section2">
                                                 </td>
                                                 <td>
-                                                <input class="form-control text-primary fw-bold section3" oninput="minus_inputs1()"  onkeypress='handleEnterKey(event, "wght3")' type="text" name="section3[]" id="section3">
+                                                <input class="form-control text-primary fw-bold section3"required oninput="minus_inputs1()"  onkeypress='handleEnterKey(event, "wght3")' type="text" name="section3[]" id="section3">
                                                 </td>
                                                 <td>
                                                 <input readonly onkeypress='handleEnterKey(event, "wght2")' type="text" class="section4" name="section4[]" id="section4">
@@ -510,7 +540,7 @@ mysqli_close($con);
                                                 <input readonly onkeypress='handleEnterKey(event, "row_ok")' type="number" class="wght2" name="wght2[]" id="wght2">
                                                 </td>
                                                 <td>
-                                                <input class="form-control text-primary fw-bold wght3" oninput="minus_inputs2()" onkeypress='handleEnterKey(event, "save")' type="number" name="wght3[]" id="wght3">
+                                                <input class="form-control text-primary fw-bold wght3"required oninput="minus_inputs2()" onkeypress='handleEnterKey(event, "save")' type="number" name="wght3[]" id="wght3">
                                                 </td>
                                                 <td>
                                                 <input readonly onkeypress='handleEnterKey(event, "row_ok")' type="number" class="wght4" name="wght4[]" id="wght4">

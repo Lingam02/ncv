@@ -192,6 +192,12 @@ iss_location2.addEventListener('change', function (event) {
          const lastRow = table.rows[table.rows.length - 1]; // Get the last row
   
           // Populate the last row with your data
+            lastRow.querySelector("[name='yard2[]']").value = invoice.yard;
+          lastRow.querySelector("[name='no_saree2[]']").value = invoice.no_saree;
+          lastRow.querySelector("[name='muzham2[]']").value = invoice.muzham;
+          lastRow.querySelector("[name='one_section2[]']").value = invoice.one_section;
+          lastRow.querySelector("[name='s_count2[]']").value = invoice.s_count;
+          // 
           lastRow.querySelector("[name='warp_no2[]']").value = invoice.warp_no;
           lastRow.querySelector("[name='border_nam2[]']").value = invoice.typ;
           lastRow.querySelector("[name='ply2[]']").value = invoice.ply;

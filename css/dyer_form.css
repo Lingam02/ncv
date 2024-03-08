@@ -86,3 +86,21 @@ a{
     .hide{
         display:none;
     }
+/* 
+    #col_div {
+        display: none;
+        position: absolute;
+        top: 20%;
+        right: 10%;
+        transform: translate(-50%, -20%);
+        background-color: #f0f0f0;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 80%; /* Limit width for responsiveness */
+    }
+    @media(max-width: 600px) {
+        #col_div {
+            max-width: 90%; /* Adjust max-width for smaller screens */
+        }
+    } */

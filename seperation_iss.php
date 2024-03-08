@@ -39,15 +39,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    $available = '1';
  $tnx_id = 'sep_iss';
     
-      
+ $yard = $_POST['yard']; 
+ $no_saree = $_POST['no_saree']; 
+ $muzham = $_POST['muzham']; 
+ $one_section = $_POST['one_section']; 
+ $s_count = $_POST['s_count']; 
+
+
+
   
         if (!empty($border_nam)) {
           // Loop through the submitted data and insert each row into the database
             if ($border_nam != "") {
-                $sql = "INSERT INTO sep (tnx_id,date, time, tnx_type,warp_no, loc_id,typ, loc_nam, loom_id, loom_nam, ply,section,wght,loc_id2,loc_nam2,position) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
+                $sql = "INSERT INTO sep (tnx_id,yard,no_saree,muzham,one_section,s_count,date, time, tnx_type,warp_no, loc_id,typ, loc_nam, loom_id, loom_nam, ply,section,wght,loc_id2,loc_nam2,position) 
+                VALUES (?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
                 $stmt = mysqli_prepare($con, $sql);
-                mysqli_stmt_bind_param($stmt, "ssssssssssssdiss",$tnx_id, $save_date, $save_time, $tbl_type,$warp_no ,$loc_id,$border_nam, $loc_nam,$loom_id, $loom_nam, $ply,$section,$wght,$loc_id2,$loc_nam2,$no);
+                mysqli_stmt_bind_param($stmt, "ssssdssssssssssssdiss",$tnx_id,$yard,$no_saree,$muzham,$one_section,$s_count, $save_date, $save_time, $tbl_type,$warp_no ,$loc_id,$border_nam, $loc_nam,$loom_id, $loom_nam, $ply,$section,$wght,$loc_id2,$loc_nam2,$no);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_close($stmt);
                 $last_id1 = mysqli_insert_id($con);
@@ -242,6 +249,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <th>Warp No</th>
                                                 <th>Type</th>
                                                 <th>Ply</th>
+                                                <th>Yard</th>
+                                                <th>No of Saree</th>
+                                                <th>Mozham</th>
+                                                <th>One Section</th>
+                                                <th>Count</th>
                                                 <th>Section</th>
                                                 <th>Weight</th>
                                                 <th>Action</th>
@@ -251,7 +263,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <tr class="trow">
                                                 
                                                 <td>
-                                                    <input  onkeypress='handleEnterKey(event, "border_nam")' list="iss_warps" name="iss_warp" id="iss_warp" class="form-control" placeholder="Select Unit">
+                                                    <input  onkeypress='handleEnterKey(event, "border_nam")' required list="iss_warps" name="iss_warp" id="iss_warp" class="form-control" placeholder="Select Unit">
                                                     <datalist id="iss_warps">
                                                         <?php
                                                             $sql = mysqli_query($con, "SELECT * FROM warp_details where tbl_type='section1' and available = 0 order by warp_no");
@@ -264,7 +276,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <input type="hidden" name="hidden_iss_warp" id="hidden_iss_warp">
                                                 </td>
                                                 <td>
-                                                    <input onkeypress='handleEnterKey(event, "ply")' list="borders_nam" class="form-control" type="text" name="border_nam" id="border_nam">
+                                                    <input onkeypress='handleEnterKey(event, "ply")' list="borders_nam" required class="form-control" type="text" name="border_nam" id="border_nam">
                                                     <datalist id="borders_nam">
                                                         <?php
                                                             $sql = mysqli_query($con, "SELECT * FROM saree_union order by id");
@@ -276,6 +288,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     </datalist>
                                                     <input type="hidden" name="saree_union" id="saree_union">
                                                 </td>
+                                                <!--  -->
+                                                <td>
+                                                <input class="form-control" type="text" name="yard" id="yard">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="no_saree" id="no_saree">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="muzham" id="muzham">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="one_section" id="one_section">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="s_count" id="s_count">
+                                                </td>
+                                                <!--  -->
                                                 <td>
                                                 <input onkeypress='handleEnterKey(event, "section")' class="form-control" type="text" name="ply" id="ply">
                                                 </td>
@@ -301,6 +330,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <th>Warp No</th>
                                                 <th>Type</th>
                                                 <th>Ply</th>
+                                                <th>Yard</th>
+                                                <th>No of Saree</th>
+                                                <th>Mozham</th>
+                                                <th>One Section</th>
+                                                <th>Count</th>
+
                                                 <th>Section</th>
                                                 <th>Weight</th>
                                                 <th>Action</th>
@@ -325,6 +360,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     </datalist>
                                                     <input type="hidden" name="saree_union2[]" id="saree_union2">
                                                 </td>
+                                                    <!--  -->
+                                                    <td>
+                                                <input class="form-control" type="text" name="yard2[]" id="yard">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="no_saree2[]" id="no_saree">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="muzham2[]" id="muzham">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="one_section2[]" id="one_section">
+                                                </td>
+                                                <td>
+                                                <input class="form-control" type="text" name="s_count2[]" id="s_count">
+                                                </td>
+                                                <!--  -->
                                                 <td>
                                                 <input onkeypress='handleEnterKey(event, "section2")' type="text" name="ply2[]" id="ply2">
                                                 </td>

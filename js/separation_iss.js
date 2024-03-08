@@ -117,9 +117,15 @@ function fetch_splitted_kora() {
       data: { id: id },
       dataType: 'json',
       success: function (work) {
+        console.log('we',work);
         document.getElementById("ply").value = work.ply;
         document.getElementById("section").value = work.section;
         document.getElementById("wght").value = work.silk_wght;
+        document.getElementById("yard").value = work.yard;
+        document.getElementById("no_saree").value = work.no_saree;
+        document.getElementById("muzham").value = work.muzham;
+        document.getElementById("one_section").value = work.one_section;
+        document.getElementById("s_count").value = work.s_count;
       }      
     });
   }
@@ -151,6 +157,12 @@ function fetch_splitted_kora() {
          const lastRow = table.rows[table.rows.length - 1]; // Get the last row
   
           // Populate the last row with your data
+          lastRow.querySelector("[name='yard2[]']").value = invoice.yard;
+          lastRow.querySelector("[name='no_saree2[]']").value = invoice.no_saree;
+          lastRow.querySelector("[name='muzham2[]']").value = invoice.muzham;
+          lastRow.querySelector("[name='one_section2[]']").value = invoice.one_section;
+          lastRow.querySelector("[name='s_count2[]']").value = invoice.s_count;
+          // 
           lastRow.querySelector("[name='warp_no2[]']").value = invoice.warp_no;
           lastRow.querySelector("[name='border_nam2[]']").value = invoice.typ;
           lastRow.querySelector("[name='ply2[]']").value = invoice.ply;
