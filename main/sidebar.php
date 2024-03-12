@@ -37,7 +37,7 @@
     <a href="seperation_iss.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Transfer to Separation Section</a>
     <a href="seperation_ret.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Return from Separation Section</a>
     <a href="dyer_form.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Transfer to Dyeing Section</a>
-    <a href="dyer_form.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Return from Dyeing Section</a>
+    <a href="dyer_form_ret.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-home me-2"></i>Return from Dyeing Section</a>
     <a href="sizeing.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Transfer to Sizing Section</a>
     <a href="sizeing.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Return from Sizing Section</a>
     <a href="sizeing.php" class="list-group-item list-group-item-action second-text "><i class="fas fa-layer-group me-2"></i>Transfer to Zari Warping Section</a>

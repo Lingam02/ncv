@@ -419,7 +419,7 @@ function frmsave() {
     // }
   });
  
-if (document.getElementById('location').value == "" || document.getElementById('tbl_type').value == "" || document.getElementById('ply_type').value == "" || document.getElementById('no_of_warp').value == "") {
+if (document.getElementById('location').value == "" || document.getElementById('ply_type').value == "" || document.getElementById('tbl_type').value == "" || document.getElementById('ply_type').value == "" || document.getElementById('no_of_warp').value == "") {
 alert('fill the required fields')
 }
 else{
@@ -468,7 +468,7 @@ function addRow_warp(S_NO) {
   const addinginputs = newRow.querySelectorAll("input[type='text'], input[type='number']");
   // addinginputs.forEach((input) => (input.value = ""));
 
-  // Append the new row to the table body
+  // Append the new row to the table bodyyes
   tableBody.appendChild(newRow);
 
   // Increment the serial number for the next row
