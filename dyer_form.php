@@ -388,7 +388,7 @@ VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                             </div>
                             <div class="col-sm-6">
                                 <!-- <input type="checkbox" name="col_divopen" id="col_divopen" onchange="toggleDiv()">  -->
-                                <div id="col_div" style="display:none;">
+                                <!-- <div id="col_div" style="display:none;">
                                     <table>
                                         <thead>
                                             <tr>
@@ -414,7 +414,7 @@ VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
