@@ -1,0 +1,19 @@
+
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 2px;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size:15px;
+  font-weight:600;
+  /* line-height: $input-line-height; */
+  color: blue;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ccc;
+  /* box-shadow: 2px 3px 2px #ccc; */
+  border-radius: 2px;
+  height: 35px !important;
+  appearance: none;
+}

@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      </style>
      
      <!-- attach form css link here ends-->
-
+<link rel="stylesheet" href="css/inputs.css">
 
  </head>
 
@@ -246,7 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                  <table id="entry_table">
                                         <thead>
                                            <tr>
-                                                <th>Warp No</th>
+                                                <th style="width:105px">Warp No</th>
                                                 <th>Type</th>
                                                 <th>Ply</th>
                                                 <th>Yard</th>
@@ -263,7 +263,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <tr class="trow">
                                                 
                                                 <td>
-                                                    <input  onkeypress='handleEnterKey(event, "border_nam")' required list="iss_warps" name="iss_warp" id="iss_warp" class="form-control" placeholder="Select Unit">
+                                                    <input  onkeypress='handleEnterKey(event, "border_nam")' required list="iss_warps" name="iss_warp" id="iss_warp" class="form-control" placeholder="Select Warp No">
                                                     <datalist id="iss_warps">
                                                         <?php
                                                             $sql = mysqli_query($con, "SELECT * FROM warp_details where tbl_type='section1' and available = 0 order by warp_no");
@@ -327,7 +327,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                  <table id="entry_table2">
                                         <thead>
                                            <tr>
-                                                <th>Warp No</th>
+                                                <th style="width:105px">Warp No</th>
                                                 <th>Type</th>
                                                 <th>Ply</th>
                                                 <th>Yard</th>
@@ -345,7 +345,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <tr class="trow2">
                                                 
                                                 <td>
-                                                 <input onkeypress='handleEnterKey(event, "border_nam2")' type="text" name="warp_no2[]" id="warp_no2">
+                                                 <input class="form-control" onkeypress='handleEnterKey(event, "border_nam2")' type="text" name="warp_no2[]" id="warp_no2">
                                                 </td>
                                                 <td>
                                                     <input onkeypress='handleEnterKey(event, "ply2")' list="borders_nam2" type="text" name="border_nam2[]" id="border_nam2">

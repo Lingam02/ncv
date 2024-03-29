@@ -250,6 +250,8 @@ mysqli_close($con);
         ?>
      <!-- headlinks ends -->
 <link rel="stylesheet" href="css/table_sep.css">
+<link rel="stylesheet" href="css/inputs.css">
+
      <!-- attach form css link here-->
      <style>
         /* #saree_table th{
@@ -469,8 +471,8 @@ mysqli_close($con);
                                                 </th>
                                             </tr>
                                             <tr>
-                                                <th>Warp No</th>
-                                                <th>Type</th>
+                                                <th style="width:110px">Warp No</th>
+                                                <th style="width:90px">Type</th>
                                                 <!--  -->
                                                 <th>Yard</th>
                                                 <th>No of Saree</th>
@@ -485,17 +487,17 @@ mysqli_close($con);
                                                 <th>Iss Weight</th>
                                                 <th>Separate wght</th>
                                                 <th>Ret Weight</th>
-                                                <th>Action</th>
+                                                <!-- <th>Action</th> -->
                                           </tr>
                                         </thead>
                                         <tbody id="sep_iss_body2">
                                             <tr class="trow2">
                                                 
-                                                <td>
-                                                 <input readonly onkeypress='handleEnterKey(event, "border_nam2")' type="text" name="warp_no2[]" id="warp_no2">
+                                                <td style="width:px">
+                                                 <input class="form-control" readonly onkeypress='handleEnterKey(event, "border_nam2")' type="text" name="warp_no2[]" id="warp_no2">
                                                 </td>
                                                 <td>
-                                                    <input readonly onkeypress='handleEnterKey(event, "ply2")' list="borders_nam2" type="text" name="border_nam2[]" id="border_nam2">
+                                                    <input class="form-control" readonly onkeypress='handleEnterKey(event, "ply2")' list="borders_nam2" type="text" name="border_nam2[]" id="border_nam2">
                                                     <datalist id="borders_nam2">
                                                         <?php
                                                             $sql = mysqli_query($con, "SELECT * FROM saree_union order by id");
@@ -545,9 +547,9 @@ mysqli_close($con);
                                                 <td>
                                                 <input readonly onkeypress='handleEnterKey(event, "row_ok")' type="number" class="wght4" name="wght4[]" id="wght4">
                                                 </td>
-                                                <td>
+                                                <!-- <td>
                                                   <button id="row_delete" class="btn btn-danger" type="button">x</button>
-                                                </td>
+                                                </td> -->
                                             </tr>
                                         </tbody>
                                  </table>                                                                    

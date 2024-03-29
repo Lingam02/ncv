@@ -65,8 +65,8 @@
     <!-- <a href="report.php" class="list-group-item list-group-item-action second-text fw-bold"><i class="fas fas fa-layer-group me-2"></i>Report</a>
     <a href="weaver_report.php" class="list-group-item list-group-item-action second-text fw-bold"><i class="fas fas fa-layer-group me-2"></i>Single User Report</a>
     <a href="stock_report.php" class="list-group-item list-group-item-action second-text fw-bold"><i class="fas fas fa-layer-group me-2"></i>Stock Report</a> -->
-    <div href="#" class="list-group-item list-group-item-action second-text fw-bold dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#report_toggle"><i class="fas fas fa-file me-2"></i>Store Reports
-    </div>
+    <!-- <div href="#" class="list-group-item list-group-item-action second-text fw-bold dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#report_toggle"><i class="fas fas fa-file me-2"></i>Store Reports
+    </div> -->
     <div class="collapse" id="report_toggle">
 
       <a href="opening_report1.php"> Raw Material Store</a>
