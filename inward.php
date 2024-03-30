@@ -129,13 +129,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       // Assuming each reel has multiple zari entries
       // for ($j = 0; $j < $_POST['reel_no'][$i]; $j++) {
       $sql = "INSERT INTO inward (reff_id,save_date, save_time, tbl_type, loc_id, loc_name,zari_item_name, no_of_marc, reel_no, zari_wght) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
       $stmt = mysqli_prepare($con, $sql);
       mysqli_stmt_bind_param($stmt, "sssssssssd", $reff_id3, $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $zari_item_nam, $no_of_marc, $reel, $zari_wghts);
       mysqli_stmt_execute($stmt);
       mysqli_stmt_close($stmt);
       // }
-
       header("location: inward.php");
       break;
     default:

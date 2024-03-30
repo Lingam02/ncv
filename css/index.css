@@ -4,17 +4,19 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
 #div_login {
-    background-color:#ddc2ff;
+    background-color:#AEC5EB;
     padding: 25px;
     
     border-radius: 10px;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     text-align: start;
     max-width: 400px;
     width: 100%;
+    padding-bottom: 30px;
 }
 #div_login input[type="text"],input[type="password"] {
   color: blue;
@@ -23,10 +25,12 @@
 #div_login input:focus{
   outline-width: 10px;
   outline-color:rgb(255, 175, 55);
+
 }
 label{
  
   font-weight: 600;
+  /* padding: 10px; */
   font-size: large;
 }
 
@@ -36,27 +40,29 @@ h1 {
 }
 
 .textbox {
-    width: 100%;
+    width: 100% ;
     padding: 10px;
+    height: 25px;
     margin-bottom: 20px;
     border: none;
     border-radius: 5px;
-    box-shadow: #ddc2ff;
+    box-shadow: #e3d9f0;
     font-size: 16px;
 }
 
 #but_submit {
-  background-color: #50D050;
+  background-color: #3A405A;
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 15px 20px;
+  width: 100%;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
 }
 
 #but_submit:hover {
-  background-color: #50D050;
+  background-color: #536099;
 }
 
 

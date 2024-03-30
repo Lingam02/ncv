@@ -46,20 +46,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  $s_count = $_POST['s_count']; 
 
 
+ $reff_id = $_POST['reff_id']; 
 
-  
         if (!empty($border_nam)) {
           // Loop through the submitted data and insert each row into the database
             if ($border_nam != "") {
-                $sql = "INSERT INTO sep (tnx_id,yard,no_saree,muzham,one_section,s_count,date, time, tnx_type,warp_no, loc_id,typ, loc_nam, loom_id, loom_nam, ply,section,wght,loc_id2,loc_nam2,position) 
-                VALUES (?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
+                $sql = "INSERT INTO sep (tnx_id,reff_id,yard,no_saree,muzham,one_section,s_count,date, time, tnx_type,warp_no, loc_id,typ, loc_nam, loom_id, loom_nam, ply,section,wght,loc_id2,loc_nam2,position) 
+                VALUES (?, ?,?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
                 $stmt = mysqli_prepare($con, $sql);
-                mysqli_stmt_bind_param($stmt, "ssssdssssssssssssdiss",$tnx_id,$yard,$no_saree,$muzham,$one_section,$s_count, $save_date, $save_time, $tbl_type,$warp_no ,$loc_id,$border_nam, $loc_nam,$loom_id, $loom_nam, $ply,$section,$wght,$loc_id2,$loc_nam2,$no);
+                mysqli_stmt_bind_param($stmt, "sssssdssssssssssssdiss",$tnx_id,$reff_id,$yard,$no_saree,$muzham,$one_section,$s_count, $save_date, $save_time, $tbl_type,$warp_no ,$loc_id,$border_nam, $loc_nam,$loom_id, $loom_nam, $ply,$section,$wght,$loc_id2,$loc_nam2,$no);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_close($stmt);
                 $last_id1 = mysqli_insert_id($con);
             }
-          
+
             $sql = "UPDATE warp_details SET available = ? WHERE warp_no = ? ";
             $stmt = mysqli_prepare($con, $sql);
             mysqli_stmt_bind_param($stmt, "ss", $available, $warp_no);
@@ -86,7 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // echo "<pre>";
     // print_r($_POST);
     // echo "</pre>";
-  
     // Close the database connection
     mysqli_close($con);
   }
@@ -256,12 +255,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <th>Count</th>
                                                 <th>Section</th>
                                                 <th>Weight</th>
-                                                <th>Action</th>
+                                                <!-- <th>Action</th> -->
                                           </tr>
                                         </thead>
                                         <tbody id="sep_iss_body">
                                             <tr class="trow">
-                                                
                                                 <td>
                                                     <input  onkeypress='handleEnterKey(event, "border_nam")' required list="iss_warps" name="iss_warp" id="iss_warp" class="form-control" placeholder="Select Warp No">
                                                     <datalist id="iss_warps">
@@ -274,6 +272,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                             ?>
                                                     </datalist>
                                                     <input type="hidden" name="hidden_iss_warp" id="hidden_iss_warp">
+                                     <input type="hidden" name="reff_id" id="reff_id">
+
                                                 </td>
                                                 <td>
                                                     <input onkeypress='handleEnterKey(event, "ply")' list="borders_nam" required class="form-control" type="text" name="border_nam" id="border_nam">
@@ -338,7 +338,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                                 <th>Section</th>
                                                 <th>Weight</th>
-                                                <th>Action</th>
+                                                <!-- <th>Action</th> -->
                                           </tr>
                                         </thead>
                                         <tbody id="sep_iss_body2">
@@ -386,9 +386,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <td>
                                                 <input onkeypress='handleEnterKey(event, "row_ok")' type="number" name="wght2[]" id="wght2">
                                                 </td>
-                                                <td>
+                                                <!-- <td>
                                                   <button id="row_delete" class="btn btn-danger" type="button">x</button>
-                                                </td>
+                                                </td> -->
                                             </tr>
                                         </tbody>
                                  </table>                                                                    

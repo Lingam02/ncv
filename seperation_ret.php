@@ -232,7 +232,37 @@ if ($stmt1) {
 } else {
     echo "Statement preparation failed: " . mysqli_error($con);
 }
-   
+//    ---------------------------------------------------------------------------------------
+ 
+    $sql = "INSERT INTO inward_hd (save_date, save_time, tbl_type, loc_id, loc_name, bill_no, pur_wght, remarks, acname, pur_date) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($con, $sql);
+    mysqli_stmt_bind_param($stmt, "ssssssssss", $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $bill_no, $pur_wght, $remarks, $acname, $pur_date);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    $last_id1 = mysqli_insert_id($con);
+
+    if (!empty($warp_wght) && !empty($count)) {
+      // Loop through the submitted data and insert each row into the database
+      for ($keys = 0; $keys < count($warp_wght); $keys++) {
+        if ($warp_wght[$keys] > 0.00 && $count[$keys] > 0.00) {
+          $sql = "INSERT INTO warp_details (warp_no,hd_id,pur_date,iss_date, iss_time,pur_invno,sup_id,wght, tbl_type, loc_id, loc_nam, silk_wght,yard,no_saree,muzham, section, one_section, s_count, ply, no_warp) /*20*/
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+          $stmt = mysqli_prepare($con, $sql);
+          mysqli_stmt_bind_param($stmt, "sssssssssssdssssssss",$warp_tag[$keys], $last_id1,$pur_date, $save_date, $save_time,$bill_no,$sup_id, $pur_wght, $tbl_type, $loc_id, $loc_name, $warp_wght[$keys],$yard[$keys],$no_of_saree[$keys],$muzham[$keys], $section[$keys], $one_section[$keys], $count[$keys], $warp_ply, $no_of_warp);
+          mysqli_stmt_execute($stmt);
+          mysqli_stmt_close($stmt);
+        }
+      }
+      $sql = "UPDATE pur_det SET sepration = ? WHERE id = ? ";
+      $stmt = mysqli_prepare($con, $sql);
+      mysqli_stmt_bind_param($stmt, "ss", $sep, $bill_no);
+      mysqli_stmt_execute($stmt);
+      mysqli_stmt_close($stmt);
+      // header("location: inward.php");
+    }
+
+//    ---------------------------------------------------------------------------------------
 // Close the database connection
 mysqli_close($con);
 }
@@ -482,10 +512,10 @@ mysqli_close($con);
                                                 <!--  -->
                                                 <th>Ply</th>
                                                 <th>Iss Section</th>
-                                                <th>Separate Sec</th>
+                                                <th>Separated Sec</th>
                                                 <th>Ret Section</th>
                                                 <th>Iss Weight</th>
-                                                <th>Separate wght</th>
+                                                <th>Separated wght</th>
                                                 <th>Ret Weight</th>
                                                 <!-- <th>Action</th> -->
                                           </tr>
@@ -508,6 +538,7 @@ mysqli_close($con);
                                                             ?>
                                                     </datalist>
                                                     <input type="hidden" name="saree_union2[]" id="saree_union2">
+                                                    <input type="text" name="reff_id[]" id="reff_id">
                                                 </td>
                                                                <!--  -->
                                                                <td>

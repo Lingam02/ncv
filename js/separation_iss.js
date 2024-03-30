@@ -126,6 +126,7 @@ function fetch_splitted_kora() {
         document.getElementById("muzham").value = work.muzham;
         document.getElementById("one_section").value = work.one_section;
         document.getElementById("s_count").value = work.s_count;
+        document.getElementById("reff_id").value = work.hd_id;
       }      
     });
   }

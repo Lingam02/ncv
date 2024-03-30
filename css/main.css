@@ -33,6 +33,9 @@ body{
   #cbf7e4,
   #d4f8ea,
   #ddfaef);
+  /* font-family: "Roboto", sans-serif; */
+  font-weight:400;
+  font-style: normal;
 }
 #wrapper {
   overflow-x: hidden;
