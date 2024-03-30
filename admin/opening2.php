@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
                   <input type="hidden" name="hidden_bobins_id[]">
                 </td>
                 <td>
-                  <input type="number" class="form-control" value="0" name="wghts[]" onclick="this.select()" oninput="calculateTotalSum()">
+                  <input type="number" class="form-control" value="0" name="wghts[]" onclick="this.select()"onkeydown="limitDecimal(this, 3)" onkeyup="limitDecimal(this, 3)" oninput="limitDecimal(this, 3)">
                 </td>
 
               </tr>
@@ -242,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
                   <input type="hidden" name="hidden_bobins_id2[]">
                 </td>
                 <td>
-                  <input type="number" class="form-control" value="0" name="wghts2[]" onclick="this.select()" oninput="calculateTotalSum2()">
+                  <input type="number" class="form-control" value="0" name="wghts2[]" onclick="this.select()" onclick="this.select()"onkeydown="limitDecimal(this, 3)" onkeyup="limitDecimal(this, 3)" oninput="limitDecimal(this, 3)">
                 </td>
                 <!-- <td>
                 <input type="number" class="form-control" value="0" name="qtys2[]" onclick="this.select()" oninput="calculateTotalSumqty2()">
@@ -278,6 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/opening2.js"></script>
+  <script src="js/limit_num_digit.js"></script>
   <script src="//code.jquery.com/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
