@@ -13,6 +13,7 @@ if (isset($_POST['save'])) {
   $finish_wght = $_POST['wght_of_pirns'];
 
   $bobins = $_POST['bobins'];
+  $bobins_id = $_POST['bobins_id'];
   $wghts = $_POST['wghts'];
   $ttl_wght_bobin = $_POST['ttl_retbobin_wght_inpirn'];
 
@@ -28,37 +29,53 @@ if (isset($_POST['save'])) {
            `finish_date`='$finish_date',
            `finish_wght`='$finish_wght' WHERE id='$id'";
 
-  if ($con->query($sql) === TRUE) {
-    for ($key = 0; $key < count($bobins); $key++) {
-      if ($bobins[$key] !== "" && $wghts[$key] > 0) { 
-        $bobin = $bobins[$key];
-        $wght = $wghts[$key];
-        $txn_type = "PIRN_RET";
-        $sql = "UPDATE `bobin_trans` SET `return_date` = '$finish_date', `ret_bobinwghts_inpirn` = '$wght',`no_of_pirnsfinished`='$finish_qty',
-        `txn_type` = '$txn_type',`ttl_wghtof_pirns`='$finish_wght',`ttl_retbobin_wght_inpirn` = '$ttl_wght_bobin',`bobin_no`='$bobin'
-         WHERE `bobin_id` = '$bobin_id' and `reff_id` = '$id'";
-        $con->query($sql); // Execute the SQL query for each bobin
+if ($con->query($sql) === TRUE) {
+  for ($key = 0; $key < count($bobins); $key++) {
+      if ($bobins[$key] !== "") { 
+          $bobin = $bobins[$key]; 
+          $bobin_id = $bobins_id[$key];
+          $wght = $wghts[$key];
+          $txn_type = "PIRN_RET";
+          $update_sql = "UPDATE `bobin_trans` 
+                          SET `return_date` = '$finish_date', 
+                              `ret_bobinwghts_inpirn` = '$wght',
+                              `no_of_pirnsfinished`='$finish_qty',
+                              `txn_type` = '$txn_type',
+                              `ttl_wghtof_pirns`='$finish_wght',
+                              `ttl_retbobin_wght_inpirn` = '$ttl_wght_bobin',
+                              `bobin_no`='$bobin'
+                          WHERE `bobin_id` = '$bobin_id' AND `reff_id` = '$id'";
+          $con->query($update_sql); // Execute the SQL query for each bobin
       }
-    }
-    for ($innerKey = 0; $innerKey < count($boxes); $innerKey++) {
-      if ($boxes[$innerKey] !== "" && $p_wghts[$innerKey] > 0) {
-        // Updated variable names inside the loop
-        $box = $boxes[$innerKey];
-        $color = $colors[$innerKey];
-        $p_no = $p_nos[$innerKey];
-        $p_wght = $p_wghts[$innerKey];
+  }
 
-        $txn_type = "PIRN_RET";
 
-        // SQL query for boxes...
-        $sql = "UPDATE `bobin_trans` SET `return_date` = '$finish_date', `ret_bobinwghts_inpirn` = '$wght',`no_of_pirnsfinished`='$finish_qty',
-                `txn_type` = '$txn_type',`ttl_wghtof_pirns`='$finish_wght',`ttl_retbobin_wght_inpirn` = '$ttl_wght_bobin',
-                `box_no`='$box',`box_col_nam`='$color',`ret_p_nos`='$p_no',`ret_p_wghts`='$p_wght'
-                WHERE `bobin_id` = '$bobin' and `reff_id` = '$id'";
+    // for ($innerKey = 0; $innerKey < count($boxes); $innerKey++) {
+    //   if ($boxes[$innerKey] !== "" && $p_wghts[$innerKey] > 0) {
+    //     // Updated variable names inside the loop
+    //     $box = $boxes[$innerKey];
+    //     $color = $colors[$innerKey];
+    //     $p_no = $p_nos[$innerKey];
+    //     $p_wght = $p_wghts[$innerKey];
 
-        $con->query($sql);
-      }
-    }
+    //     $txn_type = "PIRN_RET";
+
+    //     // SQL query for boxes...
+    //     $sql = "UPDATE `bobin_trans` SET `return_date` = '$finish_date', `ret_bobinwghts_inpirn` = '$wght',`no_of_pirnsfinished`='$finish_qty',
+    //             `txn_type` = '$txn_type',`ttl_wghtof_pirns`='$finish_wght',`ttl_retbobin_wght_inpirn` = '$ttl_wght_bobin',
+    //             `box_no`='$box',`box_col_nam`='$color',`ret_p_nos`='$p_no',`ret_p_wghts`='$p_wght'
+    //             WHERE `bobin_id` = '$bobin' and `reff_id` = '$id'";
+
+    //     $con->query($sql);
+    //   }
+    // }
+    // echo "<pre>";
+    // print_r($_POST); 
+    // // var_dump($_POST);
+    // echo "</pre>";
+
+
+
     header('Location: rawreturnfrom_pirn.php');
   } else {
     echo "Error: " . $sql . "<br>" . $con->error;
@@ -145,7 +162,7 @@ if (isset($_POST['log-out'])) {
       </div>
       <div class="input-div">
         <label for="wght_of_pirns">Weight of finished pirns</label>
-        <input style="border:1px solid yellow" type="number" id="wght_of_pirns" placeholder="ENTER TOTAL PIRNS WEIGHT" name="wght_of_pirns" required>
+        <input readonly style="border:1px solid yellow" type="number" id="wght_of_pirns" placeholder="ENTER TOTAL PIRNS WEIGHT" name="wght_of_pirns" required>
       </div>
       <!-- <div class="input-div">
         <label for="result">No of box finished</label>
@@ -169,7 +186,11 @@ if (isset($_POST['log-out'])) {
               </thead>
               <tbody id="tbody">
                 <tr>
-                  <td><input type="text" name="bobins[]" value="" readonly></td>
+                  
+                  <td>
+                  <input type="hidden" name="bobins_id[]" value="" readonly>  
+                  <input type="text" name="bobins[]" value="" readonly>
+                </td>
                   <!-- <td><input type="text" name="items[]" value=""readonly id="itemsInput"></td>
                   <td><input type="text" name="colors[]" value=""readonly id="colorsInput"></td> -->
                   <td><input type="number" name="wghts[]" onclick="this.select()" required oninput="calculateTotalSum()"></td>

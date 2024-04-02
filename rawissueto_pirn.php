@@ -56,12 +56,12 @@ if (isset($_POST['save'])) {
         }
       }
 
-      for ($innerKey = 0; $innerKey < count($box_nam); $innerKey++) {
-        if ($box_nam[$innerKey] !== "") {
-          mysqli_stmt_bind_param($stmt, "sisssssss", $currentDateTime, $reff_id, $bobins_id[$innerKey], $bobins[$innerKey], $box_nam[$innerKey], $hidden_box_id[$innerKey], $hidden_colorid[$innerKey], $box_colornames[$innerKey], $txn_type);
-          mysqli_stmt_execute($stmt);
-        }
-      }
+      // for ($innerKey = 0; $innerKey < count($box_nam); $innerKey++) {
+      //   if ($box_nam[$innerKey] !== "") {
+      //     mysqli_stmt_bind_param($stmt, "sisssssss", $currentDateTime, $reff_id, $bobins_id[$innerKey], $bobins[$innerKey], $box_nam[$innerKey], $hidden_box_id[$innerKey], $hidden_colorid[$innerKey], $box_colornames[$innerKey], $txn_type);
+      //     mysqli_stmt_execute($stmt);
+      //   }
+      // }
 
       mysqli_stmt_close($stmt);
       echo "Details Saved successfully";
@@ -194,10 +194,10 @@ if (isset($_POST['save'])) {
               </tbody>
             </table>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
            <h4>SELECT BOX TO ISSUE</h4>
             <input required type="number" placeholder="Enter no of pirn box and press tab" id="box_qty" name="box_qty">
-          </div>
+          </div> -->
           <table id="box_table">
               <thead>
                 <tr>
@@ -208,7 +208,7 @@ if (isset($_POST['save'])) {
               <tbody id="tbody2">
                 <tr>
                   <td>
-                    <input required type="text" class="form-control" list="box_options" name="boxes[]" class='text-uppercase' placeholder="Type to select category..." onchange="getbox_id(this)">
+                    <input type="text" class="form-control" list="box_options" name="boxes[]" class='text-uppercase' placeholder="Type to select category..." onchange="getbox_id(this)">
                     <datalist id="box_options">
                       <?php
                       $sql = "SELECT box_no, id FROM pirn_box ORDER BY box_no";

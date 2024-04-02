@@ -44,109 +44,111 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $save_date = $_POST['page_date'];
     // $save_time = date("H:i:s"); // Assuming you want to save the current time
     $tbl_type = "WPSEPRET";
-   
+
     // Retrieve other form data
     $loom_nam = $_POST['loom_nam'];
-    $loom_id = $_POST['loom_id']; 
+    $loom_id = $_POST['loom_id'];
 
     $loc_nam = $_POST['iss_location'];
-    $loc_id = $_POST['loc_id']; 
+    $loc_name = $_POST['iss_location'];
+    $loc_id = $_POST['loc_id'];
 
     $loc_nam2 = $_POST['iss_location2'];
-    $loc_id2 = $_POST['loc_id2']; 
+    $loc_id2 = $_POST['loc_id2'];
 
-    $dyer_nam = $_POST['dyer_nam']; 
-    $dyer_id = $_POST['dyer_id']; 
+    // $dyer_nam = $_POST['dyer_nam'];
+    // $dyer_id = $_POST['dyer_id'];
 
-    $warp_no = $_POST['warp_no2']; 
-    $border_nam = $_POST['border_nam2']; 
-    $ply = $_POST['ply2']; 
-    $section2 = $_POST['section2']; 
-    $wght2 = $_POST['wght2']; 
-    $section3 = $_POST['section3']; 
-    $wght3 = $_POST['wght3']; 
-    $section4 = $_POST['section4']; 
-    $wght4 = $_POST['wght4']; 
+    $warp_no = $_POST['warp_no2'];
+    $border_nam = $_POST['border_nam2'];
+    $ply = $_POST['ply2'];
+    $section2 = $_POST['section2'];
+    $wght2 = $_POST['wght2'];
+    $section3 = $_POST['section3'];
+    $wght3 = $_POST['wght3'];
+    $section4 = $_POST['section4'];
+    $wght4 = $_POST['wght4'];
     $position = 'FRM-RET';
 
 
-    $yard = $_POST['yard2']; 
-    $no_saree = $_POST['no_saree2']; 
-    $muzham = $_POST['muzham2']; 
-    $one_section = $_POST['one_section2']; 
-    $s_count = $_POST['s_count2']; 
-   
-// tag no genrating
+    $yard = $_POST['yard2'];
+    $reff_id = $_POST['reff_id'];
+    $no_saree = $_POST['no_saree2'];
+    $muzham = $_POST['muzham2'];
+    $one_section = $_POST['one_section2'];
+    $s_count = $_POST['s_count2'];
 
-$con->begin_transaction();
+    // tag no genrating
 
-$warp_dyetag = $_POST['booking_id']; // Define $booking_id here
+    $con->begin_transaction();
 
-$query = "SELECT * from setup ";
-$stmt = mysqli_prepare($con, $query);
+    $warp_dyetag = $_POST['booking_id']; // Define $booking_id here
 
-if ($stmt === false) {
-    die("Preparation failed: " . mysqli_error($con));
-}
+    $query = "SELECT * from setup ";
+    $stmt = mysqli_prepare($con, $query);
 
-mysqli_stmt_execute($stmt);
+    if ($stmt === false) {
+        die("Preparation failed: " . mysqli_error($con));
+    }
 
-$result = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_execute($stmt);
 
-if (mysqli_num_rows($result) == 0) {
-    echo "booking id Config Error?";
-    return;
-}
+    $result = mysqli_stmt_get_result($stmt);
 
-$setup = mysqli_fetch_array($result);
+    if (mysqli_num_rows($result) == 0) {
+        echo "booking id Config Error?";
+        return;
+    }
 
-if ($setup === false) {
-    die("Error fetching data: " . mysqli_error($con));
-}
+    $setup = mysqli_fetch_array($result);
 
-$book_id = tagcal($setup["warp_no2"]);
+    if ($setup === false) {
+        die("Error fetching data: " . mysqli_error($con));
+    }
 
-if ($book_id === null) {
-    die("Error in tagcal function.");
-}
+    $book_id = tagcal($setup["warp_no2"]);
 
-$sql = "UPDATE setup SET warp_no2 = ? ";
-$stmt = mysqli_prepare($con, $sql);
+    if ($book_id === null) {
+        die("Error in tagcal function.");
+    }
 
-if ($stmt === false) {
-    die("Preparation failed: " . mysqli_error($con));
-}
+    $sql = "UPDATE setup SET warp_no2 = ? ";
+    $stmt = mysqli_prepare($con, $sql);
 
-mysqli_stmt_bind_param($stmt, "s", $book_id); // Make sure $book_id holds the correct value
-if (mysqli_stmt_execute($stmt)) {
-    echo "Update successful!";
-} else {
-    echo "Update failed: " . mysqli_error($con);
-}
+    if ($stmt === false) {
+        die("Preparation failed: " . mysqli_error($con));
+    }
 
-mysqli_stmt_close($stmt);
-$con->commit();
-// tag no genrating
+    mysqli_stmt_bind_param($stmt, "s", $book_id); // Make sure $book_id holds the correct value
+    if (mysqli_stmt_execute($stmt)) {
+        echo "Update successful tag no!";
+    } else {
+        echo "Update failed: " . mysqli_error($con);
+    }
 
-    if (!empty($border_nam)) {  
+    mysqli_stmt_close($stmt);
+    $con->commit();
+    // tag no genrating
+
+    if (!empty($border_nam)) {
         //--------------------------------  DELETE OLD VALUES -------------
         $sql = "DELETE FROM sep WHERE loom_id = ? AND date = ?";
         $stmt = mysqli_prepare($con, $sql);
-        
+
         // Check for preparation errors
         if ($stmt === false) {
             die("Preparation failed: " . mysqli_error($con));
         }
-        
+
         // Bind parameters and execute the statement
         mysqli_stmt_bind_param($stmt, "ss", $loom_id, $save_date);
         if (mysqli_stmt_execute($stmt)) {
-            echo "Delete successful!";
+            echo "Delete successful sep lommdate!";
         } else {
             // Display more informative error message
             die("Delete failed: " . mysqli_stmt_error($stmt));
         }
-        
+
         // Close the prepared statement
         mysqli_stmt_close($stmt);
         //-----------------------------------------------------------------
@@ -154,17 +156,19 @@ $con->commit();
         // Loop through the submitted data and insert each row into the database
         for ($key = 0; $key < count($border_nam); $key++) {
             if ($border_nam != "") {
-                $sql = "INSERT INTO sep (tnx_id,yard,no_saree,muzham,one_section,s_count, date, time, tnx_type, warp_no, loc_id, typ, loc_nam, loom_id, loom_nam, ply, section, wght, loc_id2, loc_nam2, position) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO sep (tnx_id,reff_id,yard,no_saree,muzham,one_section,s_count, date, time, tnx_type, warp_no, loc_id, typ, loc_nam, loom_id, loom_nam, ply, section, wght, loc_id2, loc_nam2, position) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = mysqli_prepare($con, $sql);
                 // $new_warp_no = $warp_no[$key].'/'.($key+1);
-                mysqli_stmt_bind_param($stmt, "sssssdsssssssssssdiss", $tnx_id,$yard[$key],$no_saree[$key],$muzham[$key],$one_section[$key],$s_count[$key], $save_date, $save_time, $tbl_type, $warp_no[$key], $loc_id, $border_nam[$key], $loc_nam, $loom_id, $loom_nam, $ply[$key], $section4[$key], $wght4[$key], $loc_id2, $loc_nam2, $position);
+                mysqli_stmt_bind_param($stmt, "ssssssdsssssssssssdiss", $tnx_id, $reff_id[$key], $yard[$key], $no_saree[$key], $muzham[$key], $one_section[$key], $s_count[$key], $save_date, $save_time, $tbl_type, $warp_no[$key], $loc_id, $border_nam[$key], $loc_nam, $loom_id, $loom_nam, $ply[$key], $section4[$key], $wght4[$key], $loc_id2, $loc_nam2, $position);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_close($stmt);
                 // $last_id1 = mysqli_insert_id($con);
             }
+echo "saved sep tnx_type = sep_ret ";
+
         }
-      
+
         // $sql = "UPDATE sep SET position = ? WHERE warp_no = ? ";
         // $stmt = mysqli_prepare($con, $sql);
         // mysqli_stmt_bind_param($stmt, "ss", $available, $warp_no);
@@ -189,8 +193,9 @@ $con->commit();
                     mysqli_stmt_close($stmt);
                 }
             }
-          
-            header("location: seperation_ret.php");
+            echo "saved warp_stock ++plus";
+
+            // header("location: seperation_ret.php");
         }
     }
 
@@ -209,199 +214,200 @@ $con->commit();
                 mysqli_stmt_close($stmt);
             }
         }
-      
-        header("location: seperation_ret.php");
+echo "saved warp_stock --minus";
+        // header("location: seperation_ret.php");
     }
-// }
+    // }
 
-// First table INSERT
-$query1 = "INSERT INTO sep_ret (tnx_id,yard,no_saree,muzham,one_section,s_count, date, time,new_warp_no, tnx_type, warp_no, loc_id, typ, loc_nam, loom_id, ply, section, wght, loc_id2, loc_nam2, position, iss_section, iss_wght, bal_section, bal_wght) 
-VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-$stmt1 = mysqli_prepare($con, $query1);
-if ($stmt1) {
-    for ($key = 0; $key < count($border_nam); $key++) {
-        if ($border_nam[$key] !== "") {
-            $new_warp_no = $warp_no[$key] . '/S' . ($key + 1);
+    // First table INSERT
+    $query1 = "INSERT INTO sep_ret (tnx_id,yard,reff_id,no_saree,muzham,one_section,s_count, date, time,new_warp_no, tnx_type, warp_no, loc_id, typ, loc_nam, loom_id, ply, section, wght, loc_id2, loc_nam2, position, iss_section, iss_wght, bal_section, bal_wght) 
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    $stmt1 = mysqli_prepare($con, $query1);
+    if ($stmt1) {
+        for ($key = 0; $key < count($border_nam); $key++) {
+            if ($border_nam[$key] !== "") {
+                $new_warp_no = $warp_no[$key] . '/S' . ($key + 1);
 
-            mysqli_stmt_bind_param($stmt1, "sssssdsssssssssssdssssdsd", $tnx_id,$yard[$key],$no_saree[$key],$muzham[$key],$one_section[$key],$s_count[$key], $save_date, $save_time,$warp_dyetag, $tbl_type, $new_warp_no, $loc_id, $border_nam[$key], $loc_nam, $loom_id, $ply[$key], $section3[$key], $wght3[$key], $loc_id2, $loc_nam2, $position, $section2[$key], $wght2[$key], $section4[$key], $wght4[$key]);
-            mysqli_stmt_execute($stmt1);
+                mysqli_stmt_bind_param($stmt1, "ssssssdsssssssssssdssssdsd", $tnx_id, $reff_id[$key], $yard[$key], $no_saree[$key], $muzham[$key], $one_section[$key], $s_count[$key], $save_date, $save_time, $warp_dyetag, $tbl_type, $new_warp_no, $loc_id, $border_nam[$key], $loc_nam, $loom_id, $ply[$key], $section3[$key], $wght3[$key], $loc_id2, $loc_nam2, $position, $section2[$key], $wght2[$key], $section4[$key], $wght4[$key]);
+                mysqli_stmt_execute($stmt1);
+            }
         }
+        echo "Details Saved successfully sep_ret";
+        // header("location: seperation_ret.php");
+    } else {
+        echo "Statement preparation failed: " . mysqli_error($con);
     }
-    echo "Details Saved successfully";
-    header("location: seperation_ret.php");
-} else {
-    echo "Statement preparation failed: " . mysqli_error($con);
-}
-//    ---------------------------------------------------------------------------------------
- 
-    $sql = "INSERT INTO inward_hd (save_date, save_time, tbl_type, loc_id, loc_name, bill_no, pur_wght, remarks, acname, pur_date) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = mysqli_prepare($con, $sql);
-    mysqli_stmt_bind_param($stmt, "ssssssssss", $save_date, $save_time, $tbl_type, $loc_id, $loc_name, $bill_no, $pur_wght, $remarks, $acname, $pur_date);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-    $last_id1 = mysqli_insert_id($con);
+    //    ---------------------------------------------------------------------------------------
 
-    if (!empty($warp_wght) && !empty($count)) {
-      // Loop through the submitted data and insert each row into the database
-      for ($keys = 0; $keys < count($warp_wght); $keys++) {
-        if ($warp_wght[$keys] > 0.00 && $count[$keys] > 0.00) {
-          $sql = "INSERT INTO warp_details (warp_no,hd_id,pur_date,iss_date, iss_time,pur_invno,sup_id,wght, tbl_type, loc_id, loc_nam, silk_wght,yard,no_saree,muzham, section, one_section, s_count, ply, no_warp) /*20*/
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-          $stmt = mysqli_prepare($con, $sql);
-          mysqli_stmt_bind_param($stmt, "sssssssssssdssssssss",$warp_tag[$keys], $last_id1,$pur_date, $save_date, $save_time,$bill_no,$sup_id, $pur_wght, $tbl_type, $loc_id, $loc_name, $warp_wght[$keys],$yard[$keys],$no_of_saree[$keys],$muzham[$keys], $section[$keys], $one_section[$keys], $count[$keys], $warp_ply, $no_of_warp);
-          mysqli_stmt_execute($stmt);
-          mysqli_stmt_close($stmt);
+    //    --------------------------------- RET TO SAME WARP TO WARP DETAIL WITH ISSUE = 1 WEIGHT ,SECTION = -VALUE ------------------------------------------------------
+    if (!empty($wght3)) {
+        // Loop through the submitted data and insert each row into the database
+        $issue = '1';
+        $reff_id = $_POST['reff_id'];
+       
+        for ($keys = 0; $keys < count($wght3); $keys++) {
+            $section_minus = -1 * ($section3[$keys]);
+            $wght_minus = -1 * ($wght3[$keys]);
+            if ($issue = '1') {
+                $sql = "INSERT INTO warp_details (reff_id,warp_no,iss_date, iss_time, tbl_type,silk_wght,section,issue) /*20*/
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ? )";
+                $stmt = mysqli_prepare($con, $sql);
+                mysqli_stmt_bind_param($stmt, "sssssdds", $reff_id[$keys] ,$warp_no[$keys], $save_date, $save_time, $tbl_type,$wght_minus, $section_minus,$issue);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+            }
         }
-      }
-      $sql = "UPDATE pur_det SET sepration = ? WHERE id = ? ";
-      $stmt = mysqli_prepare($con, $sql);
-      mysqli_stmt_bind_param($stmt, "ss", $sep, $bill_no);
-      mysqli_stmt_execute($stmt);
-      mysqli_stmt_close($stmt);
-      // header("location: inward.php");
+        // $sql = "UPDATE pur_det SET sepration = ? WHERE id = ? ";
+        // $stmt = mysqli_prepare($con, $sql);
+        // mysqli_stmt_bind_param($stmt, "ss", $sep, $bill_no);
+        // mysqli_stmt_execute($stmt);
+        // mysqli_stmt_close($stmt);
+        // header("location: inward.php");
+        echo "Details Saved successfully ret ret";
+        
+    }else{
+        echo "not inserted";
     }
-
-//    ---------------------------------------------------------------------------------------
-// Close the database connection
-mysqli_close($con);
+    //    ---------------------------------------------------------------------------------------
+    // Close the database connection
+    mysqli_close($con);
 }
 ?>
 
 
- <!-- attach php code here ends-->
- <!DOCTYPE html>
- <html lang="en">
+<!-- attach php code here ends-->
+<!DOCTYPE html>
+<html lang="en">
 
- <head>
-     <!-- headlinks starts -->
-     <?php
-        include_once "main/headlinks.php";
-        ?>
-     <!-- headlinks ends -->
-<link rel="stylesheet" href="css/table_sep.css">
-<link rel="stylesheet" href="css/inputs.css">
+<head>
+    <!-- headlinks starts -->
+    <?php
+    include_once "main/headlinks.php";
+    ?>
+    <!-- headlinks ends -->
+    <link rel="stylesheet" href="css/table_sep.css">
+    <link rel="stylesheet" href="css/inputs.css">
 
-     <!-- attach form css link here-->
-     <style>
+    <!-- attach form css link here-->
+    <style>
         /* #saree_table th{
         background-color: #fff !important;            
         } */
-         label {
-             display: flex;
-             width: 150px;
-         }
+        label {
+            display: flex;
+            width: 150px;
+        }
 
-         .form-group {
-             display: flex;
-         }
+        .form-group {
+            display: flex;
+        }
 
-         h4 {
-             text-align: center;
-             background-color: #ff7bcf;
-             margin: 10px 0;
-             color: #fff;
-             padding: 10px;
-         }
+        h4 {
+            text-align: center;
+            background-color: #ff7bcf;
+            margin: 10px 0;
+            color: #fff;
+            padding: 10px;
+        }
 
-         #issue_div {
-             border: 1px solid lightblue;
-             padding: 20px;
-             margin-bottom: 10px;
-             /* background:#FFF; */
-         }
+        #issue_div {
+            border: 1px solid lightblue;
+            padding: 20px;
+            margin-bottom: 10px;
+            /* background:#FFF; */
+        }
 
-         #return_div {
-             border: 1px solid lightblue;
-             padding: 20px;
-             margin-bottom: 10px;
-             /* background: lightblue; */
-         }
+        #return_div {
+            border: 1px solid lightblue;
+            padding: 20px;
+            margin-bottom: 10px;
+            /* background: lightblue; */
+        }
 
-         .select_type {
-             border: 1px solid lightblue;
-             padding: 20px;
-             margin-bottom: 10px;
-             /* background: #fff; */
-         }
+        .select_type {
+            border: 1px solid lightblue;
+            padding: 20px;
+            margin-bottom: 10px;
+            /* background: #fff; */
+        }
 
-         .container_seperation {
-             background-color: #fff;
-             padding: 20px;
-             border-radius: 8px;
+        .container_seperation {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
 
-         }
-         
-     </style>
-     <!-- attach form css link here ends-->
- </head>
+        }
+    </style>
+    <!-- attach form css link here ends-->
+</head>
 
- <body>
-     <div class="d-flex" id="wrapper">
-         <!-- Sidebar starts-->
-         <?php
-            include_once "main/sidebar.php";
-            ?>
-         <!-- sidebar ends -->
-         <!-- Page Content -->
-         <div id="page-content-wrapper">
-             <form id="form" action="" method="post" autocomplete="off"> 
-             <!-- navbar starts -->
-             <?php
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar starts-->
+        <?php
+        include_once "main/sidebar.php";
+        ?>
+        <!-- sidebar ends -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <form id="form" action="" method="post" autocomplete="off">
+                <!-- navbar starts -->
+                <?php
                 include_once "main/navbar.php";
                 ?>
-             <!-- navbar ends -->
-             <div class="container-fluid px-4">
-                 <!-- attach form container here starts -->
-                 <div class="body">
-                         <div class="container_seperation">
-                             <h4 id="heading" class="m-4">Return From Seperation</h4>
-                          
-                             <div id="issue_div">
-                        
-                                 <div class="form-group">
-                                     <label for="iss_fromloc">Loom:</label>
-       
-                                     <input onkeypress="handleEnterKey(event, 'iss_location')" list="loom_nams" name="loom_nam" id="loom_nam" class="form-control" placeholder="Select Loom" required>
-                                     <datalist id="loom_nams">
-                                         <?php
-                                            $sql = mysqli_query($con, "SELECT nam,auto_id,maj_nam FROM cnf where cls='WRK_UNIT' and val='Loom' order by nam");                                            while ($row = $sql->fetch_assoc()) {
+                <!-- navbar ends -->
+                <div class="container-fluid px-4">
+                    <!-- attach form container here starts -->
+                    <div class="body">
+                        <div class="container_seperation">
+                            <h4 id="heading" class="m-4">Return From Seperation</h4>
+
+                            <div id="issue_div">
+
+                                <div class="form-group">
+                                    <label for="iss_fromloc">Loom:</label>
+
+                                    <input onkeypress="handleEnterKey(event, 'iss_location')" list="loom_nams" name="loom_nam" id="loom_nam" class="form-control" placeholder="Select Loom" required>
+                                    <datalist id="loom_nams">
+                                        <?php
+                                        $sql = mysqli_query($con, "SELECT nam,auto_id,maj_nam FROM cnf where cls='WRK_UNIT' and val='Loom' order by nam");
+                                        while ($row = $sql->fetch_assoc()) {
                                             echo "<option class='text-uppercase' value='" . $row['nam'] . " ( " . trim($row['maj_nam']) . " )" .  "' data-acid='" . $row['auto_id'] . "'></option>";
-                                            }
-                                            ?>
-                                     </datalist>
-                                     <input type="hidden" name="loom_id" id="loom_id">
-                                 </div>
-                                 <div class="form-group">                            
-                                     <label for="iss_location">From:</label>
-                                        <input  onkeypress="handleEnterKey(event, 'iss_location2')" list="iss_locations" name="iss_location" id="iss_location" class="form-control" placeholder="Select Location" required>
-                                        <datalist id="iss_locations">
-                                            <?php
-                        
-                                                $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores  order by loc_nam");
-                                                while ($row = $sql->fetch_assoc()) {
-                                                    echo "<option class='text-uppercase' value='" . $row['loc_nam'] . "' data-acid='" . $row['id'] . "'></option>";
-                                                }
-                                                ?>
-                                        </datalist>
-                                     <input type="hidden" name="loc_id" id="loc_id">
+                                        }
+                                        ?>
+                                    </datalist>
+                                    <input type="hidden" name="loom_id" id="loom_id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="iss_location">From:</label>
+                                    <input onkeypress="handleEnterKey(event, 'iss_location2')" list="iss_locations" name="iss_location" id="iss_location" class="form-control" placeholder="Select Location" required>
+                                    <datalist id="iss_locations">
+                                        <?php
 
-                                 </div>
-                                 <div class="form-group">
-                                     <label for="iss_location2">To:</label>
-                                     <input  onkeypress="handleEnterKey(event, 'section3')" list="iss_location2s" name="iss_location2" id="iss_location2" class="form-control" placeholder="Select Where" required>
-                                     <datalist id="iss_location2s">
-                                         <?php
-                                            $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores  order by loc_nam");
-                                            while ($row = $sql->fetch_assoc()) {
-                                                echo "<option class='text-uppercase' value='" . $row['loc_nam'] . "' data-acid='" . $row['id'] . "'></option>";
-                                            }
-                                            ?>
-                                     </datalist>
-                                     <input type="hidden" name="loc_id2" id="loc_id2">
+                                        $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores  order by loc_nam");
+                                        while ($row = $sql->fetch_assoc()) {
+                                            echo "<option class='text-uppercase' value='" . $row['loc_nam'] . "' data-acid='" . $row['id'] . "'></option>";
+                                        }
+                                        ?>
+                                    </datalist>
+                                    <input type="hidden" name="loc_id" id="loc_id">
 
-                                 </div>
-                                 <!-- <div class="form-group">
+                                </div>
+                                <div class="form-group">
+                                    <label for="iss_location2">To:</label>
+                                    <input onkeypress="handleEnterKey(event, 'section3')" list="iss_location2s" name="iss_location2" id="iss_location2" class="form-control" placeholder="Select Where" required>
+                                    <datalist id="iss_location2s">
+                                        <?php
+                                        $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores  order by loc_nam");
+                                        while ($row = $sql->fetch_assoc()) {
+                                            echo "<option class='text-uppercase' value='" . $row['loc_nam'] . "' data-acid='" . $row['id'] . "'></option>";
+                                        }
+                                        ?>
+                                    </datalist>
+                                    <input type="hidden" name="loc_id2" id="loc_id2">
+
+                                </div>
+                                <!-- <div class="form-group">
                                     <label for="dyer_nam">Dyer Name</label>
                                     
                                         <input type="text" list="twisterlist" class="form-control" id="dyer_nam" name="dyer_nam" placeholder="" onkeydown="handleEnterKey(event, 'iss_itm_nam')">
@@ -418,7 +424,7 @@ mysqli_close($con);
                                         <input type="hidden" class="form-control" id="dyer_id" name="dyer_id">
                                 
                                 </div> -->
-                                 <!-- <div class="form-group" id="weft_focus">
+                                <!-- <div class="form-group" id="weft_focus">
                                      <label for="iss_weft">Weft</label>
                                      <input list="iss_wefts" name="iss_weft" id="iss_weft" class="form-control" placeholder="Select Unit">
                                      <datalist id="iss_wefts">
@@ -433,7 +439,7 @@ mysqli_close($con);
                                      <input type="hidden" name="hidden_iss_weft" id="hidden_iss_weft">
 
                                  </div> -->
-                             <!-- <div id="entry_table_div">
+                                <!-- <div id="entry_table_div">
                                  <table id="entry_table">
                                         <thead>
                                            <tr>
@@ -452,12 +458,12 @@ mysqli_close($con);
                                                     <input  onkeypress='handleEnterKey(event, "border_nam")' list="iss_warps" name="iss_warp" id="iss_warp" class="form-control" placeholder="Select Unit">
                                                     <datalist id="iss_warps">
                                                         <?php
-                                                            $sql = mysqli_query($con, "SELECT * FROM sep where position = 'NO' order by warp_no");
-                                                            while ($row = $sql->fetch_assoc()) {
-                                                                echo "<option class='text-uppercase' value='" . $row['warp_no'] . "' data-acid ='" . $row['warp_no'] . "'></option>";
-                                                                // echo "<option value='WARPID" . trim($row['save_date']) . "   weight (" . trim($row['warp_wght']) . " )  " . trim($row['warp_ply']) . "ply' data-id='" . $row['reff_id'] . "'> </option>";
-                                                            }
-                                                            ?>
+                                                        $sql = mysqli_query($con, "SELECT * FROM sep where position = 'NO' order by warp_no");
+                                                        while ($row = $sql->fetch_assoc()) {
+                                                            echo "<option class='text-uppercase' value='" . $row['warp_no'] . "' data-acid ='" . $row['warp_no'] . "'></option>";
+                                                            // echo "<option value='WARPID" . trim($row['save_date']) . "   weight (" . trim($row['warp_wght']) . " )  " . trim($row['warp_ply']) . "ply' data-id='" . $row['reff_id'] . "'> </option>";
+                                                        }
+                                                        ?>
                                                     </datalist>
                                                     <input type="hidden" name="hidden_iss_warp" id="hidden_iss_warp">
                                                 </td>
@@ -465,12 +471,12 @@ mysqli_close($con);
                                                     <input onkeypress='handleEnterKey(event, "ply")' list="borders_nam" class="form-control" type="text" name="border_nam" id="border_nam">
                                                     <datalist id="borders_nam">
                                                         <?php
-                                                            $sql = mysqli_query($con, "SELECT * FROM saree_union order by id");
-                                                            while ($row = $sql->fetch_assoc()) {
-                                                                // echo "<option class='text-uppercase' value='" . $row['weft_batch_no'] . "' data-acid='" . $row['reff_id'] . "'></option>";
-                                                                echo "<option value='" . trim($row['saree_parts']) . "' data-id='" . $row['id'] . "'> </option>";
-                                                            }
-                                                            ?>
+                                                        $sql = mysqli_query($con, "SELECT * FROM saree_union order by id");
+                                                        while ($row = $sql->fetch_assoc()) {
+                                                            // echo "<option class='text-uppercase' value='" . $row['weft_batch_no'] . "' data-acid='" . $row['reff_id'] . "'></option>";
+                                                            echo "<option value='" . trim($row['saree_parts']) . "' data-id='" . $row['id'] . "'> </option>";
+                                                        }
+                                                        ?>
                                                     </datalist>
                                                     <input type="hidden" name="saree_union" id="saree_union">
                                                 </td>
@@ -491,128 +497,128 @@ mysqli_close($con);
                                  </table>                                                                    
                             </div> -->
 
-                        </div>
-                        <div id="entry_table_div2">
-                                 <table id="entry_table2">
-                                        <thead>
-                                           <tr>
-                                                <th colspan="2" style="background:none;">                                    
-                                                     <input type="text" class="form-control fw-bold text-success shadow-none" readonly value="<?php echo $warp_dyetag; ?>" name="booking_id" id="booking_id" required onkeydown="handleEnterKey(event, 'check_in_date')">
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:110px">Warp No</th>
-                                                <th style="width:90px">Type</th>
-                                                <!--  -->
-                                                <th>Yard</th>
-                                                <th>No of Saree</th>
-                                                <th>Mozham</th>
-                                                <th>One Section</th>
-                                                <th>Count</th>
-                                                <!--  -->
-                                                <th>Ply</th>
-                                                <th>Iss Section</th>
-                                                <th>Separated Sec</th>
-                                                <th>Ret Section</th>
-                                                <th>Iss Weight</th>
-                                                <th>Separated wght</th>
-                                                <th>Ret Weight</th>
-                                                <!-- <th>Action</th> -->
-                                          </tr>
-                                        </thead>
-                                        <tbody id="sep_iss_body2">
-                                            <tr class="trow2">
-                                                
-                                                <td style="width:px">
-                                                 <input class="form-control" readonly onkeypress='handleEnterKey(event, "border_nam2")' type="text" name="warp_no2[]" id="warp_no2">
-                                                </td>
-                                                <td>
-                                                    <input class="form-control" readonly onkeypress='handleEnterKey(event, "ply2")' list="borders_nam2" type="text" name="border_nam2[]" id="border_nam2">
-                                                    <datalist id="borders_nam2">
-                                                        <?php
-                                                            $sql = mysqli_query($con, "SELECT * FROM saree_union order by id");
-                                                            while ($row = $sql->fetch_assoc()) {
-                                                                // echo "<option class='text-uppercase' value='" . $row['weft_batch_no'] . "' data-acid='" . $row['reff_id'] . "'></option>";
-                                                                echo "<option value='" . trim($row['saree_parts']) . "' data-id='" . $row['id'] . "'> </option>";
-                                                            }
-                                                            ?>
-                                                    </datalist>
-                                                    <input type="hidden" name="saree_union2[]" id="saree_union2">
-                                                    <input type="text" name="reff_id[]" id="reff_id">
-                                                </td>
-                                                               <!--  -->
-                                                               <td>
+                            </div>
+                            <div id="entry_table_div2">
+                                <table id="entry_table2">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2" style="background:none;">
+                                                <input type="text" class="form-control fw-bold text-success shadow-none" readonly value="<?php echo $warp_dyetag; ?>" name="booking_id" id="booking_id" required onkeydown="handleEnterKey(event, 'check_in_date')">
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width:110px">Warp No</th>
+                                            <th style="width:90px">Type</th>
+                                            <!--  -->
+                                            <th>Yard</th>
+                                            <th>No of Saree</th>
+                                            <th>Mozham</th>
+                                            <th>One Section</th>
+                                            <th>Count</th>
+                                            <!--  -->
+                                            <th>Ply</th>
+                                            <th>Iss Section</th>
+                                            <th>Separated Sec</th>
+                                            <th>Ret Section</th>
+                                            <th>Iss Weight</th>
+                                            <th>Separated wght</th>
+                                            <th>Ret Weight</th>
+                                            <!-- <th>Action</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sep_iss_body2">
+                                        <tr class="trow2">
+
+                                            <td style="width:px">
+                                                <input class="form-control" readonly onkeypress='handleEnterKey(event, "border_nam2")' type="text" name="warp_no2[]" id="warp_no2">
+                                            </td>
+                                            <td>
+                                                <input class="form-control" readonly onkeypress='handleEnterKey(event, "ply2")' list="borders_nam2" type="text" name="border_nam2[]" id="border_nam2">
+                                                <datalist id="borders_nam2">
+                                                    <?php
+                                                    $sql = mysqli_query($con, "SELECT * FROM saree_union order by id");
+                                                    while ($row = $sql->fetch_assoc()) {
+                                                        // echo "<option class='text-uppercase' value='" . $row['weft_batch_no'] . "' data-acid='" . $row['reff_id'] . "'></option>";
+                                                        echo "<option value='" . trim($row['saree_parts']) . "' data-id='" . $row['id'] . "'> </option>";
+                                                    }
+                                                    ?>
+                                                </datalist>
+                                                <input type="hidden" name="saree_union2[]" id="saree_union2">
+                                                <input type="text" name="reff_id[]" id="reff_id">
+                                            </td>
+                                            <!--  -->
+                                            <td>
                                                 <input class="form-control" type="text" name="yard2[]" id="yard2">
-                                                </td>
-                                                <td>
+                                            </td>
+                                            <td>
                                                 <input class="form-control" type="text" name="no_saree2[]" id="no_saree2">
-                                                </td>
-                                                <td>
+                                            </td>
+                                            <td>
                                                 <input class="form-control" type="text" name="muzham2[]" id="muzham2">
-                                                </td>
-                                                <td>
+                                            </td>
+                                            <td>
                                                 <input class="form-control" type="text" name="one_section2[]" id="one_section2">
-                                                </td>
-                                                <td>
+                                            </td>
+                                            <td>
                                                 <input class="form-control" type="text" name="s_count2[]" id="s_count2">
-                                                </td>
-                                                <!--  -->
-                                                <td>
+                                            </td>
+                                            <!--  -->
+                                            <td>
                                                 <input readonly onkeypress='handleEnterKey(event, "section2")' type="text" name="ply2[]" id="ply2">
-                                                </td>
-                                                <td>
+                                            </td>
+                                            <td>
                                                 <input readonly onkeypress='handleEnterKey(event, "wght2")' type="text" class="section2" name="section2[]" id="section2">
-                                                </td>
-                                                <td>
-                                                <input class="form-control text-primary fw-bold section3"required oninput="minus_inputs1()"  onkeypress='handleEnterKey(event, "wght3")' type="text" name="section3[]" id="section3">
-                                                </td>
-                                                <td>
+                                            </td>
+                                            <td>
+                                                <input class="form-control text-primary fw-bold section3" required oninput="minus_inputs1()" onkeypress='handleEnterKey(event, "wght3")' type="text" name="section3[]" id="section3">
+                                            </td>
+                                            <td>
                                                 <input readonly onkeypress='handleEnterKey(event, "wght2")' type="text" class="section4" name="section4[]" id="section4">
-                                                </td>
-                                                <td>
+                                            </td>
+                                            <td>
                                                 <input readonly onkeypress='handleEnterKey(event, "row_ok")' type="number" class="wght2" name="wght2[]" id="wght2">
-                                                </td>
-                                                <td>
-                                                <input class="form-control text-primary fw-bold wght3"required oninput="minus_inputs2()" onkeypress='handleEnterKey(event, "save")' type="number" name="wght3[]" id="wght3">
-                                                </td>
-                                                <td>
+                                            </td>
+                                            <td>
+                                                <input class="form-control text-primary fw-bold wght3" required oninput="minus_inputs2()" onkeypress='handleEnterKey(event, "save")' type="number" name="wght3[]" id="wght3">
+                                            </td>
+                                            <td>
                                                 <input readonly onkeypress='handleEnterKey(event, "row_ok")' type="number" class="wght4" name="wght4[]" id="wght4">
-                                                </td>
-                                                <!-- <td>
+                                            </td>
+                                            <!-- <td>
                                                   <button id="row_delete" class="btn btn-danger" type="button">x</button>
                                                 </td> -->
-                                            </tr>
-                                        </tbody>
-                                 </table>                                                                    
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                                 
-                                         
-                                      <div class="buttonss mt-3">
-                                    <!-- <button type="button" >Save</button> -->
-                                    <button  id="save" class="btn btn-primary"type="submit">Save</button>
-                                    <button type="button" onclick="location.reload()">New</button>
-                                    <button type="button" id="home">Home</button>
-                                 </div>
-                                </div>
-                         
-                     </form>
-                 </div>
-                 <!-- attach form container here ends -->
-             </div>
-         </div>
-         <!-- /#page-content-wrapper ends-->
-     </div>
-     <!-- footer starts -->
-     <?php
-        include_once "main/footer.php";
-        ?>
-     <!-- footer ends -->
 
-     <!-- attach form js code here  -->
-     <script src="js/separation_ret.js"></script>
-     <script src="js/date_time.js"></script>
-    
-     <!-- attach form js code here  -->
- </body>
 
- </html>
+                            <div class="buttonss mt-3">
+                                <!-- <button type="button" >Save</button> -->
+                                <button id="save" class="btn btn-primary" type="submit">Save</button>
+                                <button type="button" onclick="location.reload()">New</button>
+                                <button type="button" id="home">Home</button>
+                            </div>
+                        </div>
+
+            </form>
+        </div>
+        <!-- attach form container here ends -->
+    </div>
+    </div>
+    <!-- /#page-content-wrapper ends-->
+    </div>
+    <!-- footer starts -->
+    <?php
+    include_once "main/footer.php";
+    ?>
+    <!-- footer ends -->
+
+    <!-- attach form js code here  -->
+    <script src="js/separation_ret.js"></script>
+    <script src="js/date_time.js"></script>
+
+    <!-- attach form js code here  -->
+</body>
+
+</html>

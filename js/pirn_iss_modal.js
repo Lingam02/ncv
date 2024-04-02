@@ -5,19 +5,23 @@ document.getElementById("itemopb_bobinqty").addEventListener('change', function(
     for (let i = 1; i < numrows; i++) {
       addRow();
     }
-
-    showModal();
-});
-
-document.getElementById("box_qty").addEventListener('change', function() {
-    var numrows = document.getElementById("box_qty").value;
+    // var numrows2 = document.getElementById("box_qty").value;
     deleteRowsExceptLast2();
     for (let i = 1; i < numrows; i++) {
       addRow2();
     }
+    showModal();
+});
+
+// document.getElementById("box_qty").addEventListener('change', function() {
+//     var numrows = document.getElementById("box_qty").value;
+//     deleteRowsExceptLast2();
+//     for (let i = 1; i < numrows; i++) {
+//       addRow2();
+//     }
 
    
-});
+// });
 
 
 /* ------------------------------------------------------------------------------------------------------------------------------  */

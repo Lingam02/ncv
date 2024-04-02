@@ -87,7 +87,8 @@ function funfetch2() {
         const lastRow = table.rows[table.rows.length - 1]; // Get the last row
 
         // Populate the last row with your data
-        lastRow.querySelector("[name='bobins[]']").value = invoice.bobin_id;
+        lastRow.querySelector("[name='bobins_id[]']").value = invoice.bobin_id;
+        lastRow.querySelector("[name='bobins[]']").value = invoice.bobin_no;
         lastRow.querySelector("[name='wghts[]']").value = 0;
 
         if (index < maxrec - 1) {
@@ -119,13 +120,15 @@ function funfetch3() {
       }
 
       work.forEach(function (invoice, index) {
+        console.log(invoice);
         const table = document.getElementById("modaltable2"); // Replace with your table ID
         const lastRow = table.rows[table.rows.length - 1]; // Get the last row
 
         // Populate the last row with your data
         lastRow.querySelector("[name='boxes[]']").value = invoice.box_no;
-        lastRow.querySelector("[name='p_nos[]']").value = 20;
+        lastRow.querySelector("[name='p_nos[]']").value = 0;
         lastRow.querySelector("[name='colors[]']").value = invoice.box_col_nam;
+        lastRow.querySelector("[name='p_wghts[]']").value = 0;
 
         if (index < maxrec - 1) {
           addRow2();

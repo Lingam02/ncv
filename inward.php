@@ -336,7 +336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               </select>
                             </td>
                             <td colspan="4">
-                              <input type="number" class="form-control" required onkeypress="handleEnterKey(event,'warp_wghts')" id="no_of_warp" name="no_of_warp" placeholder="ENTER NO OF WARP">
+                              <input type="number" oninput="limitDecimal(this, 2)" class="form-control" required onkeypress="handleEnterKey(event,'warp_wghts')" id="no_of_warp" name="no_of_warp" placeholder="ENTER NO OF WARP">
 
                             </td>
                           </tr>
@@ -642,6 +642,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <script src="js/inward.js?<?php echo filemtime('js/inward.js'); ?>"></script>
   <script src="js/warp_det_display.js?<?php echo filemtime('js/warp_det_display.js'); ?>"></script>
   <script src="js/date_time.js?<?php echo filemtime('js/date_time.js'); ?>"></script>
+  <script src="js/limit_num_digit.js?<?php echo filemtime('js/limit_num_digit.js'); ?>"></script>
   <script src="//code.jquery.com/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <!-- attach form js code here  -->

@@ -78,7 +78,7 @@ function funfetch2() {
         const lastRow = table.rows[table.rows.length - 1]; // Gmodaltableet the last row
 
         // Populate the last row with your data
-        lastRow.querySelector("[name='bobins[]']").value = invoice.bobin_id;
+        lastRow.querySelector("[name='bobins[]']").value = invoice.bobin_no;
         lastRow.querySelector("[name='items[]']").value = invoice.itm_nam;
         lastRow.querySelector("[name='colors[]']").value = invoice.col_nam;
         // lastRow.querySelector("[name='wept_wghts[]']").value = "";
