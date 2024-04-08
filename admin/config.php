@@ -6,7 +6,7 @@
 // $user = "root"; /* User */
 // //$user = "admin"; /* User */
 // $password = ""; /* Password */
-// $dbname = "ncv24"; /* Database name */
+// $dbname = "ncv"; /* Database name */
 // //$dbname = "pcw"; /* Database name */
 // $con = mysqli_connect($host, $user, $password,$dbname);
 // // Check connection

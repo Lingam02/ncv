@@ -2,10 +2,17 @@ body {
     font-family: Arial, sans-serif;
     background-color: #7ab1f0;
   }
+/* Increase checkbox size */
+input[type="checkbox"] {
+  transform: scale(1.6); /* Increase the size by scaling */
+  /* Optionally, you can add additional styling */
+  margin-right: 5px; /* Add some space between the checkbox and the text */
+  height:22px !important;
+}
 
-  .container {
+  .container-main {
     max-width: 500px;
-    margin: auto;
+    margin-left:20%;
     padding:0PX 20px;
     background-color: #ffffff;
     border-radius: 5px;
@@ -121,4 +128,77 @@ border-radius:4px;
 }
 .buttons button:hover{
 background-color:#007bff;
+}
+
+
+
+  
+/* CSS styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  right : 0; /* Adjust right position to center on the right side */
+  width: 40%;
+margin-left: auto;
+  background-color: rgba(228, 226, 226, 0.7);
+  z-index: 1;
+}
+
+.modal-content {
+  background-color: #fff;
+  position: absolute;
+  top: 20%;
+  right: 5%; /* Center horizontally on the right side */
+  transform: translate(0, -50%); /* Vertically center the modal content */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  max-height: 80%;
+  width: 90%;
+  /* Set a maximum height for the modal content */
+  overflow-y: auto;
+  /* Enable vertical scrollbar if needed */
+}
+
+.modal label{
+  background-color: yellowgreen;
+  border-radius: 50%;
+  padding: 8px;
+  color:#fff;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.modal input[type="text"] {
+  border: 1px solid #000;
+  margin: 5px;
+  height: 30px !important;
+  /* width: 15vw; */
+  padding: 5px;
+  color:blue;
+
+}
+.modal input[type="number"] {
+  border: 1px solid #000;
+  margin: 5px;
+  height: 32px !important;
+  /* width: 15vw; */
+  padding: 5px;
+  color:blue;
+
+}
+.modal input[type="submit"] {
+  background-color: #003985;
+  color: #fff;
+  padding: 5px;
+  margin-top: 10px;
 }
