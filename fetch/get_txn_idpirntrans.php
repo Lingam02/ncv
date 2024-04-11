@@ -8,7 +8,7 @@ if(isset($_POST['box_col_nam'])) {
     $box_col_nam = mysqli_real_escape_string($con, $_POST['box_col_nam']);
 
     // Construct the SQL query to retrieve data based on the selected box_col_nam
-    $query = "SELECT * FROM bobin_trans WHERE box_col_nam = ? AND txn_type = 'PIRN_RET'";
+    $query = "SELECT * FROM bobin_trans WHERE box_col_nam = ? AND txn_type = 'PIRN_RET'AND is_transfered = 0";
     $stmt = $con->prepare($query);
 
     // Bind the parameter
