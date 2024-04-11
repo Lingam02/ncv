@@ -1,32 +1,43 @@
 <?php
-
-// include "../config.php";
-// $id = $_POST['id'];
-// $query = "SELECT * FROM sep WHERE loom_id = '" . $id . "'";
-// $result = $con->query($query);
-
-// $cust = mysqli_fetch_array($result);
-// if($cust) {
-// echo json_encode($cust);
-// } else {
-// echo "Error: " . $sql . "" . mysqli_error($con);
-// }
-
+// Include your database configuration file
 include "../config.php";
-$id = $_POST['id'];
-// $query = "SELECT * FROM bobin_trans WHERE reff_id = '" . $id . "'";
-$query = "SELECT * FROM bobin_trans WHERE reff_id = $id AND txn_type ='PIRN_RET'";
 
-$result = mysqli_query($con,$query);
-$invdet = array(); // Initialize an empty array to store the data
+// Check if the box_col_nam parameter is set in the POST request
+if(isset($_POST['box_col_nam'])) {
+    // Sanitize the input
+    $box_col_nam = mysqli_real_escape_string($con, $_POST['box_col_nam']);
 
-while ($row = mysqli_fetch_assoc($result)) {
-    // Add each row to the $invdet array
-    $invdet[] = $row;
-}
+    // Construct the SQL query to retrieve data based on the selected box_col_nam
+    $query = "SELECT * FROM bobin_trans WHERE box_col_nam = ? AND txn_type = 'PIRN_RET'";
+    $stmt = $con->prepare($query);
 
-if (!empty($invdet)) {
-    echo json_encode($invdet);
+    // Bind the parameter
+    $stmt->bind_param("s", $box_col_nam);
+
+    // Execute the prepared statement
+    $stmt->execute();
+
+    // Get the result set
+    $result = $stmt->get_result();
+
+    // Initialize an empty array to store the retrieved data
+    $data = array();
+
+    // Loop through the result set and fetch the data
+    while($row = $result->fetch_assoc()) {
+        // Add each row to the $data array
+        $data[] = $row;
+    }
+
+    // Close the prepared statement
+    $stmt->close();
+
+    // Send the JSON response containing the retrieved data
+    header('Content-Type: application/json');
+    echo json_encode($data);
 } else {
-    echo "No data found"; // Modify the message as needed
+    // If box_col_nam parameter is not set, send an error response
+    header('HTTP/1.1 400 Bad Request');
+    echo "Error: Missing parameter box_col_nam";
 }
+?>

@@ -26,53 +26,86 @@ box.addEventListener('change', function (event) {
     console.log("txn id-->",selectedid);
     console.log("box id-->",selectedAcid);
     console.log("box value-->",box.value);
-    funfetch3();
+    // funfetch3();
+    retrieveData();
 });
   
+function retrieveData() {
+  // Get the selected value from the input field
+  var selectedValue = document.getElementById("box").value;
 
-
-function funfetch3() {
-  var id = document.getElementById("hidden_txn_id").value;
- console.log(id);
-
+  // Make AJAX request to retrieve data based on the selected value
   $.ajax({
-    url: 'fetch/get_txn_idpirntrans.php',
-    method: 'POST',
-    data: { id: id },
-    dataType: 'json',
-    success: function (work) {
-      console.table('txn_id',work);
-      const tableBody = document.getElementById("tbody");
-      const maxrec = work.length;
-      
-      // Remove all rows except the last one
-      while (tableBody.rows.length > 1) {
-        tableBody.deleteRow(0);
-      }
+    url: 'fetch/get_txn_idpirntrans.php', // Assuming this is the endpoint to retrieve data from the database
+    method: "POST",
+    data: { box_col_nam: selectedValue },
+    success: function(data) {
+      // Clear the existing table rows
+      $("#tbody").empty();
 
-      work.forEach(function (invoice, index) {
-        console.log(invoice);
-        const table = document.getElementById("modaltable"); // Replace with your table ID
-        const lastRow = table.rows[table.rows.length - 1]; // Get the last row
-
-        // Populate the last row with your data
-        lastRow.querySelector("[name='box_nos[]']").value = invoice.box_no;
-        lastRow.querySelector("[name='items[]']").value = 0;
-        lastRow.querySelector("[name='colors[]']").value = invoice.box_col_nam;
-        lastRow.querySelector("[name='wghts[]']").value = 0;
-        lastRow.querySelector("[name='hide_id[]']").value = invoice.id;
-
-        if (index < maxrec - 1) {
-          addRow();
-          showModal();
-        //  calculateTotalSum2();
-        }
+      // Append new table rows with retrieved data
+      data.forEach(function(row) {
+        var newRow = '<tr>' +
+          '<td><input style="width: 70px;" class="form-control" type="text" name="box_nos[]" value="' + row.box_no + '" readonly></td>' +
+          '<td style="display: none;"><input class="form-control" type="text" name="items[]" value="' + row.itm_nam + '" readonly id="itemsInput"></td>' +
+          '<td><input class="form-control" type="text" name="colors[]" value="' + row.box_col_nam + '" readonly id="colorsInput"></td>' +
+          '<td style="display: none;"><input style="width: 70px;" class="form-control" type="number" name="wghts[]" value="' + row.box_col_id + '" onclick="this.select()" required></td>' +
+          '<td><input class="form-control"checked type="checkbox" name="enablepost[]">' +
+          '<input class="form-control" type="hidden" name="hide_id[]" value="' + row.id + '">' +
+          '</td>' +
+          '</tr>';
+        $("#tbody").append(newRow);
+        showModal();
       });
+    },
+    error: function(xhr, status, error) {
+      console.error("AJAX request failed:", status, error);
     }
-    
   });
-  
 }
+
+// function funfetch3() {
+//   var box_col_nam = document.getElementById("box").value;
+//  console.log(box_col_nam);
+
+//   $.ajax({
+//     url: 'fetch/get_txn_idpirntrans.php',
+//     method: 'POST',
+//     data: { box_col_nam: box_col_nam },
+//     dataType: 'json',
+//     success: function (work) {
+//       console.table('txn_id',work);
+//       // const tableBody = document.getElementById("tbody");
+//       // const maxrec = work.length;
+      
+//       // // Remove all rows except the last one
+//       // while (tableBody.rows.length > 1) {
+//       //   tableBody.deleteRow(0);
+//       // }
+
+//       // work.forEach(function (invoice, index) {
+//       //   console.log(invoice);
+//       //   const table = document.getElementById("modaltable"); // Replace with your table ID
+//       //   const lastRow = table.rows[table.rows.length - 1]; // Get the last row
+
+//       //   // Populate the last row with your data
+//       //   lastRow.querySelector("[name='box_nos[]']").value = invoice.box_no;
+//       //   lastRow.querySelector("[name='items[]']").value = 0;
+//       //   lastRow.querySelector("[name='colors[]']").value = invoice.box_col_nam;
+//       //   lastRow.querySelector("[name='wghts[]']").value = 0;
+//       //   // lastRow.querySelector("[name='hide_id[]']").value = invoice.id;
+
+//       //   if (index < maxrec - 1) {
+//       //     addRow();
+//       //     showModal();
+//       //   //  calculateTotalSum2();
+//       //   }
+//       // });
+//     }
+    
+//   });
+  
+// }
 
 function addRow() {
   const tableBody = document.getElementById("tbody");
@@ -128,13 +161,13 @@ function addRow() {
     document.getElementById('selecteditem').value=selectedItems;
   });
 
-  var selectColor = document.getElementById('col_nam');
-  var hiddenColor = document.getElementById('selectedcolor');
-  selectColor.addEventListener('change', function() {
-    var selectedColors = selectColor.options[selectColor.selectedIndex].text;
-    console.log(selectedColors);
-    document.getElementById('selectedcolor').value=selectedColors;
-  });
+  // var selectColor = document.getElementById('col_nam');
+  // var hiddenColor = document.getElementById('selectedcolor');
+  // selectColor.addEventListener('change', function() {
+  //   var selectedColors = selectColor.options[selectColor.selectedIndex].text;
+  //   console.log(selectedColors);
+  //   document.getElementById('selectedcolor').value=selectedColors;
+  // });
 
   var selectzari = document.getElementById('zari_nam');
   var hiddenzari= document.getElementById('selectedzari');

@@ -51,6 +51,7 @@ function getbobin_id(rid){
   const rrow = rid.closest("tr");
   const rowname = rrow.querySelector("[name='bobins[]']");
   const rowid = rrow.querySelector("[name='hidden_bobin_id[]']");
+  const reff_id = rrow.querySelector("[name='hidden_reff_id[]']");
   const datalistOptions = document.getElementById('bobin_options');
   
   const options = datalistOptions.getElementsByTagName('option');
@@ -60,15 +61,59 @@ function getbobin_id(rid){
 
         if (optionValue === rowname.value) {
             var selectedAcid = option.getAttribute('data-acid'); // Assign value to selectedAcid
+            var selectedAcid2 = option.getAttribute('data-acid2'); // Assign value to selectedAcid
 
            rowid.value = selectedAcid;
+           reff_id.value = selectedAcid2;
           // console.log(selectedAcid);
             break;
         }
     }
     console.log('value',rowname.value);
     console.log('value id',selectedAcid);
+    console.log('value reff_id',selectedAcid2);
+    bobin_det(rid);
 }
+function bobin_det(rid) {
+  const rrow = rid.closest("tr");
+  const rowid = rrow.querySelector("[name='hidden_bobin_id[]']").value;
+  var id = rowid;
+  console.log('idididi',id);
+
+  // Make AJAX request
+  $.ajax({
+    url: 'fetch/get_bobin_id_det.php',
+    method: "POST",
+    data: { id: id },
+    success: function(data) {
+      try {
+        // Assuming data is an array with one object
+        console.log("Received data:", data);
+        if (data.length > 0) { // Check if data array is not empty
+          console.log("Received col_nam:", data[0].col_nam); // Access col_nam property of the first object
+    
+          // Set the value of the element named 'color_display[]'
+          rrow.querySelector("[name='color_display[]']").value = data[0].nam;
+        } else {
+          console.error("No data found");
+        }
+      } catch (error) {
+        console.error("Error parsing or processing data:", error);
+      }
+    },
+    
+    
+    
+    error: function(xhr, status, error) {
+      console.error("AJAX request failed:", status, error);
+    }
+  });
+}
+
+
+
+
+
       // Get the necessary elements
       var selectElement = document.getElementById('workname');
       var hiddenInput = document.getElementById('selectedName');

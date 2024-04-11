@@ -9,9 +9,10 @@ if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
 }
 
 if (isset($_POST['submit'])) {
+  print_r($_POST);
   // Retrieve data from POST
-  $wevname = $_POST['wevname'];
-  $loomnam = $_POST['loomnam'];
+  $wevname = $_POST['selectedName'];
+  $loomnam = $_POST['selectedunit'];
   $silk_nam = $_POST['silk_nam'];
   $zari_nam = $_POST['zari_nam'];
   $hidden_box_id = $_POST['hidden_box_id'];
@@ -26,7 +27,7 @@ if (isset($_POST['submit'])) {
   $silk_wght = $_POST['silk_wght'];
   $particulars = $_POST['particulars'];
   $fromid = $_POST['fromloc'];
-  $fromname = $_POST['fromloc'];
+  $fromname = $_POST['selectedloc'];
   $tnx_type = 'wev_iss';
 
   // Insert into 'wev_usage' table
@@ -35,12 +36,13 @@ if (isset($_POST['submit'])) {
         `work_progress`, `cmp_id`,`particulars`,`from_id`, `from_name`,`box_id`,`box_no`) 
         VALUES (CURRENT_DATE(),'ISS','$loomid','$loomnam','$wevid', '$wevname', '$jari_qty','$jari_wght',
         '$jari_id','$zari_nam','$silk_id','$silk_nam','$silk_qty','$silk_wght','1','1','$particulars',
-        '$fromname','$fromid','$hidden_box_id','$box')";
+        '$fromid','$fromname','$hidden_box_id','$box')";
 
   $result = $con->query($sql);
 
   if ($result === TRUE) {
     // Get the last inserted ID
+    echo "wev_usage inserted <br>";
     $last_id = $con->insert_id;
 
     // Retrieve posted data
@@ -51,6 +53,7 @@ if (isset($_POST['submit'])) {
     $hide_id = $_POST['hide_id'];
     $enablepost = $_POST['enablepost']; // Array of checkboxes
     $reff_id = $_POST['hidden_txn_id'];
+    // $tru = 1;
 
     // Insert data into 'wever_details' table
     $stmt = $con->prepare("INSERT INTO weaver_detail (hd_id, tnx_type, reff_id, box_no, box_item, box_color, box_weight) 
@@ -60,24 +63,23 @@ if (isset($_POST['submit'])) {
     $stmt->bind_param("isssssd", $last_id, $tnx_type, $reff_id, $boxId, $boxItem, $boxColor, $boxWeight);
 
     // Loop through the checked rows and insert data into 'wever_details' table
-    for ($i = 0; $i < count($boxIds); $i++) {
-      if (!empty($enablepost[$i])) { // Check if checkbox is checked
-        $boxId = $boxIds[$i];
-        $boxItem = $items[$i];
-        $boxColor = $colors[$i];
-        $boxWeight = $weights[$i];
-        $stmt->execute();
+for ($i = 0; $i < count($boxIds); $i++) {
+  if (!empty($enablepost[$i])) { // Check if checkbox is checked
+    $boxId = $boxIds[$i];
+    $boxItem = $items[$i];
+    $boxColor = $colors[$i];
+    $boxWeight = $weights[$i];
+    $stmt->execute();
 
-        // Update bobin_trans table
-        $sqlUpdate = "UPDATE `bobin_trans`
-                            SET `is_tranfered` = '1'
-                            WHERE `reff_id` = $reff_id AND `id` = $hide_id[$i]";
-        $resultUpdate = $con->query($sqlUpdate);
-        if ($resultUpdate !== TRUE) {
-          echo "Error updating record: " . $con->error;
-        }
-      }
-    }
+    $sqlUpdate = "UPDATE `bobin_trans`
+    SET `is_transfered` = 1
+    WHERE `id` = " . $hide_id[$i];
+
+    // Execute the update query
+    $con->query($sqlUpdate);
+  }
+}
+
     // Close prepared statement
     $stmt->close();
     header("Location: weaverissue.php");
@@ -176,16 +178,28 @@ if (isset($_POST['Log-out'])) {
         </div>
 
         <div class="form-group">
-          <label for="silk_nam">Box:</label>
-          <input type="text" list="box_nos" name="box" id="box" class="form-control" placeholder="Select Box no">
+          <label for="silk_nam">Colour:</label>
+          <!-- <input type="text" list="box_nos" name="box" id="box" class="form-control" placeholder="Select Colour">
           <datalist id="box_nos">
             <?php
-            $sql = mysqli_query($con, "SELECT * FROM bobin_trans WHERE txn_type = 'PIRN_RET' and is_transfered = 0 ");
-            while ($row = $sql->fetch_assoc()) {
-              echo "<option class='text-uppercase' value='" . $row['box_no'] . "' data-acid='" . $row['id'] . "' data-id='" . $row['reff_id'] . "'></option>";
-            }
+            // $sql = mysqli_query($con, "SELECT DISTINCT * FROM bobin_trans WHERE txn_type = 'PIRN_RET' AND is_transfered = 0");
+            // while ($row = $sql->fetch_assoc()) {
+            //   echo "<option class='text-uppercase' value='" . $row['box_col_nam'] . "' data-acid='" . $row['id'] . "' data-id='" . $row['reff_id'] . "'></option>";
+            // }
             ?>
-          </datalist>
+          </datalist> -->
+          <input type="text" list="box_nos" name="box" id="box" class="form-control" placeholder="Select Colour" value="<?php $id = ''; echo htmlspecialchars($id); ?>">
+<datalist id="box_nos">
+  <?php
+  $sql = mysqli_query($con, "SELECT DISTINCT box_col_nam, id, reff_id FROM bobin_trans WHERE txn_type = 'PIRN_RET' AND is_transfered = 0");
+  while ($row = $sql->fetch_assoc()) {
+    echo "<option class='text-uppercase' value='" . htmlspecialchars($row['box_col_nam']) . "' data-acid='" . htmlspecialchars($row['id']) . "' data-id='" . htmlspecialchars($row['reff_id']) . "'></option>";
+  }
+  ?>
+</datalist>
+
+
+
           <input type="hidden" id="hidden_box_id" name="hidden_box_id">
           <input type="hidden" id="hidden_txn_id" name="hidden_txn_id">
         </div>
@@ -259,22 +273,22 @@ if (isset($_POST['Log-out'])) {
       <br>
       <!-- MODAL STARTS -->
       <div id="modal_bobin" class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <p class="heading_modal"></p>
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p class="heading_modal"></p>
 
-          <div id="inputContainer">
-            <table id="modaltable">
-              <thead>
-                <tr>
-                  <th>Box No</th>
-                  <th>Box items</th>
-                  <th>Box colours</th>
-                  <th>Box Wght</th>
-                </tr>
-              </thead>
-              <tbody id="tbody">
-                <tr>
+        <div id="inputContainer">
+          <table id="modaltable">
+            <thead>
+              <tr>
+                <th>Box No</th>
+                <!-- <th>Box items</th> -->
+                <th>Box colours</th>
+                <!-- <th>Box Wght</th> -->
+              </tr>
+            </thead>
+            <tbody id="tbody">
+              <!-- <tr>
                   <td><input style="width: 70px;" class="form-control" type="text" name="box_nos[]" value="" readonly></td>
                   <td><input class="form-control" type="text" name="items[]" value="" readonly id="itemsInput"></td>
                   <td><input class="form-control" type="text" name="colors[]" value="" readonly id="colorsInput"></td>
@@ -282,13 +296,15 @@ if (isset($_POST['Log-out'])) {
                   <td><input class="form-control" type="checkbox" name="enablepost[]">
                     <input class="form-control" type="hidden" name="hide_id[]">
                   </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- <button onclick="postData()">Post Data</button> -->
+                </tr> -->
+             
 
+            </tbody>
+          </table>
         </div>
+        <!-- <button onclick="postData()">Post Data</button> -->
+
+      </div>
       </div>
       <!-- MODAL ENDS -->
       <div class="form-group buttons">
@@ -309,7 +325,7 @@ if (isset($_POST['Log-out'])) {
   </form>
 
   <script src="js/weave.js"></script>
-  <script src="js/date_time.js"></script>
+  <!-- <script src="js/date_time.js"></script> -->
   <script src="//code.jquery.com/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </body>

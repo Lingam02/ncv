@@ -165,7 +165,7 @@ if (isset($_POST['save'])) {
               <thead>
                 <tr>
                   <th>Bobin Id</th>
-                  <!-- <th>Item Wght</th> -->
+                  <th>Colour</th>
                 </tr>
               </thead>
               <tbody id="tbody">
@@ -174,12 +174,12 @@ if (isset($_POST['save'])) {
                     <input required type="text" class="form-control" list="bobin_options" name="bobins[]" class='text-uppercase' placeholder="Type to select category..." onchange="getbobin_id(this)">
                     <datalist id="bobin_options">
                       <?php
-                      $sql = "SELECT bobin_id, id FROM bobin ORDER BY bobin_id";
+                      $sql = "SELECT * FROM bobin_trans WHERE txn_type = 'ISS'";
                       $result = $con->query($sql);
 
                       if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
-                          echo "<option class='text-uppercase' value='" . $row['bobin_id'] . "' data-acid='" . $row['id'] . "'></option>";
+                          echo "<option class='text-uppercase' value='" . htmlspecialchars($row['bobin_no'], ENT_QUOTES) . "' data-acid='" . htmlspecialchars($row['id'], ENT_QUOTES) . "' data-acid2='" . htmlspecialchars($row['reff_id'], ENT_QUOTES) . "'></option>";
                         }
                       }
                       ?>
@@ -187,8 +187,14 @@ if (isset($_POST['save'])) {
 
 
                   </td>
+                  <td>
+                    <input type="text" class="form-control" name="color_display[]">
+                  </td>
                   <td style="display:none;">
                     <input type="hidden" class="form-control" name="hidden_bobin_id[]">
+                  </td>
+                  <td style="display:none;">
+                    <input type="text" class="form-control" name="hidden_reff_id[]">
                   </td>
                 </tr>
               </tbody>
@@ -241,6 +247,7 @@ if (isset($_POST['save'])) {
                   <td style="display:none;">
                     <input type="text" class="form-control" name="hidden_colorid[]">
                   </td>
+                  
                 </tr>
               </tbody>
             </table>
