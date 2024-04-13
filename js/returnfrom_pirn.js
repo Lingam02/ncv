@@ -63,7 +63,7 @@ success: function (work) {
 
 function funfetch2() {
   var id = document.getElementById("workname").value;
- // console.log(id);
+ console.log('f2',id);
 
   $.ajax({
     url: 'fetch_pirnret2.php',
@@ -88,6 +88,7 @@ function funfetch2() {
 
         // Populate the last row with your data
         lastRow.querySelector("[name='bobins_id[]']").value = invoice.bobin_id;
+        lastRow.querySelector("[name='bobins_emty[]']").value = invoice.empty_wt;
         lastRow.querySelector("[name='bobins[]']").value = invoice.bobin_no;
         lastRow.querySelector("[name='wghts[]']").value = 0;
 
@@ -128,6 +129,7 @@ function funfetch3() {
         lastRow.querySelector("[name='boxes[]']").value = invoice.box_no;
         lastRow.querySelector("[name='p_nos[]']").value = 0;
         lastRow.querySelector("[name='colors[]']").value = invoice.box_col_nam;
+        lastRow.querySelector("[name='box_empty[]']").value = invoice.empty_wght;
         lastRow.querySelector("[name='p_wghts[]']").value = 0;
 
         if (index < maxrec - 1) {

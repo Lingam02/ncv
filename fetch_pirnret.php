@@ -2,7 +2,10 @@
 include "config.php";
 $id = $_POST['id'];
 // $query = "SELECT * FROM bobin_trans WHERE reff_id = '" . $id . "'";
-$query = "SELECT * FROM bobin_trans WHERE reff_id = $id AND txn_type = 'PIRN_ISS';";
+// $query = "SELECT * FROM bobin_trans WHERE reff_id = $id AND txn_type = 'PIRN_ISS';";
+$query = "SELECT p.empty_wght,bt.* FROM pirn_box p
+INNER JOIN bobin_trans bt ON p.id = bt.box_id 
+ WHERE reff_id = $id AND txn_type = 'PIRN_ISS';";
 
 $result = mysqli_query($con,$query);
 $invdet = array(); // Initialize an empty array to store the data

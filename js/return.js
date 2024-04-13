@@ -29,7 +29,7 @@ fromlocto.addEventListener('change', function (event) {
 
 function funfetch() {
   var id = document.getElementById("workname").value;
-  //console.log(id);
+  console.log(id);
 
   $.ajax({
     url: 'fetch.php',
@@ -55,7 +55,7 @@ function funfetch() {
 
 function funfetch2() {
   var id = document.getElementById("workname").value;
-  //console.log(id);
+  console.log(id);
 
   $.ajax({
     url: 'bobinfetch.php',
@@ -76,12 +76,13 @@ function funfetch2() {
 
         const table = document.getElementById("modaltable"); // Replace with your table ID
         const lastRow = table.rows[table.rows.length - 1]; // Gmodaltableet the last row
-
+console.log(invoice);
         // Populate the last row with your data
+        lastRow.querySelector("[name='hidden_trans_id[]']").value = invoice.id;
         lastRow.querySelector("[name='bobins[]']").value = invoice.bobin_no;
         lastRow.querySelector("[name='items[]']").value = invoice.itm_nam;
         lastRow.querySelector("[name='colors[]']").value = invoice.col_nam;
-        // lastRow.querySelector("[name='wept_wghts[]']").value = "";
+       
 
         if (index < maxrec - 1) {
           addRow();

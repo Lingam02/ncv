@@ -93,7 +93,9 @@ if (isset($_POST['save'])) {
 </head>
 
 <body>
-
+<?php
+    include_once "main/nav.php";
+    ?>
   <div class="container">
     <h2>Transfer from Bobin to Pirn</h2><br>
     <form action="" method="post" autocomplete="off">

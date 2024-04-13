@@ -1,34 +1,26 @@
 <?php
 include "config.php";
 
-
- // Check if 'uname' session variable is not set or empty
- if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
+// Check if 'uname' session variable is not set or empty
+if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
   // Redirect to the login page
   header("Location: index.php");
   exit(); // Ensure that code stops executing after the redirect
 }
 
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 if (isset($_POST['save'])) {
-   
-date_default_timezone_set('Asia/Kolkata'); // Set the timezone to Indian Standard Time
-
-$currentDateTime = date('Y-m-d H:i:s'); // Format: Year-Month-Day Hours:Minutes:Seconds
-
-//echo "Current date and time in Indian Standard Time: " . $currentDateTime;
-
+  // Retrieve POST data
+  $page_date = $_POST['page_date'];
   $id = $_POST['workname'];
-  //$clb = $_POST['returnweight'];
-  //$finish_qty = $_POST['bobin_qty'];
   $finish_wght = $_POST['ttlweight'];
-
+  $hidden_trans_id = $_POST['hidden_trans_id'];
   $bobins = $_POST['bobins'];
   $wghts = $_POST['wghts'];
-  $finish_qty =$_POST['bobin_qty'];
-  date_default_timezone_set("Asia/Kolkata"); // Set the timezone to Asia/Kolkata
-  $finish_date = date("Y-m-d H:i:s"); // Generate the current date and time in the specified format
-
+  $finish_qty = $_POST['bobin_qty'];
   $items = $_POST["items"];
   $colors = $_POST['colors'];
   $ret_weight = $_POST['bln_wght_hnd'];
@@ -36,29 +28,36 @@ $currentDateTime = date('Y-m-d H:i:s'); // Format: Year-Month-Day Hours:Minutes:
   $dept_id = $_POST['hidden_fromlocto'];
   $dept = $_POST['fromlocto'];
 
-  $sql = "UPDATE `work_progress` SET  `work_prog`=0,`from_name_ret`='$from_name',`dept_id`='$dept_id',`dept_ret`='$dept', `work_end`=1,`finish_date`='$finish_date', `finish_qty`='$finish_qty', `finish_wght`='$finish_wght' WHERE id='$id'";
-
+  // Update work_progress table
+  $sql = "UPDATE `work_progress` SET `work_prog`=0, `from_name_ret`='$from_name', `dept_id`='$dept_id', `dept_ret`='$dept', `work_end`=1, `finish_date`='$page_date', `finish_qty`='$finish_qty', `finish_wght`='$finish_wght' WHERE id='$id'";
   if ($con->query($sql) === TRUE) {
-    // Success: You can perform any additional actions if needed
-    for ($key = 0; $key < count($bobins); $key++) {
-      if ($bobins[$key] !== "" && $wghts[$key] > 0) { // Corrected variable name 'amts' to 'wghts'
+    // Loop through hidden_trans_id array
+    foreach ($hidden_trans_id as $key => $ids) {
+      // Check if bobin and weight are not empty and weight is greater than 0
+      if (!empty($bobins[$key]) && isset($wghts[$key]) && $wghts[$key] > 0) {
+        // Retrieve item, color, and txn_type
         $bobin = $bobins[$key];
-        $wght = $wghts[$key];
         $item = $items[$key];
         $color = $colors[$key];
-        
+        $ret_wght = $wghts[$key];
         $txn_type = "RET";
-        $sql = "UPDATE `bobin_trans` SET `return_date` = '$currentDateTime', `ret_wghts_withbobin` = '$wght',`itm_nam` = '$item',`col_nam` = '$color',`txn_type` = '$txn_type',`ttl_wght_withbobin`='$finish_wght',`ret_ttl_wght` = '$ret_weight' WHERE `bobin_id` = '$bobin' and `reff_id` = '$id'"; // Add WHERE condition to specify which row to update
-        $con->query($sql); // Execute the SQL query for each bobin
+
+        // Construct the update query
+        $update_sql = "UPDATE `bobin_trans` SET `bobin_ret_date`='$page_date', `itm_nam`='$item', `col_nam`='$color', `txn_type`='$txn_type',`ret_wghts_withbobin`='$ret_weight' WHERE `id`='$ids'";
+
+        // Execute the update query
+        if ($con->query($update_sql) !== TRUE) {
+          echo "Error updating record: " . $con->error;
+        }
       }
     }
-
   } else {
-    echo "Error: " . $sql . "<br>" . $con->error;
+    echo "Error updating work_progress table: " . $con->error;
   }
-
-  $con->close();
   header('Location: rawreturnfrom_bobin.php');
+
+  // Close the database connection
+  $con->close();
   exit(); // Add an exit() after the header redirection.
 }
 
@@ -88,11 +87,15 @@ if (isset($_POST['log-out'])) {
 </head>
 
 <body>
-
+<?php
+    include_once "main/nav.php";
+    ?>
+  
   <div class="form_container">
     <h2>Return From Bobin</h2>
 
     <form action="" method="post" autocomplete="off">
+
       <div class="input-div">
         <label for="workname">Name:</label>
         <select name="workname" id="workname" onchange="funfetch()" class="selectpicker" value="" data-show-subtext="true" data-live-search="true">
@@ -116,10 +119,10 @@ if (isset($_POST['log-out'])) {
         <input list="fromloctos" name="fromlocto" id="fromlocto" class="form-control" placeholder="Select Where" required>
         <datalist id="fromloctos">
           <?php
-            $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores  order by loc_nam");
-            while ($row = $sql->fetch_assoc()) {
-              echo "<option class='text-uppercase' value='" . $row['loc_nam'] . "' data-acid='" . $row['id'] . "'></option>";
-            }
+          $sql = mysqli_query($con, "SELECT id, loc_nam FROM stock_stores  order by loc_nam");
+          while ($row = $sql->fetch_assoc()) {
+            echo "<option class='text-uppercase' value='" . $row['loc_nam'] . "' data-acid='" . $row['id'] . "'></option>";
+          }
           ?>
         </datalist>
       </div>
@@ -142,17 +145,18 @@ if (isset($_POST['log-out'])) {
         </div>
         <div class="column">
           <label for="bln_wght_hnd">Blnc wght inhand</label>
-          <input style="outline:2px solid yellow;" type="number" id="bln_wght_hnd" value="0" name="bln_wght_hnd" onclick="this.select()"  required >
+          <input style="outline:2px solid yellow;" type="number" id="bln_wght_hnd" value="0" name="bln_wght_hnd" onclick="this.select()" required>
         </div>
       </div>
-
+      <input type="hidden" name="page_date" id="page_date">
+      <input type="hidden" name="page_time" id="page_time">
       <div class="input-div">
         <label for="bobin_qty">No of Bobins issued:</label>
         <input class="bgwhite" type="number" id="bobin_qty" name="bobin_qty" readonly>
       </div>
-     <div class="column">
+      <div class="column">
         <label for="ttlweight">Total Bobin Weight:</label>
-        <input type="number" id="ttlweight" name="ttlweight" readonly >
+        <input type="number" id="ttlweight" name="ttlweight" readonly>
       </div>
       <div class="buttons">
         <button type="submit" name="save" value="Save">Save</button>
@@ -182,27 +186,31 @@ if (isset($_POST['log-out'])) {
               </thead>
               <tbody id="tbody">
                 <tr>
-                  <td><input  class="form-control" type="text" name="bobins[]" value=""readonly></td>
-                  <td><input  class="form-control" type="text" name="items[]" value=""readonly id="itemsInput"></td>
-                  <td><input  class="form-control" type="text" name="colors[]" value=""readonly id="colorsInput"></td>
-                  <td><input  class="form-control" type="number" name="wghts[]"onclick="this.select()" required oninput="calculateTotalSum()"></td>
+                  <td><input class="form-control" type="text" name="bobins[]">
+                    <input class="form-control" type="text" name="hidden_trans_id[]">
+                  </td>
+                  <td><input class="form-control" type="text" name="items[]"></td>
+                  <td><input class="form-control" type="text" name="colors[]"></td>
+                  <td><input class="form-control" type="number" name="wghts[]" onclick="this.select()" required oninput="calculateTotalSum()"></td>
                 </tr>
               </tbody>
             </table>
           </div>
+
           <input type="submit" name="save" value="Save">
 
         </div>
       </div>
-       <!-- MODAL ENDS -->
+      <!-- MODAL ENDS -->
     </form>
 
   </div>
 
   <script src="js/return.js"></script>
+  <script src="js/date_time.js"></script>
   <script src="//code.jquery.com/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
- 
+
 
 </body>
 

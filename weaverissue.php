@@ -111,7 +111,9 @@ if (isset($_POST['Log-out'])) {
 </head>
 
 <body>
-
+<?php
+    include_once "main/nav.php";
+    ?>
   <div class="container-main">
     <h2>Weaver Transfer</h2>
 

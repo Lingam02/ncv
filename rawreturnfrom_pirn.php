@@ -108,6 +108,9 @@ if (isset($_POST['log-out'])) {
 </head>
 
 <body>
+<?php
+    include_once "main/nav.php";
+    ?>
   <div class="form_container">
     <h2>Return From Pirn</h2>
 
@@ -181,6 +184,7 @@ if (isset($_POST['log-out'])) {
                 <tr>
                   <th>Bobin Id</th>
 
+                  <th>Bobin Empty Wght</th>
                   <th>Bobin Wght</th>
                 </tr>
               </thead>
@@ -191,8 +195,10 @@ if (isset($_POST['log-out'])) {
                   <input type="hidden" name="bobins_id[]" value="" readonly>  
                   <input type="text" name="bobins[]" value="" readonly>
                 </td>
-                  <!-- <td><input type="text" name="items[]" value=""readonly id="itemsInput"></td>
-                  <td><input type="text" name="colors[]" value=""readonly id="colorsInput"></td> -->
+                  <!-- <td><input type="text" name="items[]" value=""readonly id="itemsInput"></td> -->
+                  <td><input style="width: 100px !important;" type="text" name="bobins_emty[]" readonly></td>
+                    
+
                   <td><input type="number" name="wghts[]" onclick="this.select()" required oninput="calculateTotalSum()"></td>
                 </tr>
               </tbody>
@@ -208,6 +214,7 @@ if (isset($_POST['log-out'])) {
 
                   <th style="width:40%">Colour</th>
                   <th style="width:80px">No of Pirns</th>
+                  <th style="width:80px">Box Empty</th>
                   <th style="width:80px">Weight</th>
                 </tr>
               </thead>
@@ -217,6 +224,8 @@ if (isset($_POST['log-out'])) {
                   <!-- <td><input type="text" name="items[]" value=""readonly id="itemsInput"></td>-->
                   <td><input type="text" name="colors[]" value=""readonly id="colors"></td> 
                   <td><input style="width:80px" type="number" name="p_nos[]" onclick="this.select()" required oninput="calculateTotalSum2()"></td>
+                  <td><input style="width: 100px !important;" type="text" name="box_empty[]" readonly></td>
+                  
                   <td><input style="width:80px" type="number" name="p_wghts[]" onclick="this.select()" required oninput="calculateTotalSum3()"></td>
                 </tr>
               </tbody>

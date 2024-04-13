@@ -17,6 +17,8 @@ if (isset($_POST['save'])) {
 
   //echo "Current date and time in Indian Standard Time: " . $currentDateTime;
 
+  $page_date = $_POST['page_date'];
+  $page_time = $_POST['page_time'];
 
   $workname = $_POST['workname'];
   $workid = $_POST['hidden_workername'];
@@ -55,8 +57,10 @@ if (isset($_POST['save'])) {
       //    echo "Details Saved successfully";
       $reff_id = mysqli_insert_id($con);
       $txn_type = "ISS";
+      $txn_type_typ = "BOBIN_ISS";
       $query = "INSERT INTO `bobin_trans`(`issue_date`,`reff_id`, `bobin_id`,`bobin_no`, `txn_type`,`itm_id`,`itm_nam`, `col_id`,`col_nam`, `iss_wghts`,`ttl_wght`) 
       VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+
 
       for ($key = 0; $key < count($bobins); $key++) {
 
@@ -93,9 +97,84 @@ if (isset($_POST['save'])) {
             $ttl_wght
           );
           mysqli_stmt_execute($stmt);
+          $reff_id2 = mysqli_insert_id($con);
+        }
+
+
+        //=========================================================================================
+        //==================================== stock report==============================================================================
+
+        $query2 = "INSERT INTO `stock_report`(`save_date`,`save_time`, `txn_id`,`bobin_id`,`hd_id`,`txn_type`,
+      `loc_id`,`reff_id`,`itm_id`, `col_id`,/*`box_id`,*/`remarks`,`qty`,`qty1`,`wght`,`inw_otw`) 
+   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $remarks = "BOBIN-ISSUE";
+
+        $txnisstype = -1;
+        $wght_minus = $txnisstype * ($wghts[$key]);
+
+        if ($bobins[$key] !== "") {
+
+          if ($txnname === 'Zari') {
+            $colorid = "";
+            echo "zari";
+            $itemid = $itemids[$key];
+          } else {
+
+            $colorid = $colorids[$key];
+            echo "weft";
+            $itemid = "";
+          }
+          $bobvalue='';
+          $stmt = mysqli_prepare($con, $query2);
+          mysqli_stmt_bind_param(
+            $stmt,
+            "sssssssssssdddi",
+            $page_date,
+            $page_time,
+            $reff_id2,
+            $bobvalue,
+            $reff_id,
+            $txn_type_typ,
+            $fromid,
+            $reff_id,
+            $itemid,
+            $colorid,
+            $remarks,
+            $wghts[$key],
+            $wght_minus,
+            $wghts[$key],
+            $txnisstype
+          );
+          mysqli_stmt_execute($stmt);
+
+          $txnisstype = 1;
+          $wght_minus = $txnisstype * ($wghts[$key]);
+
+          $stmt = mysqli_prepare($con, $query2);
+          mysqli_stmt_bind_param(
+            $stmt,
+            "sssssssssssdddi",
+            $page_date,
+            $page_time,
+            $reff_id2,
+            $bobins_id[$key],
+            $reff_id,
+            $txn_type_typ,
+            $unitid,
+            $reff_id,
+            $itemid,
+            $colorid,
+            $remarks,
+            $wghts[$key],
+            $wght_minus,
+            $wghts[$key],
+            $txnisstype
+          );
+          mysqli_stmt_execute($stmt);
         }
       }
-      //=========================================================================================
+
+      //==================================================================================================================
       header('Location:rawissueto_bobin.php'); // Redirect before closing the connection
       exit();
     } else {
@@ -125,6 +204,10 @@ if (isset($_POST['save'])) {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- 
+  <link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <script src="//code.jquery.com/jquery.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
 
   <link rel="stylesheet" href="css/issue.css">
   <link rel="stylesheet" href="css/modal.css">
@@ -132,7 +215,10 @@ if (isset($_POST['save'])) {
 </head>
 
 <body>
-  <a href="admin.php"><button class="home btn btn-success">HOME</button></a>
+  <?php
+  // include_once "main/nav.php";
+  ?>
+  <!-- <a href="admin.php"><button class="home btn btn-success">HOME</button></a> -->
 
   <div class="containers">
     <h2 id="dynamicheading">Transfer to Bobin</h2><br>
@@ -176,6 +262,8 @@ if (isset($_POST['save'])) {
           }
           ?>
         </datalist>
+        <input type="hidden" name="page_date" id="page_date">
+        <input type="hidden" name="page_time" id="page_time">
       </div>
 
       <div class="radio-div">
@@ -301,6 +389,8 @@ if (isset($_POST['save'])) {
 
 
   <script src="js/issue.js"></script>
+  <script src="js/date_time.js"></script>
+
   <script src="//code.jquery.com/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 

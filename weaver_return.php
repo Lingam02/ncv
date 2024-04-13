@@ -63,7 +63,9 @@ if (isset($_POST['log-out'])) {
 </head>
 
 <body>
-
+<?php
+    include_once "main/nav.php";
+    ?>
   <div class="container-main bgcolor">
     <h2>Loom Return</h2>
 
